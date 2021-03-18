@@ -1,4 +1,4 @@
-#include "initScene.h"
+#include "playScene.h"
 #include "SceneManager.h"
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -13,20 +13,20 @@
 
 
 /* @brief Static member function declaration */
-Scene* initScene::create()
+Scene* playScene::create()
 {
-	initScene* scene = new initScene();
+	playScene* scene = new playScene();
 	return scene;
 }
 
 /* @brief Default constructor */
-initScene::initScene() : Scene()
+playScene::playScene() : Scene()
 {
 	this->sceneID = INIT_SCENE;
 }
 
 /* @brief Default destructor */
-initScene::~initScene() {}
+playScene::~playScene() {}
 
 /* @brief Overrided init function
  *
@@ -34,11 +34,11 @@ initScene::~initScene() {}
  * loads the logo and sets the camera to the perfect position
  * for the scene.
  */
-void initScene::init(void)
+void playScene::init(void)
 {
 	initShaders();
 
-	logoTexture.loadFromFile("images/initGoonies.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	logoTexture.loadFromFile("images/bub.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	logoTexture.setMinFilter(GL_NEAREST);
 	logoTexture.setMagFilter(GL_NEAREST);
 
@@ -56,13 +56,13 @@ void initScene::init(void)
  *
  * @param deltaTime
  */
-void initScene::update(int deltaTime)
+void playScene::update(int deltaTime)
 {
-	if (Game::instance().getKey(SPACEBAR)) {
-		SceneManager* scene_manager = SceneManager::instance();
-		scene_manager->requestScene(SceneID::PLAY_SCENE);
-	}
 
+	if (Game::instance().getKey(ESCAPE)) {
+		SceneManager* scene_manager = SceneManager::instance();
+		scene_manager->requestScene(SceneID::END_SCENE);
+	}
 	//count += 1;
 
 	// 210 -> 3.5 seconds (60 frames/s)
@@ -79,7 +79,7 @@ void initScene::update(int deltaTime)
  *
  * This function renders the scene.
  */
-void initScene::render()
+void playScene::render()
 {
 	glm::mat4 modelview;
 
@@ -95,10 +95,10 @@ void initScene::render()
 }
 
 /* @brief Overrided function used to finalize scenes*/
-void initScene::fin() {}
+void playScene::fin() {}
 
 /* @brief Function that initializes de shaders*/
-void initScene::initShaders()
+void playScene::initShaders()
 {
 	Shader vShader, fShader;
 

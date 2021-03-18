@@ -1,4 +1,4 @@
-#include "initScene.h"
+#include "endScene.h"
 #include "SceneManager.h"
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -6,6 +6,7 @@
 #define SCREEN_X 272.f
 #define SCREEN_Y 240.f
 
+#define C 99
 // GLUT SPACEBAR code
 #define SPACEBAR 32
 // GLUT ESC code
@@ -13,20 +14,20 @@
 
 
 /* @brief Static member function declaration */
-Scene* initScene::create()
+Scene* endScene::create()
 {
-	initScene* scene = new initScene();
+	endScene* scene = new endScene();
 	return scene;
 }
 
 /* @brief Default constructor */
-initScene::initScene() : Scene()
+endScene::endScene() : Scene()
 {
 	this->sceneID = INIT_SCENE;
 }
 
 /* @brief Default destructor */
-initScene::~initScene() {}
+endScene::~endScene() {}
 
 /* @brief Overrided init function
  *
@@ -34,11 +35,11 @@ initScene::~initScene() {}
  * loads the logo and sets the camera to the perfect position
  * for the scene.
  */
-void initScene::init(void)
+void endScene::init(void)
 {
 	initShaders();
 
-	logoTexture.loadFromFile("images/initGoonies.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	logoTexture.loadFromFile("images/gameOver.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	logoTexture.setMinFilter(GL_NEAREST);
 	logoTexture.setMagFilter(GL_NEAREST);
 
@@ -56,13 +57,13 @@ void initScene::init(void)
  *
  * @param deltaTime
  */
-void initScene::update(int deltaTime)
+void endScene::update(int deltaTime)
 {
-	if (Game::instance().getKey(SPACEBAR)) {
-		SceneManager* scene_manager = SceneManager::instance();
-		scene_manager->requestScene(SceneID::PLAY_SCENE);
-	}
 
+	if (Game::instance().getKey(C)) {
+		SceneManager* scene_manager = SceneManager::instance();
+		scene_manager->requestScene(SceneID::INIT_SCENE);
+	}
 	//count += 1;
 
 	// 210 -> 3.5 seconds (60 frames/s)
@@ -79,7 +80,7 @@ void initScene::update(int deltaTime)
  *
  * This function renders the scene.
  */
-void initScene::render()
+void endScene::render()
 {
 	glm::mat4 modelview;
 
@@ -95,10 +96,10 @@ void initScene::render()
 }
 
 /* @brief Overrided function used to finalize scenes*/
-void initScene::fin() {}
+void endScene::fin() {}
 
 /* @brief Function that initializes de shaders*/
-void initScene::initShaders()
+void endScene::initShaders()
 {
 	Shader vShader, fShader;
 

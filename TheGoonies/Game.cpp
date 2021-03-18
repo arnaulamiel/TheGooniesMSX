@@ -3,6 +3,8 @@
 #include "Game.h"
 #include "initScene.h"
 #include "Scene.h"
+#include "playScene.h"
+#include "endScene.h"
 
 void Game::init()
 {
@@ -11,6 +13,9 @@ void Game::init()
 	//scene.init();
 	SceneManager* scene_manager = SceneManager::instance();
 	scene_manager->addScene(INIT_SCENE, initScene::create);
+	scene_manager->addScene(PLAY_SCENE, playScene::create);
+	scene_manager->addScene(END_SCENE, endScene::create);
+
 	scene_manager->setStartScene(INIT_SCENE);
 }
 
