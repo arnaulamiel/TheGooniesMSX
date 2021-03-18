@@ -11,7 +11,7 @@
 
 
 static int prevTime;
-
+static Game game; // This object represents our whole game
 
 // If a key is pressed this callback is called
 

@@ -7,34 +7,42 @@
 #include "TileMap.h"
 #include "Player.h"
 
+#include "SceneManager.h"
 
 // Scene contains all the entities of our game.
 // It is responsible for updating and render them.
 
-
 class Scene
 {
-
+protected:
+	SceneID sceneID;
 public:
-	Scene();
-	~Scene();
+	Scene() = default;
+	virtual ~Scene() = default;
 
-	void init();
-	void update(int deltaTime);
-	void render();
+	virtual void init() = 0;
+	virtual void update(int deltaTime) = 0;
+	virtual void render() = 0;
+	virtual void fin() = 0;
 
-private:
-	void initShaders();
+	virtual void setSceneID(SceneID sceneId)
+	{
+		sceneID = sceneId;
+	};
 
-private:
-	TileMap *map;
-	Player *player;
-	ShaderProgram texProgram;
-	float currentTime;
-	glm::mat4 projection;
+	virtual SceneID getSceneID()
+	{
+		return sceneID;
+	};
+
+	//virtual void possibleCharacter(int key) {};
+	//virtual void confirmCharacter(int key) {};
+
+	//virtual void setBank(int bank) {};
+
+
 
 };
 
 
 #endif // _SCENE_INCLUDE
-

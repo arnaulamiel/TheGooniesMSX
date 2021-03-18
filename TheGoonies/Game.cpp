@@ -1,13 +1,17 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include "Game.h"
-
+#include "initScene.h"
+#include "Scene.h"
 
 void Game::init()
 {
 	bPlay = true;
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-	scene.init();
+	//scene.init();
+	SceneManager* scene_manager = SceneManager::instance();
+	scene_manager->addScene(INIT_SCENE, initScene::create);
+	scene_manager->setStartScene(INIT_SCENE);
 }
 
 bool Game::update(int deltaTime)
@@ -28,15 +32,17 @@ bool Game::update(int deltaTime)
 			(...)
 		}
 	*/
-	scene.update(deltaTime);
-	
+	SceneManager* scene_manager = SceneManager::instance();
+	scene_manager->updateActiveScene(deltaTime);
+
 	return bPlay;
 }
 
 void Game::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	scene.render();
+	SceneManager* scene_manager = SceneManager::instance();
+	scene_manager->renderActiveScene();
 }
 
 void Game::keyPressed(int key)
