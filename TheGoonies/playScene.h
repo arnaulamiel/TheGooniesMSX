@@ -39,8 +39,12 @@ private:
 	/* Texture of the logo */
 	Texture logoTexture;
 
+	TileMap* map;
+	float currentTime;
+
 	/* Logo sprite*/
 	Sprite* logo;
+	Player* player;
 
 	/* Projection matrix */
 	glm::mat4 projection;

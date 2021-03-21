@@ -2,19 +2,25 @@
 #include "SceneManager.h"
 #include <glm/gtc/matrix_transform.hpp>
 
-// SCREEN_X and SCREEN_Y define the size of the logo image
-#define SCREEN_X 272.f
-#define SCREEN_Y 240.f
+//Donde inicia el mapa
+#define SCREEN_X 32
+#define SCREEN_Y 50
+
+#define BACKGROUND_X 650
+#define BACKGROUND_Y 480
 
 // GLUT SPACEBAR code
 #define SPACEBAR 32
 // GLUT ESC code
 #define ESCAPE 27
 
+#define INIT_PLAYER_X_TILES 4
+#define INIT_PLAYER_Y_TILES 10
+
 
 /* @brief Static member function declaration */
 Scene* playScene::create()
-{
+{	
 	playScene* scene = new playScene();
 	return scene;
 }
@@ -23,10 +29,17 @@ Scene* playScene::create()
 playScene::playScene() : Scene()
 {
 	this->sceneID = INIT_SCENE;
+	map = NULL; 
+	player = NULL;
 }
 
 /* @brief Default destructor */
-playScene::~playScene() {}
+playScene::~playScene() {
+	if (map != NULL)
+		delete map;
+	if (player != NULL)
+		delete player;
+}
 
 /* @brief Overrided init function
  *
@@ -38,14 +51,21 @@ void playScene::init(void)
 {
 	initShaders();
 
-	logoTexture.loadFromFile("images/bub.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	logoTexture.loadFromFile("images/black.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	logoTexture.setMinFilter(GL_NEAREST);
 	logoTexture.setMagFilter(GL_NEAREST);
+	//TileMap
+	map = TileMap::createTileMap("levels/level02.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
-	logo = Sprite::createSprite(glm::ivec2(SCREEN_X, SCREEN_Y), glm::vec2(1.f, 1.f), &logoTexture, &texProgram);
+	logo = Sprite::createSprite(glm::ivec2(BACKGROUND_X, BACKGROUND_Y), glm::vec2(1.f, 1.f), &logoTexture, &texProgram);
 	logo->setPosition(glm::vec2(0, 0));
+	player = new Player();
+	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
+	player->setTileMap(map);
 
-	projection = glm::ortho(0.f, SCREEN_X, SCREEN_Y, 0.f);
+	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
+	currentTime = 0.0f;
 }
 
 /* @brief Overrided update function
@@ -63,6 +83,8 @@ void playScene::update(int deltaTime)
 		SceneManager* scene_manager = SceneManager::instance();
 		scene_manager->requestScene(SceneID::END_SCENE);
 	}
+	currentTime += deltaTime;
+	player->update(deltaTime);
 	//count += 1;
 
 	// 210 -> 3.5 seconds (60 frames/s)
@@ -92,6 +114,8 @@ void playScene::render()
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 
 	logo->render();
+	map->render();
+	player->render();
 }
 
 /* @brief Overrided function used to finalize scenes*/
