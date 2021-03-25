@@ -13,7 +13,7 @@
 
 enum PlayerAnims
 {
-	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT
+	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, JUMP_LEFT, JUMP_RIGHT
 };
 
 
@@ -26,7 +26,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	//classe sprite -> creem el sprite
 	sprite = Sprite::createSprite(glm::ivec2(36, 36), glm::vec2(0.2, 0.333), &spritesheet, &shaderProgram);
 	//aquest sprite te 4 animacions
-	sprite->setNumberAnimations(4);
+	sprite->setNumberAnimations(6);
 	//i son aquestes
 		//tants keyframes com vulguem del spritesheet (ja que pillem de l'arxiu del sprite)
 		//tb necessitem k entre dos sprites pintats (com x exemp caminant) hi hagi cert temps de retard perk no es vegi k camina super rapid
@@ -45,6 +45,13 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 		sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.f, 0.333f));
 		sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.2f, 0.333f));
 		sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.4f, 0.333f));
+
+		//Animaciones de salto
+		sprite->setAnimationSpeed(JUMP_LEFT, 8);
+		sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.6f, 0.666f));
+
+		sprite->setAnimationSpeed(JUMP_RIGHT, 8);
+		sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.6f, 0.333f));
 		
 	sprite->changeAnimation(0);
 	tileMapDispl = tileMapPos;
@@ -94,18 +101,36 @@ void Player::update(int deltaTime)
 		//en aquest cas, el alpha augmenta de 4 en 4 graus, perk si, sha decidit aixi
 		jumpAngle += JUMP_ANGLE_STEP;
 		//si arribem a 180, deixes de saltar i ja no et mous amb el sinus
+
+		/*if ((sprite->animation() != JUMP_LEFT) && (sprite->animation() == STAND_LEFT || sprite->animation() == MOVE_LEFT))
+			sprite->changeAnimation(JUMP_LEFT);
+		else if ((sprite->animation() != JUMP_RIGHT) && (sprite->animation() == STAND_RIGHT || sprite->animation() == MOVE_RIGHT))
+			sprite->changeAnimation(JUMP_RIGHT);*/
+
 		if(jumpAngle == 180)
 		{
 			bJumping = false;
 			posPlayer.y = startY;
+			/*if (sprite->animation() == JUMP_LEFT)
+				sprite->changeAnimation(STAND_LEFT);
+			else if (sprite->animation() == JUMP_RIGHT)
+				sprite->changeAnimation(STAND_RIGHT);*/
 		}
 		else
 			//si no arriba a 180, segueix pujant
 		{
 			posPlayer.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
+
 			//Mentre estem pujant, no podem colisionar, pero al baixar (<90) colisiona -> aixo es perk el nostre joc actua aixi
-			if(jumpAngle > 90)
+			if (jumpAngle > 90) {
 				bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y);
+				/*if (!bJumping) {
+					if (sprite->animation() == JUMP_LEFT)
+						sprite->changeAnimation(STAND_LEFT);
+					else if (sprite->animation() == JUMP_RIGHT)
+						sprite->changeAnimation(STAND_RIGHT);
+				}*/
+			}
 		}
 	}
 	else
