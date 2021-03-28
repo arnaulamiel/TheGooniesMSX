@@ -22,8 +22,11 @@ public:
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
 	
+	void setVidas(); 
+
 private:
 	
+	int vidasPlayer;
 	bool bJumping;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY;
