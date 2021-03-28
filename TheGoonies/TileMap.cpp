@@ -52,7 +52,7 @@ bool TileMap::loadLevel(const string &levelFile)
 	ifstream fin;
 	string line, tilesheetFile;
 	stringstream sstream;
-	char tile;
+	int tile;
 	
 	fin.open(levelFile.c_str());
 	if(!fin.is_open())
@@ -84,15 +84,20 @@ bool TileMap::loadLevel(const string &levelFile)
 	{
 		for(int i=0; i<mapSize.x; i++)
 		{
-			fin.get(tile);
+			/*fin.get(tile);
 			//si es un espai posem un 0
-			if(tile == ' ')
+			if(tile == 0)
 				map[j*mapSize.x+i] = 0;
 			else
-				//implementa la funcio ASCII to integer (que un string numero passi a ser un numero de veritat)
-				map[j*mapSize.x+i] = tile - int('0');
+			//implementa la funcio ASCII to integer (que un string numero passi a ser un numero de veritat)
+				map[j*mapSize.x+i] = tile - int('0');*/
+
+			//Per poder posar més de 10 blocs al mapa (0-9) convertim el tile en int i aixi tenim suficients numeros pels blocs que tenim
+			fin >> tile;
+			map[j * mapSize.x + i] = tile;
+				
 		}
-		fin.get(tile);
+		//fin.get(tile);
 #ifndef _WIN32
 		fin.get(tile);
 #endif
@@ -203,7 +208,7 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 		{
 			if(*posY - tileSize * y + size.y <= 4)
 			{
-				*posY = tileSize * y - size.y;
+				*posY = tileSize * y - size.y - 3;
 				return true;
 			}
 		}
@@ -211,7 +216,28 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 	
 	return false;
 }
+bool TileMap::collisionMoveUp(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const
+{
+	int x0, x1, y;
 
+	x0 = pos.x / tileSize;
+	x1 = (pos.x + size.x - 1) / tileSize;
+	y = (pos.y + size.y - 1 -16) / tileSize;
+	//una cerca desde un punt a un altre, si trobem un bloc, no caiguis mes
+	for (int x = x0; x <= x1; x++)
+	{
+		if (map[y * mapSize.x + x] != 0)
+		{
+			/*if (*posY - tileSize * y + size.y <= 4)
+			{
+				*posY = tileSize * y - size.y;*/
+				return true;
+			//}
+		}
+	}
+
+	return false;
+}
 
 
 

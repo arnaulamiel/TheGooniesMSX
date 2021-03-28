@@ -7,7 +7,7 @@
 
 
 #define JUMP_ANGLE_STEP 4
-#define JUMP_HEIGHT 96
+#define JUMP_HEIGHT 40
 #define FALL_STEP 4
 
 #define INI_VIDAS 8 //Numero de hits que necesita darte una calavera o las balas del enemigo copia para matarte
@@ -15,7 +15,7 @@
 
 enum PlayerAnims
 {
-	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, JUMP_LEFT, JUMP_RIGHT
+	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, JUMP_LEFT, JUMP_RIGHT, CLIMB_1, CLIMB_2
 };
 
 
@@ -28,7 +28,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	//classe sprite -> creem el sprite
 	sprite = Sprite::createSprite(glm::ivec2(36, 36), glm::vec2(0.2, 0.333), &spritesheet, &shaderProgram);
 	//aquest sprite te 4 animacions
-	sprite->setNumberAnimations(6);
+	sprite->setNumberAnimations(8);
 	//i son aquestes
 		//tants keyframes com vulguem del spritesheet (ja que pillem de l'arxiu del sprite)
 		//tb necessitem k entre dos sprites pintats (com x exemp caminant) hi hagi cert temps de retard perk no es vegi k camina super rapid
@@ -55,6 +55,13 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 		sprite->setAnimationSpeed(JUMP_RIGHT, 8);
 		sprite->addKeyframe(JUMP_RIGHT, glm::vec2(0.6f, 0.333f));
 		
+		//Animaciones de subir cuerda
+		sprite->setAnimationSpeed(CLIMB_1, 8);
+		sprite->addKeyframe(CLIMB_1, glm::vec2(0.0f, 0.0f));
+
+		sprite->setAnimationSpeed(CLIMB_2, 8);
+		sprite->addKeyframe(CLIMB_2, glm::vec2(0.2f, 0.0f));
+
 	sprite->changeAnimation(0);
 	tileMapDispl = tileMapPos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
@@ -75,22 +82,22 @@ void Player::update(int deltaTime)
 		if(sprite->animation() != MOVE_LEFT)
 			sprite->changeAnimation(MOVE_LEFT);
 		posPlayer.x -= 2;
-		/*if(map->collisionMoveLeft(posPlayer, glm::ivec2(36, 36)))
+		if(map->collisionMoveLeft(posPlayer, glm::ivec2(32, 20)))
 		{
 			posPlayer.x += 2;
 			sprite->changeAnimation(STAND_LEFT);
-		}*/
+		}
 	}
 	else if(Game::instance().getSpecialKey(GLUT_KEY_RIGHT))
 	{
 		if(sprite->animation() != MOVE_RIGHT)
 			sprite->changeAnimation(MOVE_RIGHT);
 		posPlayer.x += 2;
-		/*if(map->collisionMoveRight(posPlayer, glm::ivec2(36, 36)))
+		if(map->collisionMoveRight(posPlayer, glm::ivec2(32, 20)))
 		{
 			posPlayer.x -= 2;
 			sprite->changeAnimation(STAND_RIGHT);
-		}*/
+		}
 	}
 	else
 	{
@@ -102,38 +109,51 @@ void Player::update(int deltaTime)
 	
 	if(bJumping)
 	{
-		//en aquest cas, el alpha augmenta de 4 en 4 graus, perk si, sha decidit aixi
+		//en aquest cas, el alpha augmenta de x en x graus, perk si, sha decidit aixi
 		jumpAngle += JUMP_ANGLE_STEP;
-		//si arribem a 180, deixes de saltar i ja no et mous amb el sinus
-
+		
+		
 		if ((sprite->animation() != JUMP_LEFT) && (sprite->animation() == STAND_LEFT || sprite->animation() == MOVE_LEFT))
 			sprite->changeAnimation(JUMP_LEFT);
 		else if ((sprite->animation() != JUMP_RIGHT) && (sprite->animation() == STAND_RIGHT || sprite->animation() == MOVE_RIGHT))
 			sprite->changeAnimation(JUMP_RIGHT);
 
-		if(jumpAngle == 180)
+		if (map->collisionMoveUp(posPlayer, glm::ivec2(32, 20), &posPlayer.y))
 		{
+			
+			jumpAngle -= JUMP_ANGLE_STEP ;
 			bJumping = false;
-			posPlayer.y = startY;
-			/*if (sprite->animation() == JUMP_LEFT)
-				sprite->changeAnimation(STAND_LEFT);
-			else if (sprite->animation() == JUMP_RIGHT)
-				sprite->changeAnimation(STAND_RIGHT);*/
-		}//si no arriba a 180, segueix pujant
-		else		
-		{
-			posPlayer.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
+			posPlayer.y += FALL_STEP;
+			//startY = posPlayer.y;
+			
+		}
+		else {
 
-			bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y);
-			//Mentre estem pujant, no podem colisionar, pero al baixar (<90) colisiona -> aixo es perk el nostre joc actua aixi
-			//if (jumpAngle > 90) {				
+			//si arribem a 180, deixes de saltar i ja no et mous amb el sinus
+			if (jumpAngle == 180)
+			{
+				bJumping = false;
+				posPlayer.y = startY;
+				/*if (sprite->animation() == JUMP_LEFT)
+					sprite->changeAnimation(STAND_LEFT);
+				else if (sprite->animation() == JUMP_RIGHT)
+					sprite->changeAnimation(STAND_RIGHT);*/
+			}//si no arriba a 180, segueix pujant
+			else
+			{
+				posPlayer.y = int(startY - JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
+
+				bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(32, 20), &posPlayer.y);
+
+				//if (jumpAngle > 90) {				
 				if (!bJumping) {
 					if (sprite->animation() == JUMP_LEFT)
 						sprite->changeAnimation(STAND_LEFT);
 					else if (sprite->animation() == JUMP_RIGHT)
 						sprite->changeAnimation(STAND_RIGHT);
 				}
-			//}
+				//}
+			}
 		}
 	}
 	else
@@ -145,8 +165,10 @@ void Player::update(int deltaTime)
 
 		//si no estem saltant, depenent si hi ha colisio o no, caiem o no caiem
 		posPlayer.y += FALL_STEP;
-		if(map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y))
+		if(map->collisionMoveDown(posPlayer, glm::ivec2(32, 20), &posPlayer.y))
 		{
+			
+
 			//No diferencia entre Release o press perk si ja estem saltant no entra en aquest else, nomes si no esta saltant i es clica a saltar
 			if(Game::instance().getSpecialKey(GLUT_KEY_UP))
 			{
@@ -159,10 +181,10 @@ void Player::update(int deltaTime)
 	
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 
-	//Baixar vides del jugador
+	//Baixar vides del jugador (k)
 	if (Game::instance().getKey(107) ){
 		vidasPlayer = vidasPlayer - 1;
-		cout << vidasPlayer << endl;
+		//cout << vidasPlayer << endl;
 	}
 	if (vidasPlayer == 0) {
 		SceneManager* scene_manager = SceneManager::instance();
