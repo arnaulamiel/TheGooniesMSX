@@ -10,12 +10,13 @@
 #define JUMP_HEIGHT 40
 #define FALL_STEP 4
 
+#define SPACEBAR 32
 #define INI_VIDAS 8 //Numero de hits que necesita darte una calavera o las balas del enemigo copia para matarte
 
 
 enum PlayerAnims
 {
-	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, JUMP_LEFT, JUMP_RIGHT, CLIMB_1, CLIMB_2
+	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, JUMP_LEFT, JUMP_RIGHT, CLIMB_1, CLIMB_2, HIT_LEFT, HIT_RIGHT
 };
 
 
@@ -23,12 +24,13 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
 	//estat de salt -> normalment els bool son dolents perk solen haber mes estats, pero com es un salt pues ja va be
 	bJumping = false;
+	bHitting = false;
 	//load una imatge
 	spritesheet.loadFromFile("images/spritesheetPlayer.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	//classe sprite -> creem el sprite
 	sprite = Sprite::createSprite(glm::ivec2(36, 36), glm::vec2(0.2, 0.333), &spritesheet, &shaderProgram);
 	//aquest sprite te 4 animacions
-	sprite->setNumberAnimations(8);
+	sprite->setNumberAnimations(10);
 	//i son aquestes
 		//tants keyframes com vulguem del spritesheet (ja que pillem de l'arxiu del sprite)
 		//tb necessitem k entre dos sprites pintats (com x exemp caminant) hi hagi cert temps de retard perk no es vegi k camina super rapid
@@ -61,6 +63,15 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 
 		sprite->setAnimationSpeed(CLIMB_2, 8);
 		sprite->addKeyframe(CLIMB_2, glm::vec2(0.2f, 0.0f));
+
+		//Animaciones de pegar
+		sprite->setAnimationSpeed(HIT_LEFT, 8);
+		sprite->addKeyframe(HIT_LEFT, glm::vec2(0.8f, 0.666f));
+		sprite->addKeyframe(HIT_LEFT, glm::vec2(0.2f, 0.666f));
+
+		sprite->setAnimationSpeed(HIT_RIGHT, 8);
+		sprite->addKeyframe(HIT_RIGHT, glm::vec2(0.8f, 0.333f));
+		sprite->addKeyframe(HIT_RIGHT, glm::vec2(0.2f, 0.333f));
 
 	sprite->changeAnimation(0);
 	tileMapDispl = tileMapPos;
@@ -99,6 +110,18 @@ void Player::update(int deltaTime)
 			sprite->changeAnimation(STAND_RIGHT);
 		}
 	}
+	else if (Game::instance().getKey(SPACEBAR)) {
+		if (!bHitting)
+		{
+			bHitting = true;
+			if (sprite->animation() == MOVE_LEFT || sprite->animation() == (STAND_LEFT))
+				sprite->changeAnimation(HIT_LEFT);
+			else if (sprite->animation() == MOVE_RIGHT || sprite->animation() == (STAND_RIGHT))
+				sprite->changeAnimation(HIT_RIGHT);
+		}
+
+		
+	}
 	else
 	{
 		if(sprite->animation() == MOVE_LEFT)
@@ -106,6 +129,15 @@ void Player::update(int deltaTime)
 		else if(sprite->animation() == MOVE_RIGHT)
 			sprite->changeAnimation(STAND_RIGHT);
 	}
+	//Booleano para que deje de hacer la animacion de pegar cuando ya la ha hecho
+	if (!bHitting) {
+		if (sprite->animation() == HIT_LEFT)
+			sprite->changeAnimation(STAND_LEFT);
+		else if (sprite->animation() == HIT_RIGHT)
+			sprite->changeAnimation(STAND_RIGHT);
+	}
+	bHitting = false;
+
 	
 	if(bJumping)
 	{

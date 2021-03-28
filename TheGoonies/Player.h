@@ -27,7 +27,7 @@ public:
 private:
 	
 	int vidasPlayer;
-	bool bJumping;
+	bool bJumping,bHitting;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY;
 	Texture spritesheet;

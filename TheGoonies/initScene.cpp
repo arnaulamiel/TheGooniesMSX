@@ -57,8 +57,8 @@ void initScene::init(void)
  * @param deltaTime
  */
 void initScene::update(int deltaTime)
-{
-	if (Game::instance().getKey(SPACEBAR)) {
+{//ENTER
+	if (Game::instance().getKey(13)) {
 		SceneManager* scene_manager = SceneManager::instance();
 		scene_manager->requestScene(SceneID::PLAY_SCENE);
 	}
