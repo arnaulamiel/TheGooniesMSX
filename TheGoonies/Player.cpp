@@ -27,7 +27,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	bHitting = false;
 	//load una imatge
 	spritesheet.loadFromFile("images/spritesheetPlayer.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	//classe sprite -> creem el sprite
+	//classe sprite -> creem el sprite (tamaño del jugador (18 es un tile))
 	sprite = Sprite::createSprite(glm::ivec2(36, 36), glm::vec2(0.2, 0.333), &spritesheet, &shaderProgram);
 	//aquest sprite te 4 animacions
 	sprite->setNumberAnimations(10);
@@ -87,8 +87,6 @@ void Player::update(int deltaTime)
 	sprite->update(deltaTime);
 	if(Game::instance().getSpecialKey(GLUT_KEY_LEFT))
 	{
-		/*posPlayer.x -= 2;
-		sprite->changeAnimation(MOVE_LEFT);*/
 		//hem de comprovar si no estavem ja fent el moviment a la esquerra per poderlo fer ara (aixi amb la majoria de comprovacions)
 		if(sprite->animation() != MOVE_LEFT)
 			sprite->changeAnimation(MOVE_LEFT);
@@ -118,9 +116,7 @@ void Player::update(int deltaTime)
 				sprite->changeAnimation(HIT_LEFT);
 			else if (sprite->animation() == MOVE_RIGHT || sprite->animation() == (STAND_RIGHT))
 				sprite->changeAnimation(HIT_RIGHT);
-		}
-
-		
+		}		
 	}
 	else
 	{
@@ -243,6 +239,10 @@ void Player::setPosition(const glm::vec2 &pos)
 void Player::setVidas()
 {
 	vidasPlayer = INI_VIDAS; 
+}
+
+glm::ivec2 Player::getPosPlayer() {
+	return posPlayer;
 }
 
 

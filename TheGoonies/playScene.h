@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "Sprite.h"
 #include <iostream>
+#include "Calavera.h"
 
 /* @file playScene.h
 *
@@ -45,6 +46,7 @@ private:
 	/* Logo sprite*/
 	Sprite* logo;
 	Player* player;
+	Calavera* cal;
 
 	/* Projection matrix */
 	glm::mat4 projection;

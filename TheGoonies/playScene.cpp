@@ -17,6 +17,9 @@
 #define INIT_PLAYER_X_TILES 4
 #define INIT_PLAYER_Y_TILES 10
 
+#define INIT_CAL_X_TILES 25
+#define INIT_CAL_Y_TILES 21
+
 
 /* @brief Static member function declaration */
 Scene* playScene::create()
@@ -31,6 +34,7 @@ playScene::playScene() : Scene()
 	this->sceneID = INIT_SCENE;
 	map = NULL; 
 	player = NULL;
+	cal = NULL;
 }
 
 /* @brief Default destructor */
@@ -39,6 +43,8 @@ playScene::~playScene() {
 		delete map;
 	if (player != NULL)
 		delete player;
+	if (cal != NULL)
+		delete cal;
 }
 
 /* @brief Overrided init function
@@ -65,6 +71,13 @@ void playScene::init(void)
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);
 
+	//Calavera
+	cal = new Calavera();
+	cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
+	cal->setPlayer(player);
+	cal->setTileMap(map);
+
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 }
@@ -86,6 +99,7 @@ void playScene::update(int deltaTime)
 	}
 	currentTime += deltaTime;
 	player->update(deltaTime);
+	cal->update(deltaTime);
 	//count += 1;
 
 	// 210 -> 3.5 seconds (60 frames/s)
@@ -117,6 +131,7 @@ void playScene::render()
 	logo->render();
 	map->render();
 	player->render();
+	cal->render();
 }
 
 /* @brief Overrided function used to finalize scenes*/

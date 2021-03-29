@@ -23,6 +23,7 @@ public:
 	void setPosition(const glm::vec2 &pos);
 	
 	void setVidas(); 
+	glm::ivec2 getPosPlayer();
 
 private:
 	
