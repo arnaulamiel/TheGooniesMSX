@@ -70,18 +70,18 @@ void Calavera::update(int deltaTime) {
 		else if(sprite->animation() == CAL_RIGHT) posCal.x += 2;
 
 		//Si hay colision a los lados no avanza y cambia de direccion		
-		if (map->collisionMoveLeft(posCal, glm::ivec2(32, 20))) {
+		if (map->collisionMoveLeft(posCal, glm::ivec2(36, 20))) {
 			if (sprite->animation() == CAL_LEFT) {
 				posCal.x += 2;
 				sprite->changeAnimation(CAL_RIGHT);
 			}
 		}
-		if (map->collisionMoveRight(posCal, glm::ivec2(32, 20))) {
+		/*if (map->collisionMoveRight(posCal, glm::ivec2(32, 20))) {
 			if (sprite->animation() == CAL_RIGHT) {
 				posCal.x -= 2;
 				sprite->changeAnimation(CAL_LEFT);
 			}
-		}
+		}*/
 	}
 
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posCal.x), float(tileMapDispl.y + posCal.y)));

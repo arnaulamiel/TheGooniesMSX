@@ -18,7 +18,7 @@
 #define INIT_PLAYER_Y_TILES 10
 
 #define INIT_CAL_X_TILES 25
-#define INIT_CAL_Y_TILES 21
+#define INIT_CAL_Y_TILES 4
 
 
 /* @brief Static member function declaration */
