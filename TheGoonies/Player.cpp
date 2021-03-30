@@ -16,7 +16,7 @@
 
 enum PlayerAnims
 {
-	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, JUMP_LEFT, JUMP_RIGHT, CLIMB_1, CLIMB_2, HIT_LEFT, HIT_RIGHT
+	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, JUMP_LEFT, JUMP_RIGHT, CLIMB, HIT_LEFT, HIT_RIGHT
 };
 
 
@@ -25,6 +25,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	//estat de salt -> normalment els bool son dolents perk solen haber mes estats, pero com es un salt pues ja va be
 	bJumping = false;
 	bHitting = false;
+	bLiana = false;
 	//load una imatge
 	spritesheet.loadFromFile("images/spritesheetPlayer.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	//classe sprite -> creem el sprite (tamaño del jugador (18 es un tile))
@@ -58,11 +59,9 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 		sprite->addKeyframe(JUMP_RIGHT, glm::vec2(0.6f, 0.333f));
 		
 		//Animaciones de subir cuerda
-		sprite->setAnimationSpeed(CLIMB_1, 8);
-		sprite->addKeyframe(CLIMB_1, glm::vec2(0.0f, 0.0f));
-
-		sprite->setAnimationSpeed(CLIMB_2, 8);
-		sprite->addKeyframe(CLIMB_2, glm::vec2(0.2f, 0.0f));
+		sprite->setAnimationSpeed(CLIMB, 8);
+		sprite->addKeyframe(CLIMB, glm::vec2(0.0f, 0.0f));
+		sprite->addKeyframe(CLIMB, glm::vec2(0.2f, 0.0f));
 
 		//Animaciones de pegar
 		sprite->setAnimationSpeed(HIT_LEFT, 8);
@@ -85,7 +84,29 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 void Player::update(int deltaTime)
 {
 	sprite->update(deltaTime);
-	if(Game::instance().getSpecialKey(GLUT_KEY_LEFT))
+
+	//Esta en liana
+	if (bLiana) {
+		if (Game::instance().getSpecialKey(GLUT_KEY_UP)) {
+			if (map->hayLianaUp(posPlayer, glm::ivec2(32, 20))) {
+				posPlayer.y -= 1;
+			}
+			else {
+				bLiana = false;
+				sprite->changeAnimation(STAND_LEFT);
+			}
+		}
+		else if (Game::instance().getSpecialKey(GLUT_KEY_DOWN)) {
+			if (map->hayLianaDown(posPlayer, glm::ivec2(32, 20))) {
+				posPlayer.y += 1;
+			}
+			else {
+				bLiana = false;
+				sprite->changeAnimation(STAND_LEFT);
+			}
+		}
+	}
+	if(Game::instance().getSpecialKey(GLUT_KEY_LEFT) && !bLiana)
 	{
 		//hem de comprovar si no estavem ja fent el moviment a la esquerra per poderlo fer ara (aixi amb la majoria de comprovacions)
 		if(sprite->animation() != MOVE_LEFT)
@@ -97,7 +118,7 @@ void Player::update(int deltaTime)
 			sprite->changeAnimation(STAND_LEFT);
 		}
 	}
-	else if(Game::instance().getSpecialKey(GLUT_KEY_RIGHT))
+	else if(Game::instance().getSpecialKey(GLUT_KEY_RIGHT) && !bLiana)
 	{
 		if(sprite->animation() != MOVE_RIGHT)
 			sprite->changeAnimation(MOVE_RIGHT);
@@ -119,6 +140,19 @@ void Player::update(int deltaTime)
 				sprite->changeAnimation(HIT_RIGHT);
 		}		
 	}
+	else if (Game::instance().getSpecialKey(GLUT_KEY_DOWN)) {
+		if (map->hayLianaDown(posPlayer, glm::ivec2(32, 20)) & !bLiana) {			
+			bLiana = true;
+			bJumping = false;
+			posPlayer.y += 1;
+			sprite->changeAnimation(CLIMB);		
+		}
+		else if(map->collisionMoveDown(posPlayer, glm::ivec2(32, 20), &posPlayer.y)) {
+			sprite->changeAnimation(STAND_LEFT); 
+			bLiana = false;
+			posPlayer.y -= 1;
+		}
+	}
 	else
 	{
 		if(sprite->animation() == MOVE_LEFT)
@@ -126,6 +160,7 @@ void Player::update(int deltaTime)
 		else if(sprite->animation() == MOVE_RIGHT)
 			sprite->changeAnimation(STAND_RIGHT);
 	}
+
 	//Booleano para que deje de hacer la animacion de pegar cuando ya la ha hecho
 	if (!bHitting) {
 		if (sprite->animation() == HIT_LEFT)
@@ -133,15 +168,16 @@ void Player::update(int deltaTime)
 		else if (sprite->animation() == HIT_RIGHT)
 			sprite->changeAnimation(STAND_RIGHT);
 	}
-	bHitting = false;
+	else bHitting = false;
 
 	
-	if(bJumping)
+
+	if (bJumping )
 	{
 		//en aquest cas, el alpha augmenta de x en x graus, perk si, sha decidit aixi
 		jumpAngle += JUMP_ANGLE_STEP;
-		
-		
+
+
 		if ((sprite->animation() != JUMP_LEFT) && (sprite->animation() == STAND_LEFT || sprite->animation() == MOVE_LEFT))
 			sprite->changeAnimation(JUMP_LEFT);
 		else if ((sprite->animation() != JUMP_RIGHT) && (sprite->animation() == STAND_RIGHT || sprite->animation() == MOVE_RIGHT))
@@ -149,43 +185,51 @@ void Player::update(int deltaTime)
 
 		if (map->collisionMoveUp(posPlayer, glm::ivec2(32, 20), &posPlayer.y))
 		{
-			
-			jumpAngle -= JUMP_ANGLE_STEP ;
+
+			jumpAngle -= JUMP_ANGLE_STEP;
 			bJumping = false;
 			posPlayer.y += FALL_STEP;
-			//startY = posPlayer.y;
-			
+			//startY = posPlayer.y;		
+
 		}
 		else {
 
-			//si arribem a 180, deixes de saltar i ja no et mous amb el sinus
-			if (jumpAngle == 180)
-			{
-				bJumping = false;
-				posPlayer.y = startY;
-				/*if (sprite->animation() == JUMP_LEFT)
-					sprite->changeAnimation(STAND_LEFT);
-				else if (sprite->animation() == JUMP_RIGHT)
-					sprite->changeAnimation(STAND_RIGHT);*/
-			}//si no arriba a 180, segueix pujant
-			else
-			{
-				posPlayer.y = int(startY - JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
-
-				bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(32, 20), &posPlayer.y);
-
-				//if (jumpAngle > 90) {				
-				if (!bJumping) {
-					if (sprite->animation() == JUMP_LEFT)
+			if (!map->hayLianaUp(posPlayer, glm::ivec2(32, 20)) && !map->hayLianaDown(posPlayer, glm::ivec2(32, 20))) {
+				//si arribem a 180, deixes de saltar i ja no et mous amb el sinus
+				if (jumpAngle == 180)
+				{
+					bJumping = false;
+					posPlayer.y = startY;
+					/*if (sprite->animation() == JUMP_LEFT)
 						sprite->changeAnimation(STAND_LEFT);
 					else if (sprite->animation() == JUMP_RIGHT)
-						sprite->changeAnimation(STAND_RIGHT);
+						sprite->changeAnimation(STAND_RIGHT);*/
+				}//si no arriba a 180, segueix pujant
+				else
+				{
+					posPlayer.y = int(startY - JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
+
+					bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(32, 20), &posPlayer.y);
+
+					if (!bJumping) {
+						if (sprite->animation() == JUMP_LEFT)
+							sprite->changeAnimation(STAND_LEFT);
+						else if (sprite->animation() == JUMP_RIGHT)
+							sprite->changeAnimation(STAND_RIGHT);
+					}
 				}
-				//}
+			}
+			else if (map->hayLianaUp(posPlayer, glm::ivec2(32, 20))) {
+
+				bLiana = true;
+				bJumping = false;
+				posPlayer.y += 2;
+				sprite->changeAnimation(CLIMB);
+
 			}
 		}
 	}
-	else
+	else if(!bLiana)
 	{
 		if (sprite->animation() == JUMP_LEFT)
 			sprite->changeAnimation(STAND_LEFT);
@@ -194,20 +238,27 @@ void Player::update(int deltaTime)
 
 		//si no estem saltant, depenent si hi ha colisio o no, caiem o no caiem
 		posPlayer.y += FALL_STEP;
-		if(map->collisionMoveDown(posPlayer, glm::ivec2(32, 20), &posPlayer.y))
+		if (map->collisionMoveDown(posPlayer, glm::ivec2(32, 20), &posPlayer.y))
 		{
-			
-
 			//No diferencia entre Release o press perk si ja estem saltant no entra en aquest else, nomes si no esta saltant i es clica a saltar
-			if(Game::instance().getSpecialKey(GLUT_KEY_UP))
+			if (Game::instance().getSpecialKey(GLUT_KEY_UP))
 			{
-				bJumping = true;
-				jumpAngle = 0;
-				startY = posPlayer.y;
+				if (!map->hayLianaUp(posPlayer, glm::ivec2(32, 20))) {
+					bJumping = true;
+					jumpAngle = 0;
+					startY = posPlayer.y;
+				}
+				else if(!bLiana) {
+					bLiana = true;
+					sprite->changeAnimation(CLIMB);
+					posPlayer.y += 2;
+				}
 			}
 		}
 	}
 	
+
+
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 
 	//Baixar vides del jugador (k)

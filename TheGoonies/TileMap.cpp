@@ -183,7 +183,8 @@ bool TileMap::collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) c
 	//es una cerca, mirem que desde una posi fins una altra, veiem si no hi ha llocs per colisionar
 	for(int y=y0; y<=y1; y++)
 	{
-		if(map[y*mapSize.x+x] != 0)
+		//Si no hi ha res o hi ha una liana
+		if(map[y*mapSize.x+x] != 0 && map[y * mapSize.x + x] != 20 && map[y * mapSize.x + x] != 21)
 			return true;
 	}
 	
@@ -197,9 +198,10 @@ bool TileMap::collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) 
 	x = (pos.x + size.x - 1) / tileSize;
 	y0 = pos.y / tileSize;
 	y1 = (pos.y + size.y - 1) / tileSize;
+	//Si no hi ha res o hi ha una liana
 	for(int y=y0; y<=y1; y++)
 	{
-		if(map[y*mapSize.x+x] != 0)
+		if(map[y*mapSize.x+x] != 0 && map[y * mapSize.x + x] != 20 && map[y * mapSize.x + x] != 21)
 			return true;
 	}
 	
@@ -216,16 +218,53 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 	//una cerca desde un punt a un altre, si trobem un bloc, no caiguis mes
 	for(int x=x0; x<=x1; x++)
 	{
-		if(map[y*mapSize.x+x] != 0)
-		{
-			if(*posY - tileSize * y + size.y <= 4)
-			{
-				*posY = tileSize * y - size.y - 3;
-				return true;
+		if (map[y * mapSize.x + x] != 0)
+		{	
+			//Si no es una liana
+			if (map[y * mapSize.x + x] != 20 && map[y * mapSize.x + x] != 21) {
+				if (*posY - tileSize * y + size.y <= 4)
+				{
+					*posY = tileSize * y - size.y - 3;
+					return true;
+				}
 			}
 		}
 	}
 	
+	return false;
+}
+
+bool TileMap::hayLianaUp(const glm::ivec2& pos,  const glm::ivec2& size) {
+	int x0, x1, y;
+	x0= pos.x / tileSize;
+	x1 = (pos.x + size.x - 1) / tileSize;
+	y = (pos.y + size.y - 1) / tileSize;
+
+	for (int x = x0; x <= x1; x++) {
+		if (map[y * mapSize.x + x] == 20 || map[y * mapSize.x + x] == 21) {
+			return true;
+		}
+	}
+	return false;
+}
+bool TileMap::hayLianaDown(const glm::ivec2& pos, const glm::ivec2& size) {
+	int x0, x1, y;
+
+	x0 = pos.x / tileSize;
+	x1 = (pos.x + size.x - 1) / tileSize;
+	y = (pos.y + size.y - 1) / tileSize;
+	//una cerca desde un punt a un altre, si trobem un bloc, no caiguis mes
+	for (int x = x0; x <= x1; x++)
+	{		
+		//Si no es una liana
+		if (map[y * mapSize.x + x] == 20 || map[y * mapSize.x + x] == 21) {
+			
+			return true;
+			
+		}
+		
+	}
+
 	return false;
 }
 bool TileMap::collisionMoveUp(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const
@@ -238,7 +277,7 @@ bool TileMap::collisionMoveUp(const glm::ivec2& pos, const glm::ivec2& size, int
 	//una cerca desde un punt a un altre, si trobem un bloc, no caiguis mes
 	for (int x = x0; x <= x1; x++)
 	{
-		if (map[y * mapSize.x + x] != 0)
+		if (map[y * mapSize.x + x] != 0 && map[y * mapSize.x + x] != 20 && map[y * mapSize.x + x] != 21)
 		{
 			/*if (*posY - tileSize * y + size.y <= 4)
 			{
