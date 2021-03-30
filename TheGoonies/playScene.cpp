@@ -17,8 +17,8 @@
 #define INIT_PLAYER_X_TILES 4
 #define INIT_PLAYER_Y_TILES 10
 
-#define INIT_CAL_X_TILES 25
-#define INIT_CAL_Y_TILES 4
+#define INIT_CAL_X_TILES 15
+#define INIT_CAL_Y_TILES 15
 
 
 /* @brief Static member function declaration */
@@ -35,6 +35,7 @@ playScene::playScene() : Scene()
 	map = NULL; 
 	player = NULL;
 	cal = NULL;
+	room = 1;
 }
 
 /* @brief Default destructor */
@@ -61,7 +62,8 @@ void playScene::init(void)
 	logoTexture.setMinFilter(GL_NEAREST);
 	logoTexture.setMagFilter(GL_NEAREST);
 	//TileMap
-	map = TileMap::createTileMap("levels/level02.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	initMaps();
+	updateRoom();
 
 	logo = Sprite::createSprite(glm::ivec2(BACKGROUND_X, BACKGROUND_Y), glm::vec2(1.f, 1.f), &logoTexture, &texProgram);
 	logo->setPosition(glm::vec2(0, 0));
@@ -92,6 +94,7 @@ void playScene::init(void)
  */
 void playScene::update(int deltaTime)
 {
+	
 
 	if (Game::instance().getKey(ESCAPE)) {
 		SceneManager* scene_manager = SceneManager::instance();
@@ -100,16 +103,21 @@ void playScene::update(int deltaTime)
 	currentTime += deltaTime;
 	player->update(deltaTime);
 	cal->update(deltaTime);
-	//count += 1;
+	
+	if (map->isMapLimitRight(player->getPosPlayer())) {
+		++room;
+		updateRoom();
+		player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y)/18 * map->getTileSize()));
+		player->setTileMap(map);
+	}
 
-	// 210 -> 3.5 seconds (60 frames/s)
-	/*if (count > 210 || Game::instance().getKey(SPACEBAR) || Game::instance().getKey(ESCAPE))
-	{
-		SceneManager* scene_manager = SceneManager::instance();
-		scene_manager->requestScene(SceneID::C_SCENE);
-
-		count = 0;
-	}*/
+	if (room != 1 && map->isMapLimitLeft(player->getPosPlayer())) {
+		--room;
+		updateRoom();
+		player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+		player->setTileMap(map);
+	}
+	
 }
 
 /* @brief Overrided render function
@@ -136,6 +144,21 @@ void playScene::render()
 
 /* @brief Overrided function used to finalize scenes*/
 void playScene::fin() {}
+
+void playScene::initMaps() {
+	mapIni = TileMap::createTileMap("levels/level02.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	mapIni2 = TileMap::createTileMap("levels/level03.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+}
+
+void playScene::updateRoom() {
+	if (room == 1) {
+		map = mapIni;
+	}
+	else if (room == 2) {
+		map = mapIni2;
+	}
+	
+}
 
 /* @brief Function that initializes de shaders*/
 void playScene::initShaders()

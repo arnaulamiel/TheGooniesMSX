@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Calavera.h"
 
+
 enum CalavAnims
 {
 	CAL_RESPAWN,
@@ -13,9 +14,11 @@ enum CalavAnims
 	NUM_ANIMS
 };
 
+
 void Calavera::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 
 	spawnAnim = 0;
+	state = CAL_RESPAWN;
 	bRespawinig = true;
 	bDead = false;
 	spritesheet.loadFromFile("images/SpriteSheetCalavera.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -43,45 +46,52 @@ void Calavera::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) 
 		sprite->addKeyframe(CAL_DEAD, glm::vec2(0.f, 0.75f));
 
 	sprite->changeAnimation(CAL_RESPAWN);
-	// ??tileMapDispl = tileMapPos;
-	//??sprite->setPosition(glm::vec2(float(tileMapDispl.x + posCal.x), float(tileMapDispl.y + posCal.y)));
+	tileMapDispl = tileMapPos;
+	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posCal.x), float(tileMapDispl.y + posCal.y)));
 
 }
 void Calavera::update(int deltaTime) {
 	sprite->update(deltaTime);
-	//Para el inicio 
-	if (bRespawinig) {
-		++spawnAnim;
-		if (spawnAnim == 80) {
-			bRespawinig = false;
-			if (player->getPosPlayer().x <= posCal.x) {
-				sprite->changeAnimation(CAL_LEFT);
-				posCal.x -= 2;
-			}
-			else {
-				sprite->changeAnimation(CAL_RIGHT);
-				posCal.x += 2;
-			}
-		}
-	}
-	else {
-		//Dependiendo de donde mire la calavera, anda hacia un lado u otro
-		if (sprite->animation() == CAL_LEFT)posCal.x -= 2;
-		else if(sprite->animation() == CAL_RIGHT) posCal.x += 2;
 
-		//Si hay colision a los lados no avanza y cambia de direccion		
-		if (map->collisionMoveLeft(posCal, glm::ivec2(36, 20))) {
-			if (sprite->animation() == CAL_LEFT) {
+	switch (state) {
+		case CAL_RESPAWN:
+			//Para el inicio 
+			++spawnAnim;
+			if (spawnAnim == 80) {
+				bRespawinig = false;
+				if (player->getPosPlayer().x <= posCal.x) {
+					sprite->changeAnimation(CAL_LEFT);
+					posCal.x -= 2;
+					state = CAL_LEFT;
+				}
+				else {
+					sprite->changeAnimation(CAL_RIGHT);
+					posCal.x += 2;
+					state = CAL_RIGHT;
+				}
+			}
+			break;
+		case CAL_LEFT:
+			posCal.x -= 2;
+
+			if (map->collisionMoveLeft(posCal, glm::ivec2(2, 2))) {
+				
 				posCal.x += 2;
 				sprite->changeAnimation(CAL_RIGHT);
+				state = CAL_RIGHT;
+				
 			}
-		}
-		/*if (map->collisionMoveRight(posCal, glm::ivec2(32, 20))) {
-			if (sprite->animation() == CAL_RIGHT) {
+			break;
+		case CAL_RIGHT:
+			posCal.x += 2;
+
+			if (map->collisionMoveRight(posCal, glm::ivec2(2, 2))) {
+				
 				posCal.x -= 2;
 				sprite->changeAnimation(CAL_LEFT);
+				state = CAL_LEFT;
 			}
-		}*/
+			break;
 	}
 
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posCal.x), float(tileMapDispl.y + posCal.y)));

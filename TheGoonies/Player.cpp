@@ -107,6 +107,7 @@ void Player::update(int deltaTime)
 			posPlayer.x -= 2;
 			sprite->changeAnimation(STAND_RIGHT);
 		}
+		
 	}
 	else if (Game::instance().getKey(SPACEBAR)) {
 		if (!bHitting)

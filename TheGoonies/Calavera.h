@@ -23,14 +23,16 @@ public:
 	glm::ivec2 getCalPosition();
 
 private:
-	
+
+	ShaderProgram texProgram;
 	bool bRespawinig, bDead;
-	int spawnAnim;
+	int spawnAnim, state;
 	glm::ivec2 tileMapDispl, posCal;
 	Player* player;
 	Texture spritesheet;
 	Sprite* sprite;
 	TileMap* map;
+	
 };
 
 #endif // !_CALAVERA_INCLUDE

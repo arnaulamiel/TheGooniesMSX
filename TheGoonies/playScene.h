@@ -29,6 +29,9 @@ public:
 	virtual void update(int deltaTime) override;
 	virtual void render() override;
 	virtual void fin() override;
+	 void initMaps() ;
+	 void updateRoom();
+	 
 
 private:
 	/* Function to initialize the shaders */
@@ -36,11 +39,16 @@ private:
 
 	/* Variable to control the time that the logo is shown */
 	int count;
-
+	int room;
 	/* Texture of the logo */
 	Texture logoTexture;
 
+
 	TileMap* map;
+	TileMap* mapIni;
+	TileMap* mapIni2;
+	TileMap* mapIni3;
+
 	float currentTime;
 
 	/* Logo sprite*/
