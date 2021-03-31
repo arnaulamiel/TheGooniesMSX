@@ -122,7 +122,7 @@ void playScene::update(int deltaTime)
 		player->setTileMap(map);
 
 		cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-		cal->setPosition(glm::vec2(20 * map->getTileSize(), 5 * map->getTileSize()));
+		cal->setPosition(glm::vec2(20 * map->getTileSize(), 12 * map->getTileSize()));
 		cal->setPatrolPoints(10 * map->getTileSize(), 30 * map->getTileSize());
 		cal->setPlayer(player);
 		cal->setTileMap(map);
@@ -174,7 +174,7 @@ void playScene::fin() {}
 
 void playScene::initMaps() {
 	mapIni = TileMap::createTileMap("levels/level02.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	mapIni2 = TileMap::createTileMap("levels/level03.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	mapIni2 = TileMap::createTileMap("levels/level04.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 }
 
 void playScene::updateRoom() {
