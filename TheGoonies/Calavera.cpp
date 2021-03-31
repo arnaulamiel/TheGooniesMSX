@@ -74,8 +74,8 @@ void Calavera::update(int deltaTime) {
 		case CAL_LEFT:
 			posCal.x -= 2;
 
-			if (map->collisionMoveLeft(posCal, glm::ivec2(2, 2))) {
-				
+			//if (map->collisionMoveLeft(posCal, glm::ivec2(2, 2))) {
+			if (posCal.x <= xIni) {
 				posCal.x += 2;
 				sprite->changeAnimation(CAL_RIGHT);
 				state = CAL_RIGHT;
@@ -85,8 +85,8 @@ void Calavera::update(int deltaTime) {
 		case CAL_RIGHT:
 			posCal.x += 2;
 
-			if (map->collisionMoveRight(posCal, glm::ivec2(2, 2))) {
-				
+			//if (map->collisionMoveRight(posCal, glm::ivec2(2, 2))) {
+			if (posCal.x >= xEnd) {
 				posCal.x -= 2;
 				sprite->changeAnimation(CAL_LEFT);
 				state = CAL_LEFT;
@@ -130,4 +130,9 @@ glm::ivec2 Calavera::getCalPosition()
 void Calavera::setPlayer(Player* p)
 {
 	player = p;
+}
+
+void Calavera::setPatrolPoints(int pIni, int pEnd) {
+	xIni = pIni;
+	xEnd = pEnd;
 }

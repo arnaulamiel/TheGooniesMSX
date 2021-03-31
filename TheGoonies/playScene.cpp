@@ -77,6 +77,7 @@ void playScene::init(void)
 	cal = new Calavera();
 	cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
+	cal->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
 	cal->setPlayer(player);
 	cal->setTileMap(map);
 
@@ -109,6 +110,12 @@ void playScene::update(int deltaTime)
 		updateRoom();
 		player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y)/18 * map->getTileSize()));
 		player->setTileMap(map);
+
+		cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+		cal->setPosition(glm::vec2(20 * map->getTileSize(), 5 * map->getTileSize()));
+		cal->setPatrolPoints(10 * map->getTileSize(), 30 * map->getTileSize());
+		cal->setPlayer(player);
+		cal->setTileMap(map);
 	}
 
 	if (room != 1 && map->isMapLimitLeft(player->getPosPlayer())) {
@@ -116,6 +123,12 @@ void playScene::update(int deltaTime)
 		updateRoom();
 		player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 		player->setTileMap(map);
+
+		cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+		cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
+		cal->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
+		cal->setPlayer(player);
+		cal->setTileMap(map);
 	}
 	
 }

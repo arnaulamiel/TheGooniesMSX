@@ -16,6 +16,7 @@ public:
 	void setTileMap(TileMap* tileMap);
 	void setPosition(const glm::vec2& pos);
 	void setPlayer(Player* player);
+	void setPatrolPoints(int pIni, int pEnd);
 
 	void changeSpriteAnimation(int anim);
 	int getSpriteAnimation();
@@ -26,13 +27,13 @@ private:
 
 	ShaderProgram texProgram;
 	bool bRespawinig, bDead;
-	int spawnAnim, state;
+	int spawnAnim, state, xIni, xEnd;
 	glm::ivec2 tileMapDispl, posCal;
 	Player* player;
 	Texture spritesheet;
 	Sprite* sprite;
 	TileMap* map;
-	
+
 };
 
 #endif // !_CALAVERA_INCLUDE
