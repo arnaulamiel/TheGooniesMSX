@@ -111,6 +111,11 @@ void Player::update(int deltaTime)
 			}
 		}
 	}
+	if (vidasPlayer <= 0) {
+		SceneManager* scene_manager = SceneManager::instance();
+		scene_manager->requestScene(SceneID::END_SCENE);
+	}
+
 	if(Game::instance().getSpecialKey(GLUT_KEY_LEFT) && !bLiana)
 	{
 		//hem de comprovar si no estavem ja fent el moviment a la esquerra per poderlo fer ara (aixi amb la majoria de comprovacions)
@@ -171,7 +176,10 @@ void Player::update(int deltaTime)
 			bLiana = false;
 			posPlayer.y -= 1;
 		}
-	}
+	}//Baixar vides del jugador (k)
+	else if (Game::instance().getKey(107)) {
+			vidasPlayer = vidasPlayer - 1;
+		}		
 	else
 	{
 		if (sprite->animation() == MOVE_LEFT) {
@@ -298,19 +306,8 @@ void Player::update(int deltaTime)
 		}
 	}
 	
-
-
+		
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
-
-	//Baixar vides del jugador (k)
-	if (Game::instance().getKey(107) ){
-		vidasPlayer = vidasPlayer - 1;
-		//cout << vidasPlayer << endl;
-	}
-	if (vidasPlayer == 0) {
-		SceneManager* scene_manager = SceneManager::instance();
-		scene_manager->requestScene(SceneID::END_SCENE);
-	}
 }
 
 void Player::render()
