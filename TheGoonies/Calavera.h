@@ -22,12 +22,14 @@ public:
 	int getSpriteAnimation();
 
 	glm::ivec2 getCalPosition();
+	void killedCal();
+	void destroyCal();
 
 private:
 
 	ShaderProgram texProgram;
 	bool bRespawinig, bDead;
-	int spawnAnim, state, xIni, xEnd;
+	int spawnAnim, state, xIni, xEnd, endAnim;
 	glm::ivec2 tileMapDispl, posCal;
 	Player* player;
 	Texture spritesheet;

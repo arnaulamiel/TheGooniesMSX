@@ -29,8 +29,9 @@ public:
 	virtual void update(int deltaTime) override;
 	virtual void render() override;
 	virtual void fin() override;
-	 void initMaps() ;
-	 void updateRoom();
+	void initMaps() ;
+	void updateRoom();
+	bool hitCal(Calavera* c);
 	 
 
 private:
@@ -54,6 +55,7 @@ private:
 	/* Logo sprite*/
 	Sprite* logo;
 	Player* player;
+	Calavera* c[1];
 	Calavera* cal;
 
 	/* Projection matrix */

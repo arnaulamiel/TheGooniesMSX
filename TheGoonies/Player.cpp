@@ -5,7 +5,6 @@
 #include "Player.h"
 #include "Game.h"
 
-
 #define JUMP_ANGLE_STEP 4
 #define JUMP_HEIGHT 40
 #define FALL_STEP 4
@@ -26,6 +25,8 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	bJumping = false;
 	bHitting = false;
 	bLiana = false;
+	estado = STAND_LEFT;
+
 	//load una imatge
 	spritesheet.loadFromFile("images/spritesheetPlayer.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	//classe sprite -> creem el sprite (tamaño del jugador (18 es un tile))
@@ -94,6 +95,7 @@ void Player::update(int deltaTime)
 			else {
 				bLiana = false;
 				sprite->changeAnimation(STAND_LEFT);
+				estado = STAND_LEFT;
 			}
 		}
 		else if (Game::instance().getSpecialKey(GLUT_KEY_DOWN)) {
@@ -103,30 +105,37 @@ void Player::update(int deltaTime)
 			else {
 				bLiana = false;
 				sprite->changeAnimation(STAND_LEFT);
+				estado = STAND_LEFT;
 			}
 		}
 	}
 	if(Game::instance().getSpecialKey(GLUT_KEY_LEFT) && !bLiana)
 	{
 		//hem de comprovar si no estavem ja fent el moviment a la esquerra per poderlo fer ara (aixi amb la majoria de comprovacions)
-		if(sprite->animation() != MOVE_LEFT)
+		if (sprite->animation() != MOVE_LEFT) {
 			sprite->changeAnimation(MOVE_LEFT);
+			estado = MOVE_LEFT;
+		}
 		posPlayer.x -= 2;
 		if(map->collisionMoveLeft(posPlayer, glm::ivec2(32, 20)))
 		{
 			posPlayer.x += 2;
 			sprite->changeAnimation(STAND_LEFT);
+			estado = STAND_LEFT;
 		}
 	}
 	else if(Game::instance().getSpecialKey(GLUT_KEY_RIGHT) && !bLiana)
 	{
-		if(sprite->animation() != MOVE_RIGHT)
+		if (sprite->animation() != MOVE_RIGHT) {
 			sprite->changeAnimation(MOVE_RIGHT);
+			estado = MOVE_RIGHT;
+		}
 		posPlayer.x += 2;
 		if(map->collisionMoveRight(posPlayer, glm::ivec2(32, 20)))
 		{
 			posPlayer.x -= 2;
 			sprite->changeAnimation(STAND_RIGHT);
+			estado = STAND_RIGHT;
 		}
 		
 	}
@@ -134,10 +143,16 @@ void Player::update(int deltaTime)
 		if (!bHitting)
 		{
 			bHitting = true;
-			if (sprite->animation() == MOVE_LEFT || sprite->animation() == (STAND_LEFT))
+			if (sprite->animation() == MOVE_LEFT || sprite->animation() == (STAND_LEFT)) {
 				sprite->changeAnimation(HIT_LEFT);
-			else if (sprite->animation() == MOVE_RIGHT || sprite->animation() == (STAND_RIGHT))
+				estado = HIT_LEFT;
+				/*if(hitCal( calaveras[0]->getCalPosition() ){
+				}*/
+			}
+			else if (sprite->animation() == MOVE_RIGHT || sprite->animation() == (STAND_RIGHT)) {
 				sprite->changeAnimation(HIT_RIGHT);
+				estado = HIT_RIGHT;
+			}
 		}		
 	}
 	else if (Game::instance().getSpecialKey(GLUT_KEY_DOWN)) {
@@ -145,28 +160,38 @@ void Player::update(int deltaTime)
 			bLiana = true;
 			bJumping = false;
 			posPlayer.y += 1;
-			sprite->changeAnimation(CLIMB);		
+			sprite->changeAnimation(CLIMB);	
+			estado = CLIMB;
 		}
 		else if(map->collisionMoveDown(posPlayer, glm::ivec2(32, 20), &posPlayer.y)) {
-			sprite->changeAnimation(STAND_LEFT); 
+			sprite->changeAnimation(STAND_LEFT);
+			estado = STAND_LEFT;
 			bLiana = false;
 			posPlayer.y -= 1;
 		}
 	}
 	else
 	{
-		if(sprite->animation() == MOVE_LEFT)
+		if (sprite->animation() == MOVE_LEFT) {
 			sprite->changeAnimation(STAND_LEFT);
-		else if(sprite->animation() == MOVE_RIGHT)
+			estado = STAND_LEFT;
+		}
+		else if (sprite->animation() == MOVE_RIGHT) {
 			sprite->changeAnimation(STAND_RIGHT);
+			estado = STAND_RIGHT;
+		}
 	}
 
 	//Booleano para que deje de hacer la animacion de pegar cuando ya la ha hecho
 	if (!bHitting) {
-		if (sprite->animation() == HIT_LEFT)
+		if (sprite->animation() == HIT_LEFT) {
 			sprite->changeAnimation(STAND_LEFT);
-		else if (sprite->animation() == HIT_RIGHT)
+			estado = STAND_LEFT;
+		}
+		else if (sprite->animation() == HIT_RIGHT) {
 			sprite->changeAnimation(STAND_RIGHT);
+			estado = STAND_RIGHT;
+		}
 	}
 	else bHitting = false;
 
@@ -178,10 +203,14 @@ void Player::update(int deltaTime)
 		jumpAngle += JUMP_ANGLE_STEP;
 
 
-		if ((sprite->animation() != JUMP_LEFT) && (sprite->animation() == STAND_LEFT || sprite->animation() == MOVE_LEFT))
+		if ((sprite->animation() != JUMP_LEFT) && (sprite->animation() == STAND_LEFT || sprite->animation() == MOVE_LEFT)) {
 			sprite->changeAnimation(JUMP_LEFT);
-		else if ((sprite->animation() != JUMP_RIGHT) && (sprite->animation() == STAND_RIGHT || sprite->animation() == MOVE_RIGHT))
+			estado = JUMP_LEFT;
+		}
+		else if ((sprite->animation() != JUMP_RIGHT) && (sprite->animation() == STAND_RIGHT || sprite->animation() == MOVE_RIGHT)) {
 			sprite->changeAnimation(JUMP_RIGHT);
+			estado = JUMP_RIGHT;
+		}
 
 		if (map->collisionMoveUp(posPlayer, glm::ivec2(32, 20), &posPlayer.y))
 		{
@@ -212,10 +241,14 @@ void Player::update(int deltaTime)
 					bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(32, 20), &posPlayer.y);
 
 					if (!bJumping) {
-						if (sprite->animation() == JUMP_LEFT)
+						if (sprite->animation() == JUMP_LEFT) {
 							sprite->changeAnimation(STAND_LEFT);
-						else if (sprite->animation() == JUMP_RIGHT)
+							estado = STAND_LEFT;
+						}
+						else if (sprite->animation() == JUMP_RIGHT) {
 							sprite->changeAnimation(STAND_RIGHT);
+							estado = STAND_RIGHT;
+						}
 					}
 				}
 			}
@@ -225,16 +258,21 @@ void Player::update(int deltaTime)
 				bJumping = false;
 				posPlayer.y += 2;
 				sprite->changeAnimation(CLIMB);
+				estado = CLIMB;
 
 			}
 		}
 	}
 	else if(!bLiana)
 	{
-		if (sprite->animation() == JUMP_LEFT)
+		if (sprite->animation() == JUMP_LEFT) {
 			sprite->changeAnimation(STAND_LEFT);
-		else if (sprite->animation() == JUMP_RIGHT)
+			estado = STAND_LEFT;
+		}
+		else if (sprite->animation() == JUMP_RIGHT) {
 			sprite->changeAnimation(STAND_RIGHT);
+			estado = STAND_RIGHT;
+		}
 
 		//si no estem saltant, depenent si hi ha colisio o no, caiem o no caiem
 		posPlayer.y += FALL_STEP;
@@ -251,6 +289,7 @@ void Player::update(int deltaTime)
 				else if(!bLiana) {
 					bLiana = true;
 					sprite->changeAnimation(CLIMB);
+					estado = CLIMB;
 					posPlayer.y += 2;
 				}
 			}
@@ -287,7 +326,12 @@ void Player::setPosition(const glm::vec2 &pos)
 	posPlayer = pos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 }
-
+void Player::setState(int sta) {
+	estado = sta;
+}
+int Player::getState() {
+	return estado;
+}
 void Player::setVidas()
 {
 	vidasPlayer = INI_VIDAS; 
@@ -296,6 +340,36 @@ void Player::setVidas()
 glm::ivec2 Player::getPosPlayer() {
 	return posPlayer;
 }
+void Player::calHit() {
+	//ha dado a una calavera, hay que augmentar la exp
+}
+
+/*void Player::setCalaveras(Calavera* c[])
+{
+	int size = sizeof(c) / sizeof(c[0]);
+	for (int i = 0; i < size; i++) {
+		calaveras[i] = c[i];
+	}
+}
+bool Player::hitCal(glm::ivec2 posCal) {
+	if (sprite->animation() == HIT_LEFT) {
+
+		if ( posPlayer.x = posCal.x + 1  ) {
+			if (posPlayer.y >= posCal.y - 1 && posPlayer.y <= posCal.y + 1) {
+				return true;
+			}
+		}
+
+	}else if (sprite->animation() == HIT_RIGHT) {
+		if (posPlayer.x = posCal.x - 1) {
+			if (posPlayer.y >= posCal.y - 1 && posPlayer.y <= posCal.y + 1) {
+				return true;
+			}
+		}
+	}
+	return false;
+
+}*/
 
 
 

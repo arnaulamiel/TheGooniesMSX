@@ -6,6 +6,7 @@
 #include "TileMap.h"
 
 
+
 // Player is basically a Sprite that represents the player. As such it has
 // all properties it needs to track its movement, jumping, and collisions.
 
@@ -24,17 +25,19 @@ public:
 	
 	void setVidas(); 
 	glm::ivec2 getPosPlayer();
+	void setState(int sta);
+	int getState();
+	void calHit();
 
 private:
 	
 	int vidasPlayer;
 	bool bJumping,bHitting, bLiana;
 	glm::ivec2 tileMapDispl, posPlayer;
-	int jumpAngle, startY;
+	int jumpAngle, startY, estado;
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
-
 };
 
 

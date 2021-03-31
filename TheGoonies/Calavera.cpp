@@ -18,9 +18,10 @@ enum CalavAnims
 void Calavera::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 
 	spawnAnim = 0;
+	endAnim = 0;
 	state = CAL_RESPAWN;
-	bRespawinig = true;
 	bDead = false;
+	bRespawinig = true;
 	spritesheet.loadFromFile("images/SpriteSheetCalavera.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(20, 24), glm::vec2(0.50f, 0.25f), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(NUM_ANIMS);
@@ -53,7 +54,8 @@ void Calavera::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) 
 void Calavera::update(int deltaTime) {
 	sprite->update(deltaTime);
 
-	switch (state) {
+	if(!bDead){
+		switch (state) {
 		case CAL_RESPAWN:
 			//Para el inicio 
 			++spawnAnim;
@@ -79,7 +81,7 @@ void Calavera::update(int deltaTime) {
 				posCal.x += 2;
 				sprite->changeAnimation(CAL_RIGHT);
 				state = CAL_RIGHT;
-				
+
 			}
 			break;
 		case CAL_RIGHT:
@@ -92,6 +94,13 @@ void Calavera::update(int deltaTime) {
 				state = CAL_LEFT;
 			}
 			break;
+		case CAL_DEAD:
+			++endAnim;
+			sprite->changeAnimation(CAL_DEAD);
+			if(endAnim == 30)destroyCal();
+
+			break;
+		}
 	}
 
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posCal.x), float(tileMapDispl.y + posCal.y)));
@@ -100,6 +109,7 @@ void Calavera::update(int deltaTime) {
 
 void Calavera::render()
 {
+	if(!bDead)
 	sprite->render();
 }
 
@@ -135,4 +145,13 @@ void Calavera::setPlayer(Player* p)
 void Calavera::setPatrolPoints(int pIni, int pEnd) {
 	xIni = pIni;
 	xEnd = pEnd;
+}
+
+void Calavera::killedCal() {
+	//se murió
+	state = CAL_DEAD;
+}
+
+void Calavera::destroyCal() {
+	bDead = true;
 }

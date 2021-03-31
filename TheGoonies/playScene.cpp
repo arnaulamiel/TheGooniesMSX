@@ -36,6 +36,8 @@ playScene::playScene() : Scene()
 	player = NULL;
 	cal = NULL;
 	room = 1;
+
+	c[1] = { cal };
 }
 
 /* @brief Default destructor */
@@ -81,6 +83,8 @@ void playScene::init(void)
 	cal->setPlayer(player);
 	cal->setTileMap(map);
 
+	
+
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 }
@@ -102,8 +106,14 @@ void playScene::update(int deltaTime)
 		scene_manager->requestScene(SceneID::END_SCENE);
 	}
 	currentTime += deltaTime;
+	if (hitCal(cal)) {
+		player->calHit();
+		cal->killedCal();
+
+	}
 	player->update(deltaTime);
 	cal->update(deltaTime);
+	
 	
 	if (map->isMapLimitRight(player->getPosPlayer())) {
 		++room;
@@ -116,6 +126,8 @@ void playScene::update(int deltaTime)
 		cal->setPatrolPoints(10 * map->getTileSize(), 30 * map->getTileSize());
 		cal->setPlayer(player);
 		cal->setTileMap(map);
+		
+		
 	}
 
 	if (room != 1 && map->isMapLimitLeft(player->getPosPlayer())) {
@@ -129,6 +141,8 @@ void playScene::update(int deltaTime)
 		cal->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
 		cal->setPlayer(player);
 		cal->setTileMap(map);
+
+		
 	}
 	
 }
@@ -171,6 +185,32 @@ void playScene::updateRoom() {
 		map = mapIni2;
 	}
 	
+}
+
+bool playScene::hitCal(Calavera* c ) {
+	glm::vec2 posPlayer = player->getPosPlayer();
+	glm::vec2 posCal = c->getCalPosition();
+	int tilesize = map->getTileSize();
+
+	//Si esta pegando izq
+	if (player->getState() == 7) {
+
+		if (posPlayer.x / tilesize <= (posCal.x / tilesize) + 2 && posPlayer.x / tilesize >= (posCal.x / tilesize)) {
+			if (posPlayer.y / tilesize >= (posCal.y / tilesize) - 1 && posPlayer.y / tilesize <= (posCal.y / tilesize) + 1) {
+				return true;
+			}
+		}
+
+	}//Si esta pegando der
+	else if (player->getState() == 8) {
+		if (posPlayer.x/tilesize >= (posCal.x / tilesize) - 2 && posPlayer.x / tilesize <= (posCal.x / tilesize) ) {
+			if (posPlayer.y / tilesize >= (posCal.y / tilesize) - 1 && posPlayer.y / tilesize <= (posCal.y / tilesize) + 1) {
+				return true;
+			}
+		}
+	}
+	return false;
+
 }
 
 /* @brief Function that initializes de shaders*/
