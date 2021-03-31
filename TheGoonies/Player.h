@@ -23,7 +23,7 @@ public:
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
 	
-	void setVidas(); 
+	void iniPlayerStats();
 	glm::ivec2 getPosPlayer();
 	void setState(int sta);
 	int getState();
@@ -31,7 +31,7 @@ public:
 
 private:
 	
-	int vidasPlayer;
+	int vidasPlayer,expPlayer;
 	bool bJumping,bHitting, bLiana;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY, estado;

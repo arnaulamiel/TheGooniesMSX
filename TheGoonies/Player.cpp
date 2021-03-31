@@ -26,6 +26,8 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	bHitting = false;
 	bLiana = false;
 	estado = STAND_LEFT;
+	
+	iniPlayerStats();
 
 	//load una imatge
 	spritesheet.loadFromFile("images/spritesheetPlayer.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -332,9 +334,10 @@ void Player::setState(int sta) {
 int Player::getState() {
 	return estado;
 }
-void Player::setVidas()
+void Player::iniPlayerStats()
 {
 	vidasPlayer = INI_VIDAS; 
+	expPlayer = 0;
 }
 
 glm::ivec2 Player::getPosPlayer() {
@@ -342,6 +345,7 @@ glm::ivec2 Player::getPosPlayer() {
 }
 void Player::calHit() {
 	//ha dado a una calavera, hay que augmentar la exp
+	++expPlayer;
 }
 
 /*void Player::setCalaveras(Calavera* c[])
