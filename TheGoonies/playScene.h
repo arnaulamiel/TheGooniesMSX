@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Calavera.h"
 #include "Bat.h"
+#include "Object.h"
 
 /* @file playScene.h
 *
@@ -32,7 +33,7 @@ public:
 	virtual void fin() override;
 	void initMaps() ;
 	void updateRoom();
-	void loadRoomObject();
+	void loadRoomObjects();
 	void updateActualObjects();
 	void saveActualObject();
 
@@ -42,6 +43,8 @@ public:
 private:
 	/* Function to initialize the shaders */
 	void initShaders();
+
+	bool loadSingleRoomObjects(string levelFile, vector<Object*>& objectsRoom);
 
 	/* Variable to control the time that the logo is shown */
 	int count;
@@ -56,6 +59,10 @@ private:
 	TileMap* mapIni3;
 
 	float currentTime;
+
+	/* Objects */
+	vector<Object*> actualRoomObjects;
+	vector<Object*> objectsRoom1;
 
 	/* Logo sprite*/
 	Sprite* logo;

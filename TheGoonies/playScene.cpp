@@ -1,5 +1,7 @@
 #include "playScene.h"
 #include "SceneManager.h"
+#include <fstream>
+#include <sstream>
 #include <glm/gtc/matrix_transform.hpp>
 
 //Donde inicia el mapa
@@ -69,6 +71,8 @@ void playScene::init(void)
 	//TileMap
 	initMaps();
 	updateRoom();
+	loadRoomObjects();
+	updateActualObjects();
 
 	logo = Sprite::createSprite(glm::ivec2(BACKGROUND_X, BACKGROUND_Y), glm::vec2(1.f, 1.f), &logoTexture, &texProgram);
 	logo->setPosition(glm::vec2(0, 0));
@@ -184,6 +188,12 @@ void playScene::render()
 	player->render();
 	cal->render();
 	bat->render();
+
+	for (int i = 0; i < actualRoomObjects.size(); i++)
+	{
+		if (actualRoomObjects[i] != nullptr)
+			actualRoomObjects[i]->render();
+	}
 }
 
 /* @brief Overrided function used to finalize scenes*/
@@ -202,6 +212,67 @@ void playScene::updateRoom() {
 		map = mapIni2;
 	}
 	
+}
+
+void playScene::loadRoomObjects() 
+{
+	//if (objectsRoom1.size() != 0) objectsRoom1.erase(objectsRoom1.begin(), objectsRoom1.end());
+
+	loadSingleRoomObjects("objects/prueba.txt", objectsRoom1);
+}
+
+bool playScene::loadSingleRoomObjects(string levelFile, vector<Object*>& objectsRoom)
+{
+	ifstream fin;
+	string line, tilesheetFile;
+	stringstream sstream;
+	int tile;
+
+	int mapSizeX, mapSizeY;
+	int tileSize;
+
+	fin.open(levelFile.c_str());
+	if (!fin.is_open())
+		return false;
+	getline(fin, line);
+	if (line.compare(0, 9, "OBJECTMAP") != 0)
+		return false;
+	getline(fin, line);
+	sstream.str(line);
+	sstream >> mapSizeX >> mapSizeY;
+	getline(fin, line);
+	sstream.str(line);
+	sstream >> tileSize;
+
+	for (int j = 0; j < mapSizeY; j++)
+	{
+		for (int i = 0; i < mapSizeX; i++)
+		{
+			fin >> tile;
+
+			if (tile != 0)
+			{
+				glm::ivec2 position = glm::ivec2(18 * i + SCREEN_X, 18 * j + SCREEN_Y);
+				//glm::ivec2 position = glm::ivec2(tileSize * i, tileSize * j );
+				if (tile == 1) {
+					Object* key = new Object(KEY, position, glm::vec2(18, 18));
+					key->init(texProgram);
+					objectsRoom.push_back(key);
+				}
+			}
+		}
+#ifndef _WIN32
+		fin.get(tile);
+#endif
+	}
+	fin.close();
+
+	return true;
+}
+
+void playScene::updateActualObjects()
+{
+	actualRoomObjects = objectsRoom1;
 }
 
 bool playScene::hitEnem(Enemies* c ) {
