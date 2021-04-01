@@ -18,6 +18,7 @@
     <ClInclude Include="Enemies.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="initScene.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="playScene.h" />
     <ClInclude Include="Scene.h" />
@@ -36,6 +37,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="initScene.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="playScene.cpp" />
     <ClCompile Include="SceneManager.cpp" />

@@ -32,6 +32,10 @@ public:
 	virtual void fin() override;
 	void initMaps() ;
 	void updateRoom();
+	void loadRoomObject();
+	void updateActualObjects();
+	void saveActualObject();
+
 	bool hitEnem(Enemies* c);
 	 
 
