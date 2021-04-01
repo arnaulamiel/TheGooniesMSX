@@ -23,7 +23,7 @@
 #define INIT_CAL_Y_TILES 15
 
 #define INIT_BAT_X_TILES 10
-#define INIT_BAT_Y_TILES 18
+#define INIT_BAT_Y_TILES 13
 
 
 /* @brief Static member function declaration */

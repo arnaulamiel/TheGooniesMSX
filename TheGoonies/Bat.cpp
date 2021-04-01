@@ -73,6 +73,21 @@ void Bat::update(int deltaTime) {
 			break;
 		case BAT_MOVELEFT:
 			posBat.x -= 2;
+			if (isUp) 
+			{
+				if (posBat.y >= yPosMax) {
+					posBat.y -= 1;
+					isUp = false;
+				}
+				else posBat.y += 1;
+			}
+			else {
+				if (posBat.y <= yPosMin) {
+					posBat.y += 1;
+					isUp = true;
+				}
+				else posBat.y -= 1;
+			}
 			
 			/*if(isUp)posBat.y -= 1;
 			else posBat.y += 1;*/
@@ -88,11 +103,25 @@ void Bat::update(int deltaTime) {
 				state = BAT_MOVERIGHT;
 
 			}
-			isUp = true;
+			
 			break;
 		case BAT_MOVERIGHT:
 			posBat.x += 2;
-
+			if (isUp)
+			{
+				if (posBat.y >= yPosMax) {
+					posBat.y -= 1;
+					isUp = false;
+				}
+				else posBat.y += 1;
+			}
+			else {
+				if (posBat.y <= yPosMin) {
+					posBat.y += 1;
+					isUp = true;
+				}
+				else posBat.y -= 1;
+			}
 			//if (map->collisionMoveRight(posBat, glm::ivec2(2, 2))) {
 			if (posBat.x >= xEnd) {
 				posBat.x -= 2;
@@ -121,6 +150,8 @@ void Bat::render()
 
 void Bat::setPosition(const glm::vec2& pos) {
 	posBat = pos;
+	yPosMax = posBat.y + 20;
+	yPosMin = posBat.y - 20;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBat.x), float(tileMapDispl.y + posBat.y)));
 }
 void Bat::setTileMap(TileMap* tileMap)

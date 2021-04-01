@@ -31,7 +31,7 @@ private:
 
 	ShaderProgram texProgram;
 	bool bRespawinig, bDead, isUp;
-	int spawnAnim, state, xIni, xEnd, endAnim;
+	int spawnAnim, state, xIni, xEnd, endAnim, yPosMax, yPosMin;
 	glm::ivec2 tileMapDispl, posBat;
 	Player* player;
 	Texture spritesheet;
