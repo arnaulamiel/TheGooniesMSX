@@ -12,8 +12,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimKeyframes.h" />
+    <ClInclude Include="Bat.h" />
     <ClInclude Include="Calavera.h" />
     <ClInclude Include="endScene.h" />
+    <ClInclude Include="Enemies.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="initScene.h" />
     <ClInclude Include="Player.h" />
@@ -27,8 +29,10 @@
     <ClInclude Include="TileMap.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Calavera.cpp" />
     <ClCompile Include="endScene.cpp" />
+    <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="initScene.cpp" />
     <ClCompile Include="main.cpp" />

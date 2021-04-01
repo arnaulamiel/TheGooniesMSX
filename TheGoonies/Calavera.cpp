@@ -26,7 +26,6 @@ void Calavera::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) 
 	sprite = Sprite::createSprite(glm::ivec2(20, 24), glm::vec2(0.50f, 0.25f), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(NUM_ANIMS);
 		
-		//Hay que modificarlo cuando tengamos el spritesheet!!!!!!!!!!
 		//Animaciones de respawn
 		sprite->setAnimationSpeed(CAL_RESPAWN, 8);
 		sprite->addKeyframe(CAL_RESPAWN, glm::vec2(0.f, 0.50f));
@@ -132,7 +131,7 @@ int Calavera::getSpriteAnimation()
 	return sprite->animation();
 }
 
-glm::ivec2 Calavera::getCalPosition()
+glm::ivec2 Calavera::getPosition()
 {
 	return posCal;
 }

@@ -1,5 +1,5 @@
-#ifndef _CALAVERA_INCLUDE
-#define _CALAVERA_INCLUDE
+#ifndef _BAT_INCLUDE
+#define _BAT_INCLUDE
 
 #include "Sprite.h"
 #include "Player.h"
@@ -7,7 +7,7 @@
 
 #include "Enemies.h"
 
-class Calavera : public Enemies
+class Bat : public Enemies
 {
 
 public:
@@ -24,15 +24,15 @@ public:
 	virtual int getSpriteAnimation();
 
 	virtual glm::ivec2 getPosition();
-	void killedCal();
-	void destroyCal();
+	void killedBat();
+	void destroyBat();
 
 private:
 
 	ShaderProgram texProgram;
-	bool bRespawinig, bDead;
+	bool bRespawinig, bDead, isUp;
 	int spawnAnim, state, xIni, xEnd, endAnim;
-	glm::ivec2 tileMapDispl, posCal;
+	glm::ivec2 tileMapDispl, posBat;
 	Player* player;
 	Texture spritesheet;
 	Sprite* sprite;
@@ -40,4 +40,4 @@ private:
 
 };
 
-#endif // !_CALAVERA_INCLUDE
+#endif _BAT_INCLUDE

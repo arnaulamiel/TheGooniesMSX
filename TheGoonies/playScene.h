@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include <iostream>
 #include "Calavera.h"
+#include "Bat.h"
 
 /* @file playScene.h
 *
@@ -31,7 +32,7 @@ public:
 	virtual void fin() override;
 	void initMaps() ;
 	void updateRoom();
-	bool hitCal(Calavera* c);
+	bool hitEnem(Enemies* c);
 	 
 
 private:
@@ -57,6 +58,7 @@ private:
 	Player* player;
 	Calavera* c[1];
 	Calavera* cal;
+	Bat* bat;
 
 	/* Projection matrix */
 	glm::mat4 projection;

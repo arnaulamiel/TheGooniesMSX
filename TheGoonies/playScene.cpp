@@ -20,6 +20,9 @@
 #define INIT_CAL_X_TILES 15
 #define INIT_CAL_Y_TILES 15
 
+#define INIT_BAT_X_TILES 10
+#define INIT_BAT_Y_TILES 18
+
 
 /* @brief Static member function declaration */
 Scene* playScene::create()
@@ -83,6 +86,14 @@ void playScene::init(void)
 	cal->setPlayer(player);
 	cal->setTileMap(map);
 
+	//Bat
+	bat = new Bat();
+	bat->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	bat->setPosition(glm::vec2(INIT_BAT_X_TILES * map->getTileSize(), INIT_BAT_Y_TILES * map->getTileSize()));
+	bat->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
+	bat->setPlayer(player);
+	bat->setTileMap(map);
+
 	
 
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
@@ -106,13 +117,18 @@ void playScene::update(int deltaTime)
 		scene_manager->requestScene(SceneID::END_SCENE);
 	}
 	currentTime += deltaTime;
-	if (hitCal(cal)) {
+	if (hitEnem(cal)) {
 		player->calHit();
 		cal->killedCal();
 
 	}
+	if (hitEnem(bat)) {
+		player->calHit();
+		bat->killedBat();
+	}
 	player->update(deltaTime);
 	cal->update(deltaTime);
+	bat->update(deltaTime);
 	
 	
 	if (map->isMapLimitRight(player->getPosPlayer())) {
@@ -167,6 +183,7 @@ void playScene::render()
 	map->render();
 	player->render();
 	cal->render();
+	bat->render();
 }
 
 /* @brief Overrided function used to finalize scenes*/
@@ -187,9 +204,9 @@ void playScene::updateRoom() {
 	
 }
 
-bool playScene::hitCal(Calavera* c ) {
+bool playScene::hitEnem(Enemies* c ) {
 	glm::vec2 posPlayer = player->getPosPlayer();
-	glm::vec2 posCal = c->getCalPosition();
+	glm::vec2 posCal = c->getPosition();
 	int tilesize = map->getTileSize();
 
 	//Si esta pegando izq
