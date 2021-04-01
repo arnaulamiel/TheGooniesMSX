@@ -52,6 +52,7 @@ private:
 	/* Texture of the logo */
 	Texture logoTexture;
 
+	bool hasKey;
 
 	TileMap* map;
 	TileMap* mapIni;
