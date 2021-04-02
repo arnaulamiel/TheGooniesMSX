@@ -14,6 +14,8 @@ Object::~Object()
 
 void Object::init(ShaderProgram& shaderProgram)
 {
+	objDest = false;
+
 	if (this->oType == KEY) {
 		spritesheet.loadFromFile("images/keySprite.png", TEXTURE_PIXEL_FORMAT_RGBA);
 		sprite = Sprite::createSprite(this->size, glm::vec2(1.f, 1.f), &spritesheet, &shaderProgram);
@@ -31,7 +33,9 @@ void Object::update(int deltaTime)
 
 void Object::render()
 {
-	sprite->render();
+	if (!objDest) {
+		sprite->render();
+	}
 }
 
 void Object::fin()
@@ -62,4 +66,9 @@ void Object::changeSpriteAnimation(int anim)
 int Object::getSpriteAnimation()
 {
 	return sprite->animation();
+}
+
+void Object::destroyObject()
+{
+	objDest = true;
 }

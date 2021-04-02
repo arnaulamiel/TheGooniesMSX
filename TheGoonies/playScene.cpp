@@ -63,6 +63,8 @@ playScene::~playScene() {
  */
 void playScene::init(void)
 {
+	hasKey = false;
+
 	initShaders();
 
 	logoTexture.loadFromFile("images/black.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -130,6 +132,22 @@ void playScene::update(int deltaTime)
 		player->calHit();
 		bat->killedBat();
 	}
+
+	if (!hasKey) {
+		bool found = false;
+		for (int i = 0; i < actualRoomObjects.size() && !found; i++) {
+			if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == KEY) {
+				found = true;
+				Object* key = actualRoomObjects[i];
+				if (getKey(key)) {
+					hasKey = true;
+					actualRoomObjects[i]->destroyObject();
+					actualRoomObjects[i] = nullptr;
+				}
+			}
+		}
+	}
+
 	player->update(deltaTime);
 	cal->update(deltaTime);
 	bat->update(deltaTime);
@@ -299,6 +317,18 @@ bool playScene::hitEnem(Enemies* c ) {
 	}
 	return false;
 
+}
+
+bool playScene::getKey(Object* k) {
+	glm::vec2 posKey = k->getObjectPosition();
+	glm::vec2 posPlayer = player->getPosPlayer();
+	int tileSize = map->getTileSize();
+	if (posPlayer.x / tileSize >= (posKey.x / tileSize) - 4 && posPlayer.x / tileSize <= (posKey.x / tileSize) + 4) {
+		if (posPlayer.y / tileSize >= (posKey.y / tileSize) - 4 && posPlayer.y / tileSize <= (posKey.y / tileSize) + 4) {
+			return true;
+		}
+	}
+	return false;
 }
 
 /* @brief Function that initializes de shaders*/

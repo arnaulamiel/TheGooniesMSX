@@ -32,9 +32,12 @@ public:
 	glm::vec2 getObjectSize();
 	
 	void changeSpriteAnimation(int anim);
+	void destroyObject();
 	int getSpriteAnimation();
 
 private:
+
+	bool objDest;
 
 	objectType oType;
 

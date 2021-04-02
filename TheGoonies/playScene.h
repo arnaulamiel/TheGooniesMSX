@@ -38,6 +38,7 @@ public:
 	void saveActualObject();
 
 	bool hitEnem(Enemies* c);
+	bool getKey(Object* k);
 	 
 
 private:
@@ -45,6 +46,8 @@ private:
 	void initShaders();
 
 	bool loadSingleRoomObjects(string levelFile, vector<Object*>& objectsRoom);
+
+	
 
 	/* Variable to control the time that the logo is shown */
 	int count;
