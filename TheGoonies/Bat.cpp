@@ -51,7 +51,7 @@ void Bat::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) {
 
 void Bat::update(int deltaTime) {
 	sprite->update(deltaTime);
-
+	int tilesize = map->getTileSize();
 	if (!bDead) {
 		switch (state) {
 		case BAT_RESPAWN:
@@ -87,6 +87,11 @@ void Bat::update(int deltaTime) {
 					isUp = true;
 				}
 				else posBat.y -= 1;
+			}
+			if ((posBat.x / tilesize) == (player->getPosPlayer().x / tilesize)) {
+				if (posBat.y / tilesize >= (player->getPosPlayer().y / tilesize) - 1 && posBat.y / tilesize <= (player->getPosPlayer().y / tilesize) + 1) {
+					player->hitByEnemy();
+				}
 			}
 			
 			/*if(isUp)posBat.y -= 1;
@@ -127,6 +132,12 @@ void Bat::update(int deltaTime) {
 				posBat.x -= 2;
 				sprite->changeAnimation(BAT_MOVELEFT);
 				state = BAT_MOVELEFT;
+			}
+			if ((posBat.x / tilesize) == (player->getPosPlayer().x / tilesize)) {
+				if (posBat.y / tilesize >= (player->getPosPlayer().y / tilesize) - 1 && posBat.y / tilesize <= (player->getPosPlayer().y / tilesize) + 1) {
+					//if (posCal.x == player->getPosPlayer().x && ((player->getPosPlayer().y <= (posCal.y + 4) ) && (player->getPosPlayer().y >= posCal.y - 4)) ) {
+					player->hitByEnemy();
+				}
 			}
 			break;
 		case BAT_DEAD:

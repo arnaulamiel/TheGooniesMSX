@@ -168,10 +168,6 @@ void Player::update(int deltaTime)
 			}
 		}
 	}
-	if (expPlayer == 8) {
-		++vidasPlayer;
-		expPlayer = 0;
-	}
 	if (vidasPlayer <= 0) {
 		SceneManager* scene_manager = SceneManager::instance();
 		scene_manager->requestScene(SceneID::END_SCENE);

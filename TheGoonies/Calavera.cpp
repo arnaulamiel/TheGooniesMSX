@@ -52,7 +52,7 @@ void Calavera::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram) 
 }
 void Calavera::update(int deltaTime) {
 	sprite->update(deltaTime);
-
+	int tilesize = map->getTileSize();
 	if(!bDead){
 		switch (state) {
 		case CAL_RESPAWN:
@@ -80,17 +80,30 @@ void Calavera::update(int deltaTime) {
 				posCal.x += 2;
 				sprite->changeAnimation(CAL_RIGHT);
 				state = CAL_RIGHT;
-
+			}
+			//Si hay colision con el player
+			
+			if ((posCal.x / tilesize) == (player->getPosPlayer().x / tilesize) ) {
+				if (posCal.y / tilesize >= (player->getPosPlayer().y / tilesize) - 1 && posCal.y / tilesize <= (player->getPosPlayer().y / tilesize) + 1) {
+				player->hitByEnemy();
+				}
 			}
 			break;
 		case CAL_RIGHT:
 			posCal.x += 2;
+
 
 			//if (map->collisionMoveRight(posCal, glm::ivec2(2, 2))) {
 			if (posCal.x >= xEnd) {
 				posCal.x -= 2;
 				sprite->changeAnimation(CAL_LEFT);
 				state = CAL_LEFT;
+			}
+			if ((posCal.x / tilesize) == (player->getPosPlayer().x / tilesize)) {
+				if (posCal.y / tilesize >= (player->getPosPlayer().y / tilesize) - 1 && posCal.y / tilesize <= (player->getPosPlayer().y / tilesize) + 1) {
+					//if (posCal.x == player->getPosPlayer().x && ((player->getPosPlayer().y <= (posCal.y + 4) ) && (player->getPosPlayer().y >= posCal.y - 4)) ) {
+					player->hitByEnemy();
+				}
 			}
 			break;
 		case CAL_DEAD:
