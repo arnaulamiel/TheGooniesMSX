@@ -53,7 +53,7 @@ private:
 	int count;
 	int room;
 	/* Texture of the logo */
-	Texture logoTexture;
+	Texture logoTexture, vidaexpTexture;
 
 	bool hasKey;
 
@@ -70,6 +70,7 @@ private:
 
 	/* Logo sprite*/
 	Sprite* logo;
+	Sprite* vidaexp;
 	Player* player;
 	Calavera* c[1];
 	Calavera* cal;

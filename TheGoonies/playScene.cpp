@@ -11,6 +11,9 @@
 #define BACKGROUND_X 650
 #define BACKGROUND_Y 480
 
+#define VIDAEXP_X 216
+#define VIDAEXP_Y 80
+
 // GLUT SPACEBAR code
 #define SPACEBAR 32
 // GLUT ESC code
@@ -70,6 +73,11 @@ void playScene::init(void)
 	logoTexture.loadFromFile("images/black.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	logoTexture.setMinFilter(GL_NEAREST);
 	logoTexture.setMagFilter(GL_NEAREST);
+
+	/*vidaexpTexture.loadFromFile("images/VidaExpSprite.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	vidaexpTexture.setMinFilter(GL_NEAREST);
+	vidaexpTexture.setMagFilter(GL_NEAREST);*/
+
 	//TileMap
 	initMaps();
 	updateRoom();
@@ -78,6 +86,10 @@ void playScene::init(void)
 
 	logo = Sprite::createSprite(glm::ivec2(BACKGROUND_X, BACKGROUND_Y), glm::vec2(1.f, 1.f), &logoTexture, &texProgram);
 	logo->setPosition(glm::vec2(0, 0));
+
+	/*vidaexp = Sprite::createSprite(glm::ivec2(VIDAEXP_X, VIDAEXP_Y), glm::vec2(1.f, 1.f), &vidaexpTexture, &texProgram);
+	vidaexp->setPosition(glm::vec2(433, 3));*/
+
 	player = new Player();
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	
@@ -202,6 +214,7 @@ void playScene::render()
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 
 	logo->render();
+	//vidaexp->render();
 	map->render();
 	player->render();
 	cal->render();
