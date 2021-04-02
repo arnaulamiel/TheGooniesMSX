@@ -203,3 +203,6 @@ void Bat::killedBat() {
 void Bat::destroyBat() {
 	bDead = true;
 }
+bool Bat::isDead() {
+	return this->bDead;
+}

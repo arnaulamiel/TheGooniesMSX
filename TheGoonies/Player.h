@@ -22,7 +22,7 @@ public:
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
 	
-	void iniPlayerStats();
+	void iniPlayerStats(ShaderProgram& shaderPrograma);
 	glm::ivec2 getPosPlayer();
 	void setState(int sta);
 	int getState();
@@ -33,12 +33,18 @@ public:
 
 private:
 	
+
+	ShaderProgram texProgram;
 	int vidasPlayer,expPlayer, timerHit, before;
 	bool bJumping,bHitting, bLiana, isHitted;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY, estado;
 	Texture spritesheet;
+	Texture ssheet;
+	Texture ssheetexp;
 	Sprite *sprite;
+	Sprite* vidaSprite;
+	Sprite* expSprite;
 	TileMap *map;
 };
 

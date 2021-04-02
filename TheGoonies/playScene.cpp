@@ -11,9 +11,6 @@
 #define BACKGROUND_X 650
 #define BACKGROUND_Y 480
 
-#define VIDAEXP_X 216
-#define VIDAEXP_Y 80
-
 // GLUT SPACEBAR code
 #define SPACEBAR 32
 // GLUT ESC code
@@ -95,7 +92,8 @@ void playScene::init(void)
 	
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);
-
+	
+	
 	//Calavera
 	cal = new Calavera();
 	cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -310,21 +308,22 @@ bool playScene::hitEnem(Enemies* c ) {
 	glm::vec2 posPlayer = player->getPosPlayer();
 	glm::vec2 posCal = c->getPosition();
 	int tilesize = map->getTileSize();
+	if (!c->isDead()) {
+		//Si esta pegando izq
+		if (player->getState() == 7) {
 
-	//Si esta pegando izq
-	if (player->getState() == 7) {
-
-		if (posPlayer.x / tilesize <= (posCal.x / tilesize) + 2 && posPlayer.x / tilesize >= (posCal.x / tilesize)) {
-			if (posPlayer.y / tilesize >= (posCal.y / tilesize) - 1 && posPlayer.y / tilesize <= (posCal.y / tilesize) + 1) {
-				return true;
+			if (posPlayer.x / tilesize <= (posCal.x / tilesize) + 2 && posPlayer.x / tilesize >= (posCal.x / tilesize)) {
+				if (posPlayer.y / tilesize >= (posCal.y / tilesize) - 1 && posPlayer.y / tilesize <= (posCal.y / tilesize) + 1) {
+					return true;
+				}
 			}
-		}
 
-	}//Si esta pegando der
-	else if (player->getState() == 8) {
-		if (posPlayer.x/tilesize >= (posCal.x / tilesize) - 2 && posPlayer.x / tilesize <= (posCal.x / tilesize) ) {
-			if (posPlayer.y / tilesize >= (posCal.y / tilesize) - 1 && posPlayer.y / tilesize <= (posCal.y / tilesize) + 1) {
-				return true;
+		}//Si esta pegando der
+		else if (player->getState() == 8) {
+			if (posPlayer.x / tilesize >= (posCal.x / tilesize) - 2 && posPlayer.x / tilesize <= (posCal.x / tilesize)) {
+				if (posPlayer.y / tilesize >= (posCal.y / tilesize) - 1 && posPlayer.y / tilesize <= (posCal.y / tilesize) + 1) {
+					return true;
+				}
 			}
 		}
 	}
@@ -343,6 +342,7 @@ bool playScene::getKey(Object* k) {
 	}
 	return false;
 }
+
 
 /* @brief Function that initializes de shaders*/
 void playScene::initShaders()

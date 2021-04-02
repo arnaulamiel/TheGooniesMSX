@@ -21,6 +21,7 @@ public:
 	virtual int getSpriteAnimation() = 0;
 
 	virtual glm::ivec2 getPosition() = 0;
+	virtual bool isDead() = 0;
 };
 
 #endif _ENEMIES_INCLUDE

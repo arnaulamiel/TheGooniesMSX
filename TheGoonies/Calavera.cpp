@@ -167,3 +167,8 @@ void Calavera::killedCal() {
 void Calavera::destroyCal() {
 	bDead = true;
 }
+
+bool Calavera::isDead() {
+	return this->bDead;
+
+}

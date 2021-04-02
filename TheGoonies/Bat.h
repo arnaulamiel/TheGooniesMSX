@@ -24,8 +24,10 @@ public:
 	virtual int getSpriteAnimation();
 
 	virtual glm::ivec2 getPosition();
+	virtual bool isDead();
 	void killedBat();
 	void destroyBat();
+	
 
 private:
 

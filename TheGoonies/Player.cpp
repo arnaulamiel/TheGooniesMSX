@@ -12,19 +12,25 @@
 #define SPACEBAR 32
 #define INI_VIDAS 8 //Numero de hits que necesita darte una calavera o las balas del enemigo copia para matarte
 
+#define VIDAEXP_X 175
+#define VIDAEXP_Y 22
+
 
 enum PlayerAnims
 {
 	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, JUMP_LEFT, JUMP_RIGHT, CLIMB, HIT_LEFT, HIT_RIGHT, DMG_STAND_LEFT, DMG_STAND_RIGHT, DMG_MOVE_LEFT, DMG_MOVE_RIGHT, DMG_JUMP_LEFT, DMG_JUMP_RIGHT, DMG_CLIMB, DMG_HIT_LEFT, DMG_HIT_RIGHT, NUM_ANIMS
 };
 
+enum PlayerVidaExp {
+	VIDA_1, VIDA_2, VIDA_3, VIDA_4, VIDA_5, VIDA_6, VIDA_7, VIDA_8
+};
 
+enum PlayerExp {
+	EXP_0, EXP_1, EXP_2, EXP_3, EXP_4, EXP_5, EXP_6, EXP_7, EXP_8
+};
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
-		
-	iniPlayerStats();
-
 	//load una imatge
 	spritesheet.loadFromFile("images/spritesheetPlayerDef.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	//classe sprite -> creem el sprite (tamaño del jugador (18 es un tile))
@@ -129,7 +135,9 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 
 	sprite->changeAnimation(0);
 	tileMapDispl = tileMapPos;
+	iniPlayerStats(shaderProgram);
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
+
 
 	
 	
@@ -139,6 +147,9 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 void Player::update(int deltaTime)
 {
 	sprite->update(deltaTime);
+	vidaSprite->update(deltaTime);
+	expSprite->update(deltaTime);
+
 
 	//Esta en liana
 	if (bLiana) {
@@ -232,14 +243,26 @@ void Player::update(int deltaTime)
 		{
 			bHitting = true;
 			if (sprite->animation() == MOVE_LEFT || sprite->animation() == (STAND_LEFT)) {
-				sprite->changeAnimation(HIT_LEFT);
-				estado = HIT_LEFT;
-				setHitAnimation();
+				if (!isHitted) {
+					sprite->changeAnimation(HIT_LEFT);
+					estado = HIT_LEFT;
+				}
+				else if (sprite->animation() != DMG_HIT_LEFT) {
+
+					sprite->changeAnimation(DMG_HIT_LEFT);
+					estado = DMG_HIT_LEFT;
+				}
 			}
 			else if (sprite->animation() == MOVE_RIGHT || sprite->animation() == (STAND_RIGHT)) {
-				sprite->changeAnimation(HIT_RIGHT);
-				estado = HIT_RIGHT;
-				setHitAnimation();
+				if (!isHitted) {
+					sprite->changeAnimation(HIT_RIGHT);
+					sprite->changeAnimation(HIT_RIGHT);
+					estado = HIT_RIGHT;
+				}
+				else if (sprite->animation() != DMG_HIT_RIGHT) {
+					sprite->changeAnimation(DMG_HIT_RIGHT);
+					estado = DMG_HIT_RIGHT;
+				}
 			}
 		}		
 	}
@@ -403,11 +426,15 @@ void Player::update(int deltaTime)
 	
 		
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
+	vidaSprite->setPosition(glm::vec2(float(330), float(30)));
+	expSprite->setPosition(glm::vec2(float(330), float(50)));
 }
 
 void Player::render()
 {
 	sprite->render();
+	vidaSprite->render();
+	expSprite->render();
 }
 
 void Player::setTileMap(TileMap *tileMap)
@@ -428,17 +455,89 @@ void Player::setState(int sta) {
 int Player::getState() {
 	return estado;
 }
-void Player::iniPlayerStats()
+void Player::iniPlayerStats(ShaderProgram& shaderProgram)
 {
 	bJumping = false;
 	bHitting = false;
 	bLiana = false;
 	isHitted = false;
 
-	before = STAND_LEFT;
+	
 	estado = STAND_LEFT;
 	vidasPlayer = INI_VIDAS; 
-	expPlayer = 0;
+	expPlayer = 0;	
+	
+	ssheet.loadFromFile("images/VidaExpSprite.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	//classe sprite -> creem el sprite (tamaño del jugador (18 es un tile))
+	vidaSprite = Sprite::createSprite(glm::ivec2(VIDAEXP_X, VIDAEXP_Y), glm::vec2(0.333f, 0.1666f), &ssheet, &shaderProgram);
+	//aquest sprite te 4 animacions
+		vidaSprite->setNumberAnimations(8);
+	
+		vidaSprite->setAnimationSpeed(VIDA_1, 8);
+		vidaSprite->addKeyframe(VIDA_1, glm::vec2(0.f, 0.0f));
+
+		vidaSprite->setAnimationSpeed(VIDA_2, 8);
+		vidaSprite->addKeyframe(VIDA_2, glm::vec2(0.333f, 0.f));
+
+		vidaSprite->setAnimationSpeed(VIDA_3, 8);
+		vidaSprite->addKeyframe(VIDA_3, glm::vec2(0.666f, 0.f));
+
+		vidaSprite->setAnimationSpeed(VIDA_4, 8);
+		vidaSprite->addKeyframe(VIDA_4, glm::vec2(0.0f, 0.333f));
+
+		vidaSprite->setAnimationSpeed(VIDA_5, 8);
+		vidaSprite->addKeyframe(VIDA_5, glm::vec2(0.333f, 0.333f));
+
+		vidaSprite->setAnimationSpeed(VIDA_6, 8);
+		vidaSprite->addKeyframe(VIDA_6, glm::vec2(0.666f, 0.333f));
+
+		vidaSprite->setAnimationSpeed(VIDA_7, 8);
+		vidaSprite->addKeyframe(VIDA_7, glm::vec2(0.0f, 0.664f));
+
+		vidaSprite->setAnimationSpeed(VIDA_8, 8);
+		vidaSprite->addKeyframe(VIDA_8, glm::vec2(0.333f, 0.664f));
+
+	vidaSprite->changeAnimation(VIDA_8);
+	vidaSprite->setPosition(glm::vec2(float(433), float(11)));
+
+
+	ssheetexp.loadFromFile("images/VidaExpSprite.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	expSprite = Sprite::createSprite(glm::ivec2(VIDAEXP_X, VIDAEXP_Y), glm::vec2(0.333f, 0.1666f), &ssheetexp, &shaderProgram);
+	//aquest sprite te 4 animacions
+	expSprite->setNumberAnimations(8);
+
+
+		expSprite->setAnimationSpeed(EXP_0, 8);
+		expSprite->addKeyframe(EXP_0, glm::vec2(0.666f, 0.664f));
+
+		expSprite->setAnimationSpeed(EXP_1, 8);
+		expSprite->addKeyframe(EXP_1, glm::vec2(0.f, 0.1666f));
+
+		expSprite->setAnimationSpeed(EXP_2, 8);
+		expSprite->addKeyframe(EXP_2, glm::vec2(0.333f,  0.1666f));
+
+		expSprite->setAnimationSpeed(EXP_3, 8);
+		expSprite->addKeyframe(EXP_3, glm::vec2(0.666f, 0.1666f));
+
+		expSprite->setAnimationSpeed(EXP_4, 8);
+		expSprite->addKeyframe(EXP_4, glm::vec2(0.0f, 0.333f + 0.1666f));
+
+		expSprite->setAnimationSpeed(EXP_5, 8);
+		expSprite->addKeyframe(EXP_5, glm::vec2(0.333f, 0.333f + 0.1666f));
+
+		expSprite->setAnimationSpeed(EXP_6, 8);
+		expSprite->addKeyframe(EXP_6, glm::vec2(0.666f, 0.333f + 0.1666f));
+
+		expSprite->setAnimationSpeed(EXP_7, 8);
+		expSprite->addKeyframe(EXP_7, glm::vec2(0.0f, 0.664f + 0.1666f));
+
+		expSprite->setAnimationSpeed(EXP_8, 8);
+		expSprite->addKeyframe(EXP_8, glm::vec2(0.333f, 0.664f + 0.1666f));
+
+	expSprite->changeAnimation(EXP_0);
+	expSprite->setPosition(glm::vec2(float(433), float(31)));
+
+
 }
 
 glm::ivec2 Player::getPosPlayer() {
@@ -447,6 +546,7 @@ glm::ivec2 Player::getPosPlayer() {
 void Player::calHit() {
 	//ha dado a una calavera, hay que augmentar la exp
 	++expPlayer;
+	expSprite->changeAnimation(expPlayer);
 }
 
 void Player::hitByEnemy() {
@@ -455,6 +555,7 @@ void Player::hitByEnemy() {
 		isHitted = true;
 		setHitAnimation();
 		timerHit = 0;
+		vidaSprite->changeAnimation(vidasPlayer);
 	}
 }
 
