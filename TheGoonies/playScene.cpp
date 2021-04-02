@@ -134,13 +134,16 @@ void playScene::update(int deltaTime)
 	}
 	currentTime += deltaTime;
 	if (hitEnem(cal)) {
-		player->calHit();
-		cal->killedCal();
-
+		if (!cal->isDead()) {
+			player->calHit();
+			cal->killedCal();
+		}
 	}
 	if (hitEnem(bat)) {
-		player->calHit();
-		bat->killedBat();
+		if (!bat->isDead()) {
+			player->calHit();
+			bat->killedBat();
+		}
 	}
 
 	if (!hasKey) {

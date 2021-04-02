@@ -546,6 +546,12 @@ glm::ivec2 Player::getPosPlayer() {
 void Player::calHit() {
 	//ha dado a una calavera, hay que augmentar la exp
 	++expPlayer;
+	if (expPlayer == 8) {
+		if(vidasPlayer <8)++vidasPlayer;
+		expPlayer = 0;
+		
+	vidaSprite->changeAnimation(vidasPlayer);
+	}
 	expSprite->changeAnimation(expPlayer);
 }
 

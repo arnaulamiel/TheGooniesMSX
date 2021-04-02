@@ -204,5 +204,5 @@ void Bat::destroyBat() {
 	bDead = true;
 }
 bool Bat::isDead() {
-	return this->bDead;
+	return  (state == BAT_DEAD);;
 }

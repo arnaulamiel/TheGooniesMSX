@@ -169,6 +169,6 @@ void Calavera::destroyCal() {
 }
 
 bool Calavera::isDead() {
-	return this->bDead;
+	return (state == CAL_DEAD);
 
 }
