@@ -62,6 +62,7 @@ private:
 	bool hasKey;
 	bool bgota;
 	bool byeRoca;
+	bool rocaDown;
 
 	TileMap* map;
 	TileMap* mapIni;

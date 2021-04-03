@@ -66,6 +66,7 @@ void playScene::init(void)
 	hasKey = false;
 	bgota = false;
 	byeRoca = false;
+	rocaDown = false;
 	timerGota = 0;
 	timerRoca = 0;
 	initShaders();
@@ -419,27 +420,30 @@ void playScene::calculateDownObstaculo(Object* obst) {
 		}
 	}
 	else if (obst->getObjectType() == ROCA) {
-		if (!gotaHitsPlayer(obst) && (pos.y < obst->getPatrolPoints())) {
+
+		if (rocaDown || ((player->getPosPlayer().x / map->getTileSize()) >= (obst->getObjectPosition().x / map->getTileSize()) - 5 && (player->getPosPlayer().x / map->getTileSize()) <= (obst->getObjectPosition().x / map->getTileSize()) + 3)) {
+			rocaDown = true;
+			if (!gotaHitsPlayer(obst) && (pos.y < obst->getPatrolPoints())) {
 
 
-			if (pos.y > obst->getPatrolPoints()) {
-				pos.y += (obst->getPatrolPoints() - pos.y);
-				obst->setObjectPosition(pos);
+				if (pos.y > obst->getPatrolPoints()) {
+					pos.y += (obst->getPatrolPoints() - pos.y);
+					obst->setObjectPosition(pos);
+				}
+				else {
+					pos.y += 25;
+					obst->setObjectPosition(pos);
+				}
+
 			}
 			else {
-				pos.y += 25;
+
+				if (gotaHitsPlayer(obst))player->hitByEnemy();
 				obst->setObjectPosition(pos);
+				obst->changeSpriteAnimation(SPLASH);
 			}
-
 		}
-		else {
-
-			if (gotaHitsPlayer(obst))player->hitByEnemy();
-			obst->setObjectPosition(pos);
-			obst->changeSpriteAnimation(SPLASH);
-		}
-	}
-	
+	}	
 	
 }
 
