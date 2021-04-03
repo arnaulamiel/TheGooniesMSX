@@ -205,16 +205,18 @@ void playScene::update(int deltaTime)
 				int spriteanim = roca->getSpriteAnimation();
 				
 				switch (spriteanim) {
-				case INI:
-					roca->changeSpriteAnimation(spriteanim + 1);
+				case R_INI:
+					
+					calculateDownObstaculo(roca);
+					if (rocaDown) {
+							roca->changeSpriteAnimation(spriteanim + 1);
+					}
 					break;
-				case DOWN_1:
-					roca->changeSpriteAnimation(spriteanim + 1);
-					break;
-				case DOWN_2:
+				
+				case R_DOWN:
 					calculateDownObstaculo(roca);
 					break;
-				case SPLASH:
+				case R_SPLASH:
 					if (!byeRoca) {
 						roca->changeSpriteAnimation(SPLASH);
 						byeRoca = true;
@@ -440,7 +442,7 @@ void playScene::calculateDownObstaculo(Object* obst) {
 
 				if (gotaHitsPlayer(obst))player->hitByEnemy();
 				obst->setObjectPosition(pos);
-				obst->changeSpriteAnimation(SPLASH);
+				obst->changeSpriteAnimation(R_SPLASH);
 			}
 		}
 	}	

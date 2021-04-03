@@ -17,6 +17,10 @@ enum objectType
 enum gotaAnim {
 	INI, DOWN_1, DOWN_2, SPLASH, NUM_GOTA
 };
+enum rockAnim {
+	R_INI, R_DOWN, R_SPLASH, NUM_R
+};
+
 
 
 class Object
