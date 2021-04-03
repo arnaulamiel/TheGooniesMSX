@@ -24,7 +24,7 @@
 
 #define INIT_BAT_X_TILES 10
 #define INIT_BAT_Y_TILES 13
-
+//prueba
 
 /* @brief Static member function declaration */
 Scene* playScene::create()
