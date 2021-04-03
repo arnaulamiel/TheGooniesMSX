@@ -41,6 +41,28 @@ void Object::init(ShaderProgram& shaderProgram)
 		sprite->changeAnimation(INI);
 
 	}
+	else if (this->oType == DOOR_CHILD) {
+		spritesheet.loadFromFile("images/doorChildSprite.png", TEXTURE_PIXEL_FORMAT_RGBA);
+		sprite = Sprite::createSprite(this->size, glm::vec2(0.333f, 1.f), &spritesheet, &shaderProgram);
+
+		sprite->setNumberAnimations(NUM_DOOR_CHILD);
+
+		sprite->setAnimationSpeed(CLOSED, 8);
+		sprite->addKeyframe(CLOSED, glm::vec2(0.f, 0.f));
+
+		sprite->setAnimationSpeed(OPEN_CHILD, 8);
+		sprite->addKeyframe(OPEN_CHILD, glm::vec2(0.333f, 0.f));
+
+		sprite->setAnimationSpeed(OPEN_EMPTY, 8);
+		sprite->addKeyframe(OPEN_EMPTY, glm::vec2(0.666f, 0.f));
+
+		sprite->changeAnimation(CLOSED);
+
+	}
+	else if (this->oType == LOCK) {
+		spritesheet.loadFromFile("images/lock.png", TEXTURE_PIXEL_FORMAT_RGBA);
+		sprite = Sprite::createSprite(this->size, glm::vec2(1.f, 1.f), &spritesheet, &shaderProgram);
+	}
 
 	spritesheet.setMinFilter(GL_NEAREST);
 	spritesheet.setMagFilter(GL_NEAREST);

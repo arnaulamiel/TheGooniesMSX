@@ -65,6 +65,10 @@ void playScene::init(void)
 {
 	hasKey = false;
 	timerGota = false;
+	doorOpen = false;
+	hasChild = false;
+	numChilds = 0;
+
 	initShaders();
 
 	logoTexture.loadFromFile("images/black.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -147,13 +151,12 @@ void playScene::update(int deltaTime)
 	}
 
 
-	bool found = false;
-	for (int i = 0; i < actualRoomObjects.size() && !found; i++) {
+	
+	for (int i = 0; i < actualRoomObjects.size(); i++) {
 		if (!hasKey) {
 			if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == KEY) {
-				found = true;
 				Object* key = actualRoomObjects[i];
-				if (getKey(key)) {
+				if (getObject(key)) {
 					hasKey = true;
 					actualRoomObjects[i]->destroyObject();
 					actualRoomObjects[i] = nullptr;
@@ -184,6 +187,31 @@ void playScene::update(int deltaTime)
 
 			}
 		}
+		if (!doorOpen) {
+			if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == LOCK) {
+				Object* lock = actualRoomObjects[i];
+				if (getObject(lock)) {
+					doorOpen = true;
+					actualRoomObjects[i]->destroyObject();
+					actualRoomObjects[i] = nullptr;
+				}
+			}
+		}
+		if (doorOpen) {
+			if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == DOOR_CHILD) {
+				Object* doorChild = actualRoomObjects[i];
+				if (!hasChild && doorChild->getSpriteAnimation() == CLOSED) {
+					doorChild->changeSpriteAnimation(OPEN_CHILD);
+				}
+				else if (!hasChild && getObjDoor(doorChild)) {
+					hasChild = true;
+					++numChilds;
+					doorChild->changeSpriteAnimation(OPEN_EMPTY);
+				}
+
+			}
+		}
+
 	}
 	
 
@@ -243,15 +271,18 @@ void playScene::render()
 	logo->render();
 	//vidaexp->render();
 	map->render();
-	player->render();
-	cal->render();
-	bat->render();
 
 	for (int i = 0; i < actualRoomObjects.size(); i++)
 	{
 		if (actualRoomObjects[i] != nullptr)
 			actualRoomObjects[i]->render();
 	}
+
+	player->render();
+	cal->render();
+	bat->render();
+
+	
 }
 
 /* @brief Overrided function used to finalize scenes*/
@@ -317,7 +348,17 @@ bool playScene::loadSingleRoomObjects(string levelFile, vector<Object*>& objects
 					key->init(texProgram);
 					objectsRoom.push_back(key);
 				}
-				if (tile == 4) {
+				else if (tile == 2) {
+					Object* doorChild = new Object(DOOR_CHILD, position, glm::vec2(54, 54));
+					doorChild->init(texProgram);
+					objectsRoom.push_back(doorChild);
+				}
+				else if (tile == 3) {
+					Object* lock = new Object(LOCK, position, glm::vec2(18, 18));
+					lock->init(texProgram);
+					objectsRoom.push_back(lock);
+				}
+				else if (tile == 4) {
 					Object* gota = new Object(GOTA, position, glm::vec2(18, 18));
 					gota->init(texProgram);
 					objectsRoom.push_back(gota);
@@ -376,12 +417,24 @@ bool playScene::hitEnem(Enemies* c ) {
 
 }
 
-bool playScene::getKey(Object* k) {
+bool playScene::getObject(Object* k) {
 	glm::vec2 posKey = k->getObjectPosition();
 	glm::vec2 posPlayer = player->getPosPlayer();
 	int tileSize = map->getTileSize();
 	if (posPlayer.x / tileSize >= (posKey.x / tileSize) - 4 && posPlayer.x / tileSize <= (posKey.x / tileSize) + 4) {
 		if (posPlayer.y / tileSize >= (posKey.y / tileSize) - 4 && posPlayer.y / tileSize <= (posKey.y / tileSize) + 4) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool playScene::getObjDoor(Object* door) {
+	glm::vec2 posDoor = door->getObjectPosition();
+	glm::vec2 posPlayer = player->getPosPlayer();
+	int tileSize = map->getTileSize();
+	if (posPlayer.x / tileSize >= (posDoor.x / tileSize) - 3 && posPlayer.x / tileSize <= (posDoor.x / tileSize) + 4) {
+		if (posPlayer.y / tileSize >= (posDoor.y / tileSize) - 3 && posPlayer.y / tileSize <= (posDoor.y / tileSize) + 4) {
 			return true;
 		}
 	}

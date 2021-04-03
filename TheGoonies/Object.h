@@ -10,13 +10,18 @@
 enum objectType
 {
 	KEY,
-	GOTA
+	GOTA,
+	DOOR_CHILD, 
+	LOCK
 };
 
 enum gotaAnim {
 	INI, DOWN_1, DOWN_2, SPLASH, NUM_GOTA
 };
 
+enum doorChildAnim {
+	CLOSED, OPEN_CHILD, OPEN_EMPTY, NUM_DOOR_CHILD
+};
 
 class Object
 {

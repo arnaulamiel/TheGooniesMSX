@@ -38,7 +38,8 @@ public:
 	void saveActualObject();
 
 	bool hitEnem(Enemies* c);
-	bool getKey(Object* k);
+	bool getObject(Object* k);
+	bool getObjDoor(Object* door);
 	 
 
 private:
@@ -57,8 +58,10 @@ private:
 	/* Texture of the logo */
 	Texture logoTexture, vidaexpTexture;
 
-	bool hasKey;
+	bool hasKey, doorOpen, hasChild;
 	bool firstDownGota;
+
+	int numChilds;
 
 	TileMap* map;
 	TileMap* mapIni;
