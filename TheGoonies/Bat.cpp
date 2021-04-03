@@ -206,3 +206,4 @@ void Bat::destroyBat() {
 bool Bat::isDead() {
 	return  (state == BAT_DEAD);;
 }
+//sdasdasdsdsadas
