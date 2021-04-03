@@ -40,6 +40,10 @@ public:
 	int getSpriteAnimation();
 
 	void setObjectPosition(glm::ivec2 position);
+	void setIniPosition(glm::ivec2 position);
+	glm::ivec2 getIniPosition();
+	void setPatrolPoints(int pEnd);
+	int getPatrolPoints();
 
 private:
 
@@ -48,7 +52,9 @@ private:
 	objectType oType;
 
 	glm::ivec2 position;
+	glm::ivec2 iniposition;
 	glm::ivec2 size;
+	int yIni, yEnd;
 
 	Texture spritesheet;
 	Sprite* sprite;

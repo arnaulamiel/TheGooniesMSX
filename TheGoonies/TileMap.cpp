@@ -234,6 +234,28 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 	return false;
 }
 
+bool TileMap::collisionGota(const glm::ivec2& pos,int* posY) 
+{
+	int x0, x1, y;
+	glm::ivec2 size = glm::ivec2(18, 18);
+	x0 = pos.x / tileSize;
+	x1 = (pos.x + size.x - 1) / tileSize;
+	y = (pos.y + size.y - 1) / tileSize;
+
+	//una cerca desde un punt a un altre, si trobem un bloc, no caiguis mes
+	for (int x = x0; x <= x1; x++)
+	{
+		if (map[pos.y * mapSize.x + x] != 0){
+			if (*posY - tileSize * y + size.y <= 6)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 bool TileMap::hayLianaUp(const glm::ivec2& pos,  const glm::ivec2& size) {
 	int x0, x1, y;
 	x0= pos.x / tileSize;
@@ -256,7 +278,7 @@ bool TileMap::hayLianaDown(const glm::ivec2& pos, const glm::ivec2& size) {
 	//una cerca desde un punt a un altre, si trobem un bloc, no caiguis mes
 	for (int x = x0; x <= x1; x++)
 	{		
-		//Si no es una liana
+		//Si es una liana
 		if (map[y * mapSize.x + x] == 20 || map[y * mapSize.x + x] == 21) {
 			
 			return true;

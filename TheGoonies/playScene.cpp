@@ -64,7 +64,8 @@ playScene::~playScene() {
 void playScene::init(void)
 {
 	hasKey = false;
-	timerGota = false;
+	bgota = false;
+	timerGota = 0;
 	initShaders();
 
 	logoTexture.loadFromFile("images/black.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -176,11 +177,20 @@ void playScene::update(int deltaTime)
 						calculateDownGota(gota);
 						break;
 					case SPLASH:
+						gota->changeSpriteAnimation(SPLASH);
 						break;
 
 					}
 				}
-				else gota->changeSpriteAnimation(0);
+				else{
+					glm::ivec2 ini = gota->getIniPosition();
+
+					gota->setObjectPosition(ini);
+					gota->init(texProgram);
+					gota->changeSpriteAnimation(0); 
+					bgota = false;
+					
+				}
 				timerGota = 0;
 
 			}
@@ -321,6 +331,8 @@ bool playScene::loadSingleRoomObjects(string levelFile, vector<Object*>& objects
 				if (tile == 4) {
 					Object* gota = new Object(GOTA, position, glm::vec2(18, 18));
 					gota->init(texProgram);
+					gota->setIniPosition(position);
+					gota->setPatrolPoints(360);
 					objectsRoom.push_back(gota);
 				}
 			}
@@ -343,9 +355,27 @@ void playScene::calculateDownGota(Object* gota) {
 	//Entra cuando esta en la animacion de bajar
 	glm::ivec2 pos = gota->getObjectPosition();
 	
-	if (!map->collisionMoveDown(pos, glm::ivec2(1, 1), &pos.y)) {
-		pos.y = pos.y + 25;
+	if (!gotaHitsPlayer(gota) && (pos.y < gota->getPatrolPoints()) && !bgota) {
+		
+		
+		if (pos.y > gota->getPatrolPoints()) {
+			pos.y += (gota->getPatrolPoints() - pos.y);
+			gota->setObjectPosition(pos);
+		}
+		else {
+			pos.y += 25;
+			gota->setObjectPosition(pos);
+		}
+		
+		
+	}
+	//Si la gota toca el terra/enemic i no esta en SPLASH
+	else if(!bgota) {		
+
+		if(gotaHitsPlayer(gota))player->hitByEnemy();
 		gota->setObjectPosition(pos);
+		bgota = true;
+		gota->changeSpriteAnimation(SPLASH);
 	}
 	
 }
@@ -382,8 +412,23 @@ bool playScene::getKey(Object* k) {
 	glm::vec2 posPlayer = player->getPosPlayer();
 	int tileSize = map->getTileSize();
 	if (posPlayer.x / tileSize >= (posKey.x / tileSize) - 4 && posPlayer.x / tileSize <= (posKey.x / tileSize) + 4) {
-		if (posPlayer.y / tileSize >= (posKey.y / tileSize) - 4 && posPlayer.y / tileSize <= (posKey.y / tileSize) + 4) {
+		if (posPlayer.y / tileSize >= (posKey.y / tileSize) - 4 && posPlayer.y / tileSize <= (posKey.y / tileSize) +4) {
 			return true;
+		}
+	}
+	return false;
+}
+
+bool playScene::gotaHitsPlayer(Object* g)
+{
+	glm::vec2 posGota = g->getObjectPosition();
+	glm::vec2 posPlayer = player->getPosPlayer();
+	//Si la gota coincide con el player return true
+	int tileSize = map->getTileSize();
+	if (posPlayer.x / tileSize >= (posGota.x / tileSize) - 3 && posPlayer.x / tileSize <= (posGota.x / tileSize) -1) {
+		if (posPlayer.y / tileSize >= (posGota.y / tileSize) -5 && posPlayer.y / tileSize <= (posGota.y / tileSize)-1  ) {
+			return true;
+			
 		}
 	}
 	return false;

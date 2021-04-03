@@ -69,6 +69,16 @@ void Object::setObjectPosition(glm::ivec2 position) {
 	sprite->setPosition(position);
 }
 
+void Object::setIniPosition(glm::ivec2 position)
+{
+	this->iniposition = position;
+}
+
+glm::ivec2 Object::getIniPosition()
+{
+	return this->iniposition;
+}
+
 objectType Object::getObjectType()
 {
 	return this->oType;
@@ -98,4 +108,13 @@ int Object::getSpriteAnimation()
 void Object::destroyObject()
 {
 	objDest = true;
+}
+
+void Object::setPatrolPoints(int pEnd) {
+
+	yEnd = pEnd;
+}
+int Object::getPatrolPoints() {
+	
+	return  yEnd;
 }

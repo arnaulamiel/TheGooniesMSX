@@ -39,6 +39,7 @@ public:
 
 	bool hitEnem(Enemies* c);
 	bool getKey(Object* k);
+	bool gotaHitsPlayer(Object* g);
 	 
 
 private:
@@ -58,6 +59,7 @@ private:
 	Texture logoTexture, vidaexpTexture;
 
 	bool hasKey;
+	bool bgota;
 
 	TileMap* map;
 	TileMap* mapIni;

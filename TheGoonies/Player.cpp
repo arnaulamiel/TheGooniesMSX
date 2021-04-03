@@ -22,7 +22,7 @@ enum PlayerAnims
 };
 
 enum PlayerVidaExp {
-	VIDA_1, VIDA_2, VIDA_3, VIDA_4, VIDA_5, VIDA_6, VIDA_7, VIDA_8
+	VIDA_0, VIDA_1, VIDA_2, VIDA_3, VIDA_4, VIDA_5, VIDA_6, VIDA_7, VIDA_8
 };
 
 enum PlayerExp {
@@ -180,7 +180,7 @@ void Player::update(int deltaTime)
 		}
 	}
 	if (expPlayer == 8) {
-		++vidasPlayer;
+		if(vidasPlayer<8)++vidasPlayer;
 		expPlayer = 0;
 	}
 	if (vidasPlayer <= 0) {
@@ -471,8 +471,11 @@ void Player::iniPlayerStats(ShaderProgram& shaderProgram)
 	//classe sprite -> creem el sprite (tamaño del jugador (18 es un tile))
 	vidaSprite = Sprite::createSprite(glm::ivec2(VIDAEXP_X, VIDAEXP_Y), glm::vec2(0.333f, 0.1666f), &ssheet, &shaderProgram);
 	//aquest sprite te 4 animacions
-		vidaSprite->setNumberAnimations(8);
+		vidaSprite->setNumberAnimations(9);
 	
+		vidaSprite->setAnimationSpeed(VIDA_0, 8);
+		vidaSprite->addKeyframe(VIDA_0, glm::vec2(0.666f, 0.664f));
+
 		vidaSprite->setAnimationSpeed(VIDA_1, 8);
 		vidaSprite->addKeyframe(VIDA_1, glm::vec2(0.f, 0.0f));
 
@@ -495,7 +498,7 @@ void Player::iniPlayerStats(ShaderProgram& shaderProgram)
 		vidaSprite->addKeyframe(VIDA_7, glm::vec2(0.0f, 0.664f));
 
 		vidaSprite->setAnimationSpeed(VIDA_8, 8);
-		vidaSprite->addKeyframe(VIDA_8, glm::vec2(0.333f, 0.664f));
+		vidaSprite->addKeyframe(VIDA_8, glm::vec2(0.333f, 0.666f));
 
 	vidaSprite->changeAnimation(VIDA_8);
 	vidaSprite->setPosition(glm::vec2(float(433), float(11)));
@@ -546,7 +549,7 @@ glm::ivec2 Player::getPosPlayer() {
 void Player::calHit() {
 	//ha dado a una calavera, hay que augmentar la exp
 	++expPlayer;
-	if (expPlayer == 8) {
+	if (expPlayer >= 8) {
 		if(vidasPlayer <8)++vidasPlayer;
 		expPlayer = 0;
 		
