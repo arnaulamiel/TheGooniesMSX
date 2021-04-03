@@ -64,7 +64,7 @@ playScene::~playScene() {
 void playScene::init(void)
 {
 	hasKey = false;
-
+	timerGota = false;
 	initShaders();
 
 	logoTexture.loadFromFile("images/black.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -146,9 +146,10 @@ void playScene::update(int deltaTime)
 		}
 	}
 
-	if (!hasKey) {
-		bool found = false;
-		for (int i = 0; i < actualRoomObjects.size() && !found; i++) {
+
+	bool found = false;
+	for (int i = 0; i < actualRoomObjects.size() && !found; i++) {
+		if (!hasKey) {
 			if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == KEY) {
 				found = true;
 				Object* key = actualRoomObjects[i];
@@ -159,7 +160,32 @@ void playScene::update(int deltaTime)
 				}
 			}
 		}
+		if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == GOTA) {
+			++timerGota;
+			if (timerGota == 20) {
+				Object* gota = actualRoomObjects[i];
+				int spriteanim = gota->getSpriteAnimation();
+				if (spriteanim < 3) { 
+					switch (spriteanim) { 
+					case INI || DOWN_1:
+						gota->changeSpriteAnimation(spriteanim + 1);
+						break;
+					case DOWN_2:
+						firstDownGota = true;
+						calculateDownGota(gota);
+						break;
+					case SPLASH:
+						break;
+
+					}
+				}
+				else gota->changeSpriteAnimation(0);
+				timerGota = 0;
+
+			}
+		}
 	}
+	
 
 	player->update(deltaTime);
 	cal->update(deltaTime);
@@ -291,6 +317,11 @@ bool playScene::loadSingleRoomObjects(string levelFile, vector<Object*>& objects
 					key->init(texProgram);
 					objectsRoom.push_back(key);
 				}
+				if (tile == 4) {
+					Object* gota = new Object(GOTA, position, glm::vec2(18, 18));
+					gota->init(texProgram);
+					objectsRoom.push_back(gota);
+				}
 			}
 		}
 #ifndef _WIN32
@@ -305,6 +336,17 @@ bool playScene::loadSingleRoomObjects(string levelFile, vector<Object*>& objects
 void playScene::updateActualObjects()
 {
 	actualRoomObjects = objectsRoom1;
+}
+
+void playScene::calculateDownGota(Object* gota) {
+	//Entra cuando esta en la animacion de bajar
+	glm::vec2 pos = gota->getObjectPosition();
+	if (firstDownGota) {
+		firstDownGota = false;
+	}
+	else {
+		//sgota->setObjectPosition(pos.x, pos.y+2);
+	}
 }
 
 bool playScene::hitEnem(Enemies* c ) {

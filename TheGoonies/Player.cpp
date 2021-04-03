@@ -426,8 +426,8 @@ void Player::update(int deltaTime)
 	
 		
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
-	vidaSprite->setPosition(glm::vec2(float(330), float(30)));
-	expSprite->setPosition(glm::vec2(float(330), float(50)));
+	vidaSprite->setPosition(glm::vec2(float(330), float(10)));
+	expSprite->setPosition(glm::vec2(float(330), float(30)));
 }
 
 void Player::render()
@@ -535,7 +535,7 @@ void Player::iniPlayerStats(ShaderProgram& shaderProgram)
 		expSprite->addKeyframe(EXP_8, glm::vec2(0.333f, 0.664f + 0.1666f));
 
 	expSprite->changeAnimation(EXP_0);
-	expSprite->setPosition(glm::vec2(float(433), float(31)));
+	expSprite->setPosition(glm::vec2(float(433), float(1)));
 
 
 }

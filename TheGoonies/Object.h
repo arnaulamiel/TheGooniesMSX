@@ -9,9 +9,13 @@
 
 enum objectType
 {
-	KEY
+	KEY,
+	GOTA
 };
 
+enum gotaAnim {
+	INI, DOWN_1, DOWN_2, SPLASH, NUM_GOTA
+};
 
 
 class Object
@@ -34,6 +38,8 @@ public:
 	void changeSpriteAnimation(int anim);
 	void destroyObject();
 	int getSpriteAnimation();
+
+	void setObjectPosition(glm::vec2 position);
 
 private:
 

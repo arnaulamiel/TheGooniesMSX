@@ -46,16 +46,19 @@ private:
 	void initShaders();
 
 	bool loadSingleRoomObjects(string levelFile, vector<Object*>& objectsRoom);
+	void calculateDownGota(Object* gota);
 
 	
 
 	/* Variable to control the time that the logo is shown */
 	int count;
 	int room;
+	int timerGota;
 	/* Texture of the logo */
 	Texture logoTexture, vidaexpTexture;
 
 	bool hasKey;
+	bool firstDownGota;
 
 	TileMap* map;
 	TileMap* mapIni;
