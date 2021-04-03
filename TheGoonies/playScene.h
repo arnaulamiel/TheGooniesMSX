@@ -47,7 +47,7 @@ private:
 	void initShaders();
 
 	bool loadSingleRoomObjects(string levelFile, vector<Object*>& objectsRoom);
-	void calculateDownGota(Object* gota);
+	void calculateDownObstaculo(Object* obs);
 
 	
 
@@ -55,11 +55,13 @@ private:
 	int count;
 	int room;
 	int timerGota;
+	int timerRoca;
 	/* Texture of the logo */
 	Texture logoTexture, vidaexpTexture;
 
 	bool hasKey;
 	bool bgota;
+	bool byeRoca;
 
 	TileMap* map;
 	TileMap* mapIni;

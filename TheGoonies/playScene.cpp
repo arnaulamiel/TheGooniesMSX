@@ -65,7 +65,9 @@ void playScene::init(void)
 {
 	hasKey = false;
 	bgota = false;
+	byeRoca = false;
 	timerGota = 0;
+	timerRoca = 0;
 	initShaders();
 
 	logoTexture.loadFromFile("images/black.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -174,7 +176,7 @@ void playScene::update(int deltaTime)
 						gota->changeSpriteAnimation(spriteanim + 1);
 						break;
 					case DOWN_2:
-						calculateDownGota(gota);
+						calculateDownObstaculo(gota);
 						break;
 					case SPLASH:
 						gota->changeSpriteAnimation(SPLASH);
@@ -192,6 +194,38 @@ void playScene::update(int deltaTime)
 					
 				}
 				timerGota = 0;
+
+			}
+		}
+		if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == ROCA) {
+			++timerRoca;
+			if (timerRoca == 20) {
+				Object* roca = actualRoomObjects[i];
+				int spriteanim = roca->getSpriteAnimation();
+				
+				switch (spriteanim) {
+				case INI:
+					roca->changeSpriteAnimation(spriteanim + 1);
+					break;
+				case DOWN_1:
+					roca->changeSpriteAnimation(spriteanim + 1);
+					break;
+				case DOWN_2:
+					calculateDownObstaculo(roca);
+					break;
+				case SPLASH:
+					if (!byeRoca) {
+						roca->changeSpriteAnimation(SPLASH);
+						byeRoca = true;
+					}
+					else {
+						roca->destroyObject();
+					}
+					break;
+
+				}
+				
+				timerRoca = 0;
 
 			}
 		}
@@ -334,6 +368,12 @@ bool playScene::loadSingleRoomObjects(string levelFile, vector<Object*>& objects
 					gota->setIniPosition(position);
 					gota->setPatrolPoints(360);
 					objectsRoom.push_back(gota);
+				}if (tile == 5) {
+					Object* roca = new Object(ROCA, position, glm::vec2(18, 18));
+					roca->init(texProgram);
+					roca->setIniPosition(position);
+					roca->setPatrolPoints(360);
+					objectsRoom.push_back(roca);
 				}
 			}
 		}
@@ -351,32 +391,55 @@ void playScene::updateActualObjects()
 	actualRoomObjects = objectsRoom1;
 }
 
-void playScene::calculateDownGota(Object* gota) {
+void playScene::calculateDownObstaculo(Object* obst) {
 	//Entra cuando esta en la animacion de bajar
-	glm::ivec2 pos = gota->getObjectPosition();
-	
-	if (!gotaHitsPlayer(gota) && (pos.y < gota->getPatrolPoints()) && !bgota) {
-		
-		
-		if (pos.y > gota->getPatrolPoints()) {
-			pos.y += (gota->getPatrolPoints() - pos.y);
-			gota->setObjectPosition(pos);
+	glm::ivec2 pos = obst->getObjectPosition();
+	if (obst->getObjectType() == GOTA) {
+		if (!gotaHitsPlayer(obst) && (pos.y < obst->getPatrolPoints()) && !bgota) {
+
+
+			if (pos.y > obst->getPatrolPoints()) {
+				pos.y += (obst->getPatrolPoints() - pos.y);
+				obst->setObjectPosition(pos);
+			}
+			else {
+				pos.y += 25;
+				obst->setObjectPosition(pos);
+			}
+
+
+		}
+		//Si la gota toca el terra/enemic i no esta en SPLASH
+		else if (!bgota) {
+
+			if (gotaHitsPlayer(obst))player->hitByEnemy();
+			obst->setObjectPosition(pos);
+			bgota = true;
+			obst->changeSpriteAnimation(SPLASH);
+		}
+	}
+	else if (obst->getObjectType() == ROCA) {
+		if (!gotaHitsPlayer(obst) && (pos.y < obst->getPatrolPoints())) {
+
+
+			if (pos.y > obst->getPatrolPoints()) {
+				pos.y += (obst->getPatrolPoints() - pos.y);
+				obst->setObjectPosition(pos);
+			}
+			else {
+				pos.y += 25;
+				obst->setObjectPosition(pos);
+			}
+
 		}
 		else {
-			pos.y += 25;
-			gota->setObjectPosition(pos);
-		}
-		
-		
-	}
-	//Si la gota toca el terra/enemic i no esta en SPLASH
-	else if(!bgota) {		
 
-		if(gotaHitsPlayer(gota))player->hitByEnemy();
-		gota->setObjectPosition(pos);
-		bgota = true;
-		gota->changeSpriteAnimation(SPLASH);
+			if (gotaHitsPlayer(obst))player->hitByEnemy();
+			obst->setObjectPosition(pos);
+			obst->changeSpriteAnimation(SPLASH);
+		}
 	}
+	
 	
 }
 

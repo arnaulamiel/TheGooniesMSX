@@ -10,7 +10,8 @@
 enum objectType
 {
 	KEY,
-	GOTA
+	GOTA,
+	ROCA
 };
 
 enum gotaAnim {
