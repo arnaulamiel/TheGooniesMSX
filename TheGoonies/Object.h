@@ -39,7 +39,7 @@ public:
 	void destroyObject();
 	int getSpriteAnimation();
 
-	void setObjectPosition(glm::vec2 position);
+	void setObjectPosition(glm::ivec2 position);
 
 private:
 
@@ -47,7 +47,7 @@ private:
 
 	objectType oType;
 
-	glm::vec2 position;
+	glm::ivec2 position;
 	glm::ivec2 size;
 
 	Texture spritesheet;
