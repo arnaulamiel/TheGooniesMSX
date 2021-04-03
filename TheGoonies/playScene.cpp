@@ -187,28 +187,30 @@ void playScene::update(int deltaTime)
 
 			}
 		}
-		if (!doorOpen) {
-			if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == LOCK) {
-				Object* lock = actualRoomObjects[i];
-				if (getObject(lock)) {
-					doorOpen = true;
-					actualRoomObjects[i]->destroyObject();
-					actualRoomObjects[i] = nullptr;
+		if (hasKey) {
+			if (!doorOpen) {
+				if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == LOCK) {
+					Object* lock = actualRoomObjects[i];
+					if (getObject(lock)) {
+						doorOpen = true;
+						actualRoomObjects[i]->destroyObject();
+						actualRoomObjects[i] = nullptr;
+					}
 				}
 			}
-		}
-		if (doorOpen) {
-			if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == DOOR_CHILD) {
-				Object* doorChild = actualRoomObjects[i];
-				if (!hasChild && doorChild->getSpriteAnimation() == CLOSED) {
-					doorChild->changeSpriteAnimation(OPEN_CHILD);
-				}
-				else if (!hasChild && getObjDoor(doorChild)) {
-					hasChild = true;
-					++numChilds;
-					doorChild->changeSpriteAnimation(OPEN_EMPTY);
-				}
+			if (doorOpen) {
+				if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == DOOR_CHILD) {
+					Object* doorChild = actualRoomObjects[i];
+					if (!hasChild && doorChild->getSpriteAnimation() == CLOSED) {
+						doorChild->changeSpriteAnimation(OPEN_CHILD);
+					}
+					else if (!hasChild && getObjDoor(doorChild)) {
+						hasChild = true;
+						++numChilds;
+						doorChild->changeSpriteAnimation(OPEN_EMPTY);
+					}
 
+				}
 			}
 		}
 
@@ -421,8 +423,8 @@ bool playScene::getObject(Object* k) {
 	glm::vec2 posKey = k->getObjectPosition();
 	glm::vec2 posPlayer = player->getPosPlayer();
 	int tileSize = map->getTileSize();
-	if (posPlayer.x / tileSize >= (posKey.x / tileSize) - 4 && posPlayer.x / tileSize <= (posKey.x / tileSize) + 4) {
-		if (posPlayer.y / tileSize >= (posKey.y / tileSize) - 4 && posPlayer.y / tileSize <= (posKey.y / tileSize) + 4) {
+	if (posPlayer.x / tileSize >= (posKey.x / tileSize) - 4 && posPlayer.x / tileSize <= (posKey.x / tileSize) + 2) {
+		if (posPlayer.y / tileSize >= (posKey.y / tileSize) - 4 && posPlayer.y / tileSize <= (posKey.y / tileSize) + 2) {
 			return true;
 		}
 	}
