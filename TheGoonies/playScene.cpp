@@ -343,7 +343,7 @@ bool playScene::loadSingleRoomObjects(string levelFile, vector<Object*>& objects
 
 			if (tile != 0)
 			{
-				glm::ivec2 position = glm::ivec2(18 * i + SCREEN_X, 18 * j + SCREEN_Y);
+				glm::ivec2 position = glm::ivec2(18 * i + SCREEN_X, 18 * j + SCREEN_Y + 9);
 				//glm::ivec2 position = glm::ivec2(tileSize * i, tileSize * j );
 				if (tile == 1) {
 					Object* key = new Object(KEY, position, glm::vec2(18, 18));
