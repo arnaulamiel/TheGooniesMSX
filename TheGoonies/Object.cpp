@@ -64,9 +64,9 @@ void Object::fin()
 
 }
 
-void Object::setObjectPosition(glm::vec2 position) {
+void Object::setObjectPosition(glm::ivec2 position) {
 	this->position = position;
-	sprite->setPosition(this->position);
+	sprite->setPosition(position);
 }
 
 objectType Object::getObjectType()

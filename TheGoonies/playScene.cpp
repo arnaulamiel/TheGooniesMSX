@@ -147,11 +147,10 @@ void playScene::update(int deltaTime)
 	}
 
 
-	bool found = false;
-	for (int i = 0; i < actualRoomObjects.size() && !found; i++) {
+	for (int i = 0; i < actualRoomObjects.size(); i++) {
 		if (!hasKey) {
 			if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == KEY) {
-				found = true;
+				
 				Object* key = actualRoomObjects[i];
 				if (getKey(key)) {
 					hasKey = true;
@@ -167,11 +166,13 @@ void playScene::update(int deltaTime)
 				int spriteanim = gota->getSpriteAnimation();
 				if (spriteanim < 3) { 
 					switch (spriteanim) { 
-					case INI || DOWN_1:
+					case INI :
+						gota->changeSpriteAnimation(spriteanim + 1);
+						break;
+					case DOWN_1:
 						gota->changeSpriteAnimation(spriteanim + 1);
 						break;
 					case DOWN_2:
-						firstDownGota = true;
 						calculateDownGota(gota);
 						break;
 					case SPLASH:
@@ -340,13 +341,13 @@ void playScene::updateActualObjects()
 
 void playScene::calculateDownGota(Object* gota) {
 	//Entra cuando esta en la animacion de bajar
-	glm::vec2 pos = gota->getObjectPosition();
-	if (firstDownGota) {
-		firstDownGota = false;
+	glm::ivec2 pos = gota->getObjectPosition();
+	
+	if (!map->collisionMoveDown(pos, glm::ivec2(1, 1), &pos.y)) {
+		pos.y = pos.y + 25;
+		gota->setObjectPosition(pos);
 	}
-	else {
-		//sgota->setObjectPosition(pos.x, pos.y+2);
-	}
+	
 }
 
 bool playScene::hitEnem(Enemies* c ) {

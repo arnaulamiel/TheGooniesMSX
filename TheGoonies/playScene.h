@@ -58,7 +58,6 @@ private:
 	Texture logoTexture, vidaexpTexture;
 
 	bool hasKey;
-	bool firstDownGota;
 
 	TileMap* map;
 	TileMap* mapIni;
