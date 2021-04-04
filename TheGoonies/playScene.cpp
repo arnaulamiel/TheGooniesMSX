@@ -24,7 +24,7 @@
 
 #define INIT_BAT_X_TILES 10
 #define INIT_BAT_Y_TILES 13
-
+//prueba
 
 /* @brief Static member function declaration */
 Scene* playScene::create()
@@ -69,6 +69,10 @@ void playScene::init(void)
 	rocaDown = false;
 	timerGota = 0;
 	timerRoca = 0;
+	doorOpen = false;
+	hasChild = false;
+	numChilds = 0;
+
 	initShaders();
 
 	logoTexture.loadFromFile("images/black.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -156,7 +160,7 @@ void playScene::update(int deltaTime)
 			if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == KEY) {
 				
 				Object* key = actualRoomObjects[i];
-				if (getKey(key)) {
+				if (getObject(key)) {
 					hasKey = true;
 					actualRoomObjects[i]->destroyObject();
 					actualRoomObjects[i] = nullptr;
@@ -196,6 +200,32 @@ void playScene::update(int deltaTime)
 				}
 				timerGota = 0;
 
+			}
+		}
+		if (hasKey) {
+			if (!doorOpen) {
+				if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == LOCK) {
+					Object* lock = actualRoomObjects[i];
+					if (getObject(lock)) {
+						doorOpen = true;
+						actualRoomObjects[i]->destroyObject();
+						actualRoomObjects[i] = nullptr;
+					}
+				}
+			}
+			if (doorOpen) {
+				if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == DOOR_CHILD) {
+					Object* doorChild = actualRoomObjects[i];
+					if (!hasChild && doorChild->getSpriteAnimation() == CLOSED) {
+						doorChild->changeSpriteAnimation(OPEN_CHILD);
+					}
+					else if (!hasChild && getObjDoor(doorChild)) {
+						hasChild = true;
+						++numChilds;
+						doorChild->changeSpriteAnimation(OPEN_EMPTY);
+					}
+
+				}
 			}
 		}
 		if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == ROCA) {
@@ -291,15 +321,18 @@ void playScene::render()
 	logo->render();
 	//vidaexp->render();
 	map->render();
-	player->render();
-	cal->render();
-	bat->render();
 
 	for (int i = 0; i < actualRoomObjects.size(); i++)
 	{
 		if (actualRoomObjects[i] != nullptr)
 			actualRoomObjects[i]->render();
 	}
+
+	player->render();
+	cal->render();
+	bat->render();
+
+	
 }
 
 /* @brief Overrided function used to finalize scenes*/
@@ -358,14 +391,24 @@ bool playScene::loadSingleRoomObjects(string levelFile, vector<Object*>& objects
 
 			if (tile != 0)
 			{
-				glm::ivec2 position = glm::ivec2(18 * i + SCREEN_X, 18 * j + SCREEN_Y);
+				glm::ivec2 position = glm::ivec2(18 * i + SCREEN_X, 18 * j + SCREEN_Y + 9);
 				//glm::ivec2 position = glm::ivec2(tileSize * i, tileSize * j );
 				if (tile == 1) {
 					Object* key = new Object(KEY, position, glm::vec2(18, 18));
 					key->init(texProgram);
 					objectsRoom.push_back(key);
 				}
-				if (tile == 4) {
+				else if (tile == 2) {
+					Object* doorChild = new Object(DOOR_CHILD, position, glm::vec2(54, 54));
+					doorChild->init(texProgram);
+					objectsRoom.push_back(doorChild);
+				}
+				else if (tile == 3) {
+					Object* lock = new Object(LOCK, position, glm::vec2(18, 18));
+					lock->init(texProgram);
+					objectsRoom.push_back(lock);
+				}
+				else if (tile == 4) {
 					Object* gota = new Object(GOTA, position, glm::vec2(18, 18));
 					gota->init(texProgram);
 					gota->setIniPosition(position);
@@ -476,10 +519,24 @@ bool playScene::hitEnem(Enemies* c ) {
 
 }
 
-bool playScene::getKey(Object* k) {
+bool playScene::getObject(Object* k) {
 	glm::vec2 posKey = k->getObjectPosition();
 	glm::vec2 posPlayer = player->getPosPlayer();
 	int tileSize = map->getTileSize();
+	if (posPlayer.x / tileSize >= (posKey.x / tileSize) - 4 && posPlayer.x / tileSize <= (posKey.x / tileSize) + 2) {
+		if (posPlayer.y / tileSize >= (posKey.y / tileSize) - 4 && posPlayer.y / tileSize <= (posKey.y / tileSize) + 2) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool playScene::getObjDoor(Object* door) {
+	glm::vec2 posDoor = door->getObjectPosition();
+	glm::vec2 posPlayer = player->getPosPlayer();
+	int tileSize = map->getTileSize();
+	if (posPlayer.x / tileSize >= (posDoor.x / tileSize) - 3 && posPlayer.x / tileSize <= (posDoor.x / tileSize) + 4) {
+		if (posPlayer.y / tileSize >= (posDoor.y / tileSize) - 3 && posPlayer.y / tileSize <= (posDoor.y / tileSize) + 4) {
 	if (posPlayer.x / tileSize >= (posKey.x / tileSize) - 4 && posPlayer.x / tileSize <= (posKey.x / tileSize) + 4) {
 		if (posPlayer.y / tileSize >= (posKey.y / tileSize) - 4 && posPlayer.y / tileSize <= (posKey.y / tileSize) +4) {
 			return true;

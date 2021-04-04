@@ -38,7 +38,8 @@ public:
 	void saveActualObject();
 
 	bool hitEnem(Enemies* c);
-	bool getKey(Object* k);
+	bool getObject(Object* k);
+	bool getObjDoor(Object* door);
 	bool gotaHitsPlayer(Object* g);
 	 
 
@@ -59,10 +60,12 @@ private:
 	/* Texture of the logo */
 	Texture logoTexture, vidaexpTexture;
 
-	bool hasKey;
+	bool hasKey,doorOpen, hasChild;;
 	bool bgota;
 	bool byeRoca;
 	bool rocaDown;
+
+	int numChilds;
 
 	TileMap* map;
 	TileMap* mapIni;

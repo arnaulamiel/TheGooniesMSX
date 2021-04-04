@@ -11,6 +11,8 @@ enum objectType
 {
 	KEY,
 	GOTA,
+	DOOR_CHILD, 
+	LOCK,
 	ROCA
 };
 
@@ -21,6 +23,9 @@ enum rockAnim {
 	R_INI, R_DOWN, R_SPLASH, NUM_R
 };
 
+enum doorChildAnim {
+	CLOSED, OPEN_CHILD, OPEN_EMPTY, NUM_DOOR_CHILD
+};
 
 
 class Object
