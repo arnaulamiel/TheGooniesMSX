@@ -41,6 +41,7 @@ public:
 	bool getObject(Object* k);
 	bool getObjDoor(Object* door);
 	bool gotaHitsPlayer(Object* g);
+	bool fireHitsPlayer(Object* f);
 	 
 
 private:
@@ -57,6 +58,7 @@ private:
 	int room;
 	int timerGota;
 	int timerRoca;
+	int timerFuego, timesFireAnim;
 	/* Texture of the logo */
 	Texture logoTexture, vidaexpTexture;
 

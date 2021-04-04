@@ -13,7 +13,8 @@ enum objectType
 	GOTA,
 	DOOR_CHILD, 
 	LOCK,
-	ROCA
+	ROCA,
+	FIRE
 };
 
 enum gotaAnim {
@@ -21,6 +22,9 @@ enum gotaAnim {
 };
 enum rockAnim {
 	R_INI, R_DOWN, R_SPLASH, NUM_R
+};
+enum fireAnim {
+	F_INI, FIRE1, FIRE2, NUM_F
 };
 
 enum doorChildAnim {

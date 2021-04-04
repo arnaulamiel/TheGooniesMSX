@@ -69,9 +69,11 @@ void playScene::init(void)
 	rocaDown = false;
 	timerGota = 0;
 	timerRoca = 0;
+	timerFuego = 0;
 	doorOpen = false;
 	hasChild = false;
 	numChilds = 0;
+	timesFireAnim = 0;
 
 	initShaders();
 
@@ -262,6 +264,58 @@ void playScene::update(int deltaTime)
 
 			}
 		}
+		if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == FIRE) {
+			++timerFuego;
+			
+				Object* fire = actualRoomObjects[i];
+				int spriteanim = fire->getSpriteAnimation();
+
+				switch (spriteanim) {
+				case F_INI:		
+					if (timerFuego == 8 && timesFireAnim <= 13) {
+						if (fireHitsPlayer(fire)) {
+							player->hitByEnemy();
+						}
+						fire->changeSpriteAnimation(FIRE1);
+						timerFuego = 0;
+					}
+					else if(timerFuego >8) {
+						
+						if (timerFuego == 200) {
+							fire->init(texProgram);
+							fire->changeSpriteAnimation(F_INI);
+							timerFuego = 0;
+							timesFireAnim = 0;
+						}
+					}					
+					break;
+				case FIRE1:
+					if (timerFuego == 8 ) {
+						if (fireHitsPlayer(fire)) {
+							player->hitByEnemy();
+						}
+						fire->changeSpriteAnimation(FIRE2);
+						timerFuego = 0;
+						++timesFireAnim;
+					}
+					break;
+				case FIRE2:	
+					if (timerFuego == 8 && timesFireAnim <=13) {
+						if (fireHitsPlayer(fire)) {
+							player->hitByEnemy();
+						}
+						fire->changeSpriteAnimation(FIRE1);
+						timerFuego = 0;
+						++timesFireAnim;
+					}
+					else if(timerFuego >8) {
+						fire->changeSpriteAnimation(F_INI);
+					}
+					
+					break;
+				}
+		}
+
 	}
 	
 
@@ -414,12 +468,18 @@ bool playScene::loadSingleRoomObjects(string levelFile, vector<Object*>& objects
 					gota->setIniPosition(position);
 					gota->setPatrolPoints(360);
 					objectsRoom.push_back(gota);
-				}if (tile == 5) {
+				}else if (tile == 5) {
 					Object* roca = new Object(ROCA, position, glm::vec2(18, 18));
 					roca->init(texProgram);
 					roca->setIniPosition(position);
 					roca->setPatrolPoints(360);
 					objectsRoom.push_back(roca);
+				}
+				else if (tile == 6) {
+					Object* fire = new Object(FIRE, position, glm::vec2(18, 42));
+					fire->init(texProgram);
+					fire->setIniPosition(position);
+					objectsRoom.push_back(fire);
 				}
 			}
 		}
@@ -555,6 +615,20 @@ bool playScene::gotaHitsPlayer(Object* g)
 			
 		}
 	}
+	return false;
+}
+
+bool playScene::fireHitsPlayer(Object* f)
+{
+	glm::vec2 posFire = f->getObjectPosition();
+	glm::vec2 posPlayer = player->getPosPlayer();
+	int tileSize = map->getTileSize();
+	if (posPlayer.x /tileSize >= (posFire.x / tileSize) -3 && posPlayer.x / tileSize <= (posFire.x / tileSize) -1 ) {
+		if (posPlayer.y / tileSize >= (posFire.y / tileSize) - 5 && posPlayer.y / tileSize <= (posFire.y / tileSize) - 1) {
+			return true; 
+		}
+	}
+
 	return false;
 }
 

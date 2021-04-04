@@ -79,7 +79,26 @@ void Object::init(ShaderProgram& shaderProgram)
 		sprite->setAnimationSpeed(R_SPLASH, 8);
 		sprite->addKeyframe(R_SPLASH, glm::vec2(0.666f, 0.0f));
 
-		sprite->changeAnimation(INI);
+		sprite->changeAnimation(R_INI);
+
+	}
+	else if (this->oType == FIRE) {
+		//Fa falta spritesheet i canviarho
+		spritesheet.loadFromFile("images/FuegoSprite.png", TEXTURE_PIXEL_FORMAT_RGBA);
+		sprite = Sprite::createSprite(this->size, glm::vec2(0.333f, 1.f), &spritesheet, &shaderProgram);
+
+		sprite->setNumberAnimations(NUM_F);
+
+		sprite->setAnimationSpeed(F_INI, 8);
+		sprite->addKeyframe(INI, glm::vec2(0.0f, 0.0f));
+
+		sprite->setAnimationSpeed(FIRE1, 8);
+		sprite->addKeyframe(R_DOWN, glm::vec2(0.333f, 0.0f));
+
+		sprite->setAnimationSpeed(FIRE2, 8);
+		sprite->addKeyframe(R_SPLASH, glm::vec2(0.666f, 0.0f));
+
+		sprite->changeAnimation(F_INI);
 
 	}
 
