@@ -202,6 +202,10 @@ void Player::update(int deltaTime)
 		scene_manager->requestScene(SceneID::END_SCENE);
 		
 	}
+	if (flagDash) {
+		soundDash = false;
+		flagDash = false;
+	}
 	//Si han pegado al jugador hace 20 frames ya no es invulnerable
 	if (timerHit == 60) {
 		isHitted = false;
@@ -322,10 +326,12 @@ void Player::update(int deltaTime)
 			if (estado == STAND_RIGHT || estado == JUMP_RIGHT || estado == MOVE_RIGHT || estado == DMG_STAND_RIGHT || estado == DMG_JUMP_RIGHT || estado == DMG_MOVE_RIGHT) {
 				posPlayer.x += 72;
 				bCooldownX = true;
+				
 			}
 			else if (estado == STAND_LEFT || estado == JUMP_LEFT || estado == MOVE_LEFT || estado == DMG_STAND_LEFT || estado == DMG_JUMP_LEFT || estado == DMG_MOVE_LEFT) {
 				posPlayer.x -= 72;
 				bCooldownX = true;
+				
 			}
 		}
 	}
@@ -514,7 +520,8 @@ void Player::iniPlayerStats(ShaderProgram& shaderProgram)
 	isHitted = false;
 	timerSprite = false;
 	hasBlueHel = false;
-
+	soundDash = false;
+	flagDash = false;
 	
 	estado = STAND_LEFT;
 	vidasPlayer = INI_VIDAS; 
@@ -695,6 +702,10 @@ bool Player::isHittedPlayer()
 {
 	return isHitted;
 }
+bool Player::soundXDash()
+{
+	return soundDash;
+}
 
 void Player::setHitAnimation() {
 	//STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, JUMP_LEFT, JUMP_RIGHT, CLIMB, HIT_LEFT, HIT_RIGHT
@@ -803,11 +814,15 @@ bool Player::canTP()
 	if (!bCooldownX) {
 		if (estado == STAND_RIGHT || estado == JUMP_RIGHT || estado == MOVE_RIGHT || estado == DMG_STAND_RIGHT || estado == DMG_JUMP_RIGHT || estado == DMG_MOVE_RIGHT) {
 			if (posPlayer.x + 72 <= 532 ) {
+				soundDash = true;
+				flagDash = true;
 				return true;
 			}
 		}
 		else if (estado == STAND_LEFT || estado == JUMP_LEFT || estado == MOVE_LEFT || estado == DMG_STAND_LEFT || estado == DMG_JUMP_LEFT || estado == DMG_MOVE_LEFT) {
 			if (posPlayer.x - 72 >= 60) {
+				soundDash = true;
+				flagDash = true;
 				return true;
 			}
 		}

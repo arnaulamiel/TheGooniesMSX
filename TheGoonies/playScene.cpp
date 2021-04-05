@@ -162,7 +162,9 @@ void playScene::update(int deltaTime)
 			bat->killedBat();
 		}
 	}
-
+	if (player->soundXDash()) {
+		createSound("../../../libs/irrKlang-1.6.0/media/dash.wav",false);
+	}
 
 	for (int i = 0; i < actualRoomObjects.size(); i++) {
 		if (!hasKey) {
@@ -575,6 +577,7 @@ void playScene::calculateDownObstaculo(Object* obst) {
 			bgota = true;
 			
 			createSound("../../../libs/irrKlang-1.6.0/media/gota.mp3", false);
+			sound->setSoundVolume(0.2);
 			obst->changeSpriteAnimation(SPLASH);
 		}
 	}

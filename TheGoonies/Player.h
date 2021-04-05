@@ -39,13 +39,14 @@ public:
 	int getExp();
 	void getBlueHelmet();
 	bool hasBlueHelmet();
+	bool soundXDash();
 
 private:
 	
 
 	ShaderProgram texProgram;
 	int vidasPlayer,expPlayer, timerHit, before;
-	bool bJumping,bHitting, bLiana, isHitted, bCooldownX, hasBlueHel;
+	bool bJumping,bHitting, bLiana, isHitted, bCooldownX, hasBlueHel, soundDash, flagDash;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY, estado, timerX, stateChild;
 	Texture spritesheet;
