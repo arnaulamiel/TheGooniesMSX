@@ -10,6 +10,7 @@ using namespace irrklang;
 
 void Game::init()
 {
+	
 	bPlay = true;
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	//scene.init();
@@ -20,32 +21,18 @@ void Game::init()
 
 	scene_manager->setStartScene(INIT_SCENE);
 
-	// start the sound engine with default parameters
-	engine = createIrrKlangDevice();
-	engine->play2D("/../../../libs\irrKlang-1.6.0\media",true);
+	changeMusic("../../../libs/irrKlang-1.6.0/media/titleGoonies.ogg");
 }
 
 bool Game::update(int deltaTime)
 {
-	/*per un exemple que ha fet de una class Input.Read ha fet ->
-	enum KEY_STATE { KEY_IDLE, KEY_PRESS, KEY_RELEASE, KEY_REPEAT}
-	KEY_STATE key_state[N];
-	(...)
-	for (i=0..){
-		if(keys[i]){
-			if(key_state[i]  == KEY_IDLE) key_state[i] = KEY_PRESS;
-			else if(key_state[i]  == KEY_PRESS) key_state[i] = KEY_REPEAT;		
-			(...)
-		}
-		else{
-		//poden haber moltes opcions, depen del tipus de joc i tot aixo
-			if(key_state[i]  == KEY_REPEAT || key_state[i]  == KEY_RELEASE) key_state[i] = KEY_RELEASE;
-			(...)
-		}
-	*/
 	SceneManager* scene_manager = SceneManager::instance();
 	scene_manager->updateActiveScene(deltaTime);
-
+	/*if (a == 14) { 
+		engine->drop();
+		engine = createIrrKlangDevice();
+		engine->play2D("../../../libs/irrKlang-1.6.0/media/gameOverGoonies.ogg", true); 
+	}*/
 	return bPlay;
 }
 
@@ -68,6 +55,24 @@ void Game::keyReleased(int key)
 	keys[key] = false;
 }
 
+void Game::deleteEngine() {
+	engine->drop();
+}
+
+void Game::changeMusic(char* music) {
+
+	engine = createIrrKlangDevice();
+	
+	engine->play2D(music, true);
+}
+
+void::Game::createSound(char* music) {
+	sound = createIrrKlangDevice();
+	sound->play2D(music, true);
+}
+void Game::deleteSound() {
+	sound->drop();
+}
 //tecles especials (f1,f2, arrows....)
 void Game::specialKeyPressed(int key)
 {

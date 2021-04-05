@@ -11,6 +11,8 @@
 #define SCREEN_HEIGHT 480
 
 
+using namespace irrklang;
+
 // Game is a singleton (a class with a single instance) that represents our whole application
 
 
@@ -42,15 +44,21 @@ public:
 	void mouseRelease(int button);
 	
 	bool getKey(int key) const;
-	bool getSpecialKey(int key) const;
-
+	bool getSpecialKey(int key) const; 
+	void deleteEngine();
+	void changeMusic(char* music);
+	void createSound(char* music);
+	void deleteSound();
 private:
 	bool bPlay;                       // Continue to play game?
 	//Scene scene;                      // Scene to render
 	//tecles del teclat i tecles especials del teclat
 	bool keys[256], specialKeys[256]; // Store key states so that 
 	                                  // we can have access at any time
+
 	ISoundEngine* engine;
+	ISoundEngine* sound;
+
 };
 
 

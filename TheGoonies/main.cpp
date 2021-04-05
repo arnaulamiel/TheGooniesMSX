@@ -1,10 +1,15 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include "Game.h"
+#include <iostream>
+#include <irrKlang.h>
 
+using namespace irrklang;
 
 //Remove console (only works in Visual Studio)
 #pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
+#pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
+// start the sound engine with default parameters
 
 
 #define TIME_PER_FRAME 1000.f / 60.f // Approx. 60 fps
@@ -97,7 +102,8 @@ int main(int argc, char **argv)
 	glutSpecialUpFunc(specialUpCallback);
 	glutMouseFunc(mouseCallback);
 	glutMotionFunc(motionCallback);
-
+	/*ISoundEngine* engine = createIrrKlangDevice();
+	engine->play2D("../../../libs/irrKlang-1.6.0/media/titleGoonies.ogg", true);*/
 	// GLEW will take care of OpenGL extension functions
 	glewExperimental = GL_TRUE;
 	glewInit();
