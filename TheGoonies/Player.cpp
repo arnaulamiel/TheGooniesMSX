@@ -313,11 +313,11 @@ void Player::update(int deltaTime)
 
 		if (canTP()) {
 			if (estado == STAND_RIGHT || estado == JUMP_RIGHT || estado == MOVE_RIGHT || estado == DMG_STAND_RIGHT || estado == DMG_JUMP_RIGHT || estado == DMG_MOVE_RIGHT) {
-				posPlayer.x += 36;
+				posPlayer.x += 72;
 				bCooldownX = true;
 			}
 			else if (estado == STAND_LEFT || estado == JUMP_LEFT || estado == MOVE_LEFT || estado == DMG_STAND_LEFT || estado == DMG_JUMP_LEFT || estado == DMG_MOVE_LEFT) {
-				posPlayer.x -= 36;
+				posPlayer.x -= 72;
 				bCooldownX = true;
 			}
 		}
@@ -738,12 +738,12 @@ bool Player::canTP()
 {
 	if (!bCooldownX) {
 		if (estado == STAND_RIGHT || estado == JUMP_RIGHT || estado == MOVE_RIGHT || estado == DMG_STAND_RIGHT || estado == DMG_JUMP_RIGHT || estado == DMG_MOVE_RIGHT) {
-			if (posPlayer.x + 36 <= 532 ) {
+			if (posPlayer.x + 72 <= 532 ) {
 				return true;
 			}
 		}
 		else if (estado == STAND_LEFT || estado == JUMP_LEFT || estado == MOVE_LEFT || estado == DMG_STAND_LEFT || estado == DMG_JUMP_LEFT || estado == DMG_MOVE_LEFT) {
-			if (posPlayer.x - 36 >= 68) {
+			if (posPlayer.x - 72 >= 60) {
 				return true;
 			}
 		}
