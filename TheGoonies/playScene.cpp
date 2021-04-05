@@ -340,6 +340,7 @@ void playScene::update(int deltaTime)
 	}
 	
 
+	if (player->getHealth() == 0) deleteEngine();
 	player->update(deltaTime);
 	cal->update(deltaTime);
 	bat->update(deltaTime);
@@ -403,7 +404,6 @@ void playScene::render()
 			actualRoomObjects[i]->render();
 	}
 
-	if (player->getHealth() == 0) deleteEngine();
 	player->render();
 	cal->render();
 	bat->render();
