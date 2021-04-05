@@ -46,19 +46,21 @@ private:
 
 	ShaderProgram texProgram;
 	int vidasPlayer,expPlayer, timerHit, before;
-	bool bJumping,bHitting, bLiana, isHitted, bCooldownX, hasBlueHel, soundDash, flagDash;
+	bool bJumping,bHitting, bLiana, isHitted, bCooldownX, hasBlueHel, soundDash, flagDash, godMode;
 	glm::ivec2 tileMapDispl, posPlayer;
-	int jumpAngle, startY, estado, timerX, stateChild;
+	int jumpAngle, startY, estado, timerX, stateChild, timerGod;
 	Texture spritesheet;
 	Texture ssheet;
 	Texture ssheetTimer;
 	Texture ssheetexp;
 	Texture ssheetch;
+	Texture godsh;
 	Sprite *sprite;
 	Sprite* vidaSprite;
 	Sprite* expSprite;
 	Sprite* timerSprite;
 	Sprite* childSprite;
+	Sprite* godSprite;
 	TileMap *map;
 };
 

@@ -163,8 +163,9 @@ void Player::update(int deltaTime)
 	expSprite->update(deltaTime);
 	timerSprite->update(deltaTime);
 	childSprite->update(deltaTime);
+	godSprite->update(deltaTime);
 	
-
+	++timerGod;
 	//Esta en liana
 	if (bLiana) {
 		if (Game::instance().getSpecialKey(GLUT_KEY_UP)) {
@@ -306,7 +307,21 @@ void Player::update(int deltaTime)
 	//Baixar vides del jugador (k)
 	else if (Game::instance().getKey(107)) {
 			vidasPlayer = vidasPlayer - 1;
-		}		
+		}	
+	//God mode con la 'G'
+	else if (Game::instance().getKey(103)) {
+		if (timerGod >= 60) {
+			if (!godMode) {
+				godMode = true;
+				godSprite->changeAnimation(1);
+			}
+			else {
+				godMode = false;
+				godSprite->changeAnimation(0);
+			}
+			timerGod = 0;
+		}
+	}
 	else
 	{
 		if (sprite->animation() == MOVE_LEFT) {
@@ -483,6 +498,7 @@ void Player::update(int deltaTime)
 	vidaSprite->setPosition(glm::vec2(float(330), float(10)));
 	expSprite->setPosition(glm::vec2(float(330), float(30)));
 	timerSprite->setPosition(glm::vec2(float(60), float(6)));
+	godSprite->setPosition(glm::vec2(float(90), float(6)));
 }
 
 void Player::render()
@@ -492,6 +508,7 @@ void Player::render()
 	expSprite->render();
 	if (bCooldownX) timerSprite->render();
 	childSprite->render();
+	godSprite->render();
 }
 
 void Player::setTileMap(TileMap *tileMap)
@@ -522,6 +539,8 @@ void Player::iniPlayerStats(ShaderProgram& shaderProgram)
 	hasBlueHel = false;
 	soundDash = false;
 	flagDash = false;
+	godMode = false;
+	timerGod = 0;
 	
 	estado = STAND_LEFT;
 	vidasPlayer = INI_VIDAS; 
@@ -605,20 +624,35 @@ void Player::iniPlayerStats(ShaderProgram& shaderProgram)
 	//aquest sprite te 4 animacions
 	timerSprite->setNumberAnimations(4);
 
-	timerSprite->setAnimationSpeed(FULL, 8);
-	timerSprite->addKeyframe(FULL, glm::vec2(0.5f, 0.5f));
+		timerSprite->setAnimationSpeed(FULL, 8);
+		timerSprite->addKeyframe(FULL, glm::vec2(0.5f, 0.5f));
 
-	timerSprite->setAnimationSpeed(ALMOST_FULL, 8);
-	timerSprite->addKeyframe(ALMOST_FULL, glm::vec2(0.f, 0.5f));
+		timerSprite->setAnimationSpeed(ALMOST_FULL, 8);
+		timerSprite->addKeyframe(ALMOST_FULL, glm::vec2(0.f, 0.5f));
 
-	timerSprite->setAnimationSpeed(HALF, 8);
-	timerSprite->addKeyframe(HALF, glm::vec2(0.5f, 0.0f));
+		timerSprite->setAnimationSpeed(HALF, 8);
+		timerSprite->addKeyframe(HALF, glm::vec2(0.5f, 0.0f));
 
-	timerSprite->setAnimationSpeed(ALMOST_END, 8);
-	timerSprite->addKeyframe(ALMOST_END, glm::vec2(0.0f, 0.0f));
+		timerSprite->setAnimationSpeed(ALMOST_END, 8);
+		timerSprite->addKeyframe(ALMOST_END, glm::vec2(0.0f, 0.0f));
 		
 	timerSprite->changeAnimation(FULL);
 	timerSprite->setPosition(glm::vec2(float(20), float(5)));
+
+	godsh.loadFromFile("images/godMode.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	godSprite = Sprite::createSprite(glm::ivec2(84, 21), glm::vec2(0.5, 1.f), &godsh, &shaderProgram);
+	//aquest sprite te 2 animacions
+	godSprite->setNumberAnimations(2);
+
+		godSprite->setAnimationSpeed(0, 8);
+		godSprite->addKeyframe(0, glm::vec2(0.5f, 0.0f));
+
+		godSprite->setAnimationSpeed(1, 8);
+		godSprite->addKeyframe(1, glm::vec2(0.f, 0.0f));
+	
+		godSprite->changeAnimation(0);
+	godSprite->setPosition(glm::vec2(float(20), float(5)));
+
 
 
 }
@@ -675,7 +709,7 @@ void Player::calHit() {
 }
 
 void Player::hitByEnemy() {
-	if (!isHitted) {
+	if (!isHitted && !godMode) {
 		--vidasPlayer;
 		isHitted = true;
 		setHitAnimation();
@@ -700,7 +734,7 @@ int Player::getExp() {
 
 bool Player::isHittedPlayer()
 {
-	return isHitted;
+	return isHitted || godMode;
 }
 bool Player::soundXDash()
 {
