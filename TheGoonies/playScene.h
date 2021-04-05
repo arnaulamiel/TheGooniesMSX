@@ -68,7 +68,7 @@ private:
 	bool byeRoca;
 	bool rocaDown;
 
-	int numChilds;
+
 
 	TileMap* map;
 	TileMap* mapIni;
