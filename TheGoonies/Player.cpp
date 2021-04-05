@@ -498,7 +498,7 @@ void Player::update(int deltaTime)
 	vidaSprite->setPosition(glm::vec2(float(330), float(10)));
 	expSprite->setPosition(glm::vec2(float(330), float(30)));
 	timerSprite->setPosition(glm::vec2(float(60), float(6)));
-	godSprite->setPosition(glm::vec2(float(90), float(6)));
+	godSprite->setPosition(glm::vec2(float(110), float(6)));
 }
 
 void Player::render()
