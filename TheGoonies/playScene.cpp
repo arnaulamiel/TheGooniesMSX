@@ -347,12 +347,12 @@ void playScene::update(int deltaTime)
 				++waitToEnd;
 				if (!inPortal) { 
 					inPortal = true;
-					createSound("../../../libs/irrKlang-1.6.0/media/winGoonies.ogg", false); 
+					createSound("../../../libs/irrKlang-1.6.0/media/alterntiveScene.ogg", false); 
 					deleteEngine();				
 
 				}
 				else {
-					if (waitToEnd == 90) {
+					if (waitToEnd == 40) {
 						deleteSound();
 						SceneManager* scene_manager = SceneManager::instance();
 						scene_manager->requestScene(SceneID::END_SCENE);
