@@ -88,7 +88,7 @@ void Bat::update(int deltaTime) {
 				}
 				else posBat.y -= 1;
 			}
-			if ((posBat.x / tilesize) == (player->getPosPlayer().x / tilesize)) {
+			if (!player->hasBlueHelmet() && ((posBat.x / tilesize) == (player->getPosPlayer().x / tilesize))) {
 				if (posBat.y / tilesize >= (player->getPosPlayer().y / tilesize) - 1 && posBat.y / tilesize <= (player->getPosPlayer().y / tilesize) + 1) {
 					
 					if (!player->isHittedPlayer()) {
@@ -138,7 +138,7 @@ void Bat::update(int deltaTime) {
 				sprite->changeAnimation(BAT_MOVELEFT);
 				state = BAT_MOVELEFT;
 			}
-			if ((posBat.x / tilesize) == (player->getPosPlayer().x / tilesize)) {
+			if (!player->hasBlueHelmet() && ((posBat.x / tilesize) == (player->getPosPlayer().x / tilesize))) {
 				if (posBat.y / tilesize >= (player->getPosPlayer().y / tilesize) - 1 && posBat.y / tilesize <= (player->getPosPlayer().y / tilesize) + 1) {
 					//if (posCal.x == player->getPosPlayer().x && ((player->getPosPlayer().y <= (posCal.y + 4) ) && (player->getPosPlayer().y >= posCal.y - 4)) ) {
 					

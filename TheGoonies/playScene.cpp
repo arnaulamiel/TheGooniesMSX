@@ -72,12 +72,13 @@ void playScene::init(void)
 	timerFuego = 0;
 	doorOpen = false;
 	hasChild = false;
-	numChilds = 0;
 	timesFireAnim = 0;
 	hasSound = false;
 	
 	
 	changeMusic("../../../libs/irrKlang-1.6.0/media/playGoonies.ogg");
+
+	hasBlueHel = false;
 
 	initShaders();
 
@@ -325,7 +326,17 @@ void playScene::update(int deltaTime)
 					break;
 				}
 		}
-
+		if (!hasBlueHel) {
+			if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == BLUE_HEL) {
+				Object* blueHel = actualRoomObjects[i];
+				if (getObject(blueHel)) {
+					hasBlueHel = true;
+					player->getBlueHelmet();
+					actualRoomObjects[i]->destroyObject();
+					actualRoomObjects[i] = nullptr;
+				}
+			}
+		}
 	}
 	
 
@@ -491,6 +502,36 @@ bool playScene::loadSingleRoomObjects(string levelFile, vector<Object*>& objects
 					fire->init(texProgram);
 					fire->setIniPosition(position);
 					objectsRoom.push_back(fire);
+				}
+				else if (tile == 7) {
+					Object* portal = new Object(PORTAL, position, glm::vec2(54, 54));
+					portal->init(texProgram);
+					objectsRoom.push_back(portal);
+				}
+				else if (tile == 8) {
+					Object* portal = new Object(BLUE_HEL, position, glm::vec2(18, 18));
+					portal->init(texProgram);
+					objectsRoom.push_back(portal);
+				}
+				else if (tile == 9) {
+					Object* portal = new Object(YELLOW_HEL, position, glm::vec2(18, 18));
+					portal->init(texProgram);
+					objectsRoom.push_back(portal);
+				}
+				else if (tile == 10) {
+					Object* portal = new Object(GREEN_RAIN, position, glm::vec2(18, 18));
+					portal->init(texProgram);
+					objectsRoom.push_back(portal);
+				}
+				else if (tile == 11) {
+					Object* portal = new Object(GRAY_RAIN, position, glm::vec2(18, 18));
+					portal->init(texProgram);
+					objectsRoom.push_back(portal);
+				}
+				else if (tile == 12) {
+					Object* portal = new Object(HYPERSHOES, position, glm::vec2(18, 18));
+					portal->init(texProgram);
+					objectsRoom.push_back(portal);
 				}
 			}
 		}

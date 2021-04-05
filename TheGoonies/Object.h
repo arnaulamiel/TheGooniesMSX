@@ -14,7 +14,13 @@ enum objectType
 	DOOR_CHILD, 
 	LOCK,
 	ROCA,
-	FIRE
+	FIRE,
+	PORTAL,
+	BLUE_HEL,
+	YELLOW_HEL,
+	GREEN_RAIN,
+	GRAY_RAIN,
+	HYPERSHOES
 };
 
 enum gotaAnim {

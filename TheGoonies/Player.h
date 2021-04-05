@@ -1,4 +1,4 @@
-#ifndef _PLAYER_INCLUDE
+ï»¿#ifndef _PLAYER_INCLUDE
 #define _PLAYER_INCLUDE
 
 
@@ -11,7 +11,7 @@
 // all properties it needs to track its movement, jumping, and collisions.
 
 //Seria millor fer una clase 'entity' i player hereda d'ell, aixi podem fer que 'entity' fos el menu, el background, els players, els enemics........ 
-//entity ->instancia qualsevol, una cosa k sha de pintar, té posicio, o si esta viu o mort, i el k vulguem 
+//entity ->instancia qualsevol, una cosa k sha de pintar, tï¿½ posicio, o si esta viu o mort, i el k vulguem 
 class Player
 {
 
@@ -37,13 +37,15 @@ public:
 	int getHealth();
 	bool isHittedPlayer();
 	int getExp();
+	void getBlueHelmet();
+	bool hasBlueHelmet();
 
 private:
 	
 
 	ShaderProgram texProgram;
 	int vidasPlayer,expPlayer, timerHit, before;
-	bool bJumping,bHitting, bLiana, isHitted, bCooldownX;
+	bool bJumping,bHitting, bLiana, isHitted, bCooldownX, hasBlueHel;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY, estado, timerX, stateChild;
 	Texture spritesheet;
