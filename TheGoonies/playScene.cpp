@@ -72,7 +72,6 @@ void playScene::init(void)
 	timerFuego = 0;
 	doorOpen = false;
 	hasChild = false;
-	numChilds = 0;
 	timesFireAnim = 0;
 
 	initShaders();
@@ -480,6 +479,11 @@ bool playScene::loadSingleRoomObjects(string levelFile, vector<Object*>& objects
 					fire->init(texProgram);
 					fire->setIniPosition(position);
 					objectsRoom.push_back(fire);
+				}
+				else if (tile == 7) {
+					Object* portal = new Object(PORTAL, position, glm::vec2(54, 54));
+					portal->init(texProgram);
+					objectsRoom.push_back(portal);
 				}
 			}
 		}
