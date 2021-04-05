@@ -14,7 +14,8 @@ enum objectType
 	DOOR_CHILD, 
 	LOCK,
 	ROCA,
-	FIRE
+	FIRE,
+	PORTAL
 };
 
 enum gotaAnim {
