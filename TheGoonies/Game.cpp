@@ -6,6 +6,8 @@
 #include "playScene.h"
 #include "endScene.h"
 
+using namespace irrklang;
+
 void Game::init()
 {
 	bPlay = true;
@@ -17,6 +19,10 @@ void Game::init()
 	scene_manager->addScene(END_SCENE, endScene::create);
 
 	scene_manager->setStartScene(INIT_SCENE);
+
+	// start the sound engine with default parameters
+	engine = createIrrKlangDevice();
+	engine->play2D("/../../../libs\irrKlang-1.6.0\media",true);
 }
 
 bool Game::update(int deltaTime)

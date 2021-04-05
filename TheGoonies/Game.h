@@ -4,6 +4,8 @@
 
 #include "Scene.h"
 #include "SceneManager.h"
+#include <iostream>
+#include <irrKlang.h>
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
@@ -48,7 +50,7 @@ private:
 	//tecles del teclat i tecles especials del teclat
 	bool keys[256], specialKeys[256]; // Store key states so that 
 	                                  // we can have access at any time
-
+	ISoundEngine* engine;
 };
 
 
