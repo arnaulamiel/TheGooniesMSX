@@ -75,7 +75,6 @@ private:
 	ISoundEngine* sound;
 
 
-	bool hasKey,doorOpen, hasChild;;
 	bool hasKey,doorOpen, hasChild, hasBlueHel;
 	bool bgota;
 	bool byeRoca;
