@@ -40,13 +40,22 @@ public:
 	void getBlueHelmet();
 	bool hasBlueHelmet();
 	bool soundXDash();
+	void getYellowHelmet();
+	void getGreenRaincoat();
+	void getGrayRaincoat();
+	void getHyperShoes();
+	bool hasYellowHelmet();
+	bool hasGreenRaincoat();
+	bool hasGrayRaincoat();
+	bool hasHypershoes();
+
 
 private:
 	
 
 	ShaderProgram texProgram;
 	int vidasPlayer,expPlayer, timerHit, before;
-	bool bJumping,bHitting, bLiana, isHitted, bCooldownX, hasBlueHel, soundDash, flagDash;
+	bool bJumping,bHitting, bLiana, isHitted, bCooldownX, hasBlueHel, soundDash, flagDash, hasYellowHel, hasGreenRain, hasGrayRain, hasHyperShoes;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY, estado, timerX, stateChild;
 	Texture spritesheet;

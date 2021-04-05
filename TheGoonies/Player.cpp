@@ -225,10 +225,12 @@ void Player::update(int deltaTime)
 				estado = DMG_MOVE_LEFT;
 			}
 		}
-		posPlayer.x -= 2;
+		if (hasHyperShoes) posPlayer.x -= 6;
+		else posPlayer.x -= 2;
 		if(map->collisionMoveLeft(posPlayer, glm::ivec2(32, 20)))
 		{
-			posPlayer.x += 2;
+			if (hasHyperShoes) posPlayer.x += 6;
+			else posPlayer.x += 2;
 			sprite->changeAnimation(STAND_LEFT);
 
 			estado = STAND_LEFT;
@@ -247,10 +249,12 @@ void Player::update(int deltaTime)
 				estado = DMG_MOVE_RIGHT;
 			}
 		}
-		posPlayer.x += 2;
+		if (hasHyperShoes) posPlayer.x += 6;
+		else posPlayer.x += 2;
 		if(map->collisionMoveRight(posPlayer, glm::ivec2(32, 20)))
 		{
-			posPlayer.x -= 2;
+			if (hasHyperShoes) posPlayer.x -= 6;
+			else posPlayer.x -= 2;;
 			sprite->changeAnimation(STAND_RIGHT);
 			estado = STAND_RIGHT;
 			setHitAnimation();
@@ -522,6 +526,10 @@ void Player::iniPlayerStats(ShaderProgram& shaderProgram)
 	hasBlueHel = false;
 	soundDash = false;
 	flagDash = false;
+	hasYellowHel = false;
+	hasGreenRain = false;
+	hasGrayRain = false;
+	hasHyperShoes = false;
 	
 	estado = STAND_LEFT;
 	vidasPlayer = INI_VIDAS; 
@@ -836,12 +844,50 @@ void Player::getBlueHelmet()
 	hasBlueHel = true;
 }
 
+void Player::getYellowHelmet()
+{
+	hasYellowHel = true;
+}
+
+void Player::getGreenRaincoat()
+{
+	hasGreenRain = true;
+}
+
+void Player::getGrayRaincoat()
+{
+	hasGrayRain = true;
+}
+
+void Player::getHyperShoes()
+{
+	hasHyperShoes = true;
+}
+
 bool Player::hasBlueHelmet()
 {
 	return hasBlueHel;
 }
 
+bool Player::hasYellowHelmet()
+{
+	return hasYellowHel;
+}
 
+bool Player::hasGreenRaincoat()
+{
+	return hasGreenRain;
+}
+
+bool Player::hasGrayRaincoat()
+{
+	return hasGrayRain;
+}
+
+bool Player::hasHypershoes()
+{
+	return hasHyperShoes;
+}
 
 /*void Player::setCalaveras(Calavera* c[])
 {

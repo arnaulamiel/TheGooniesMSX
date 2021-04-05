@@ -79,6 +79,10 @@ void playScene::init(void)
 	changeMusic("../../../libs/irrKlang-1.6.0/media/playGoonies.ogg");
 
 	hasBlueHel = false;
+	hasYellowHel = false;
+	hasGreenRain = false;
+	hasGrayRain = false;
+	hasHyperShoes = false;
 
 	initShaders();
 
@@ -339,6 +343,50 @@ void playScene::update(int deltaTime)
 				}
 			}
 		}
+		if (!hasYellowHel) {
+			if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == YELLOW_HEL) {
+				Object* yellowHel = actualRoomObjects[i];
+				if (getObject(yellowHel)) {
+					hasYellowHel = true;
+					player->getYellowHelmet();
+					actualRoomObjects[i]->destroyObject();
+					actualRoomObjects[i] = nullptr;
+				}
+			}
+		}
+		if (!hasGreenRain) {
+			if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == GREEN_RAIN) {
+				Object* greenRain = actualRoomObjects[i];
+				if (getObject(greenRain)) {
+					hasGreenRain = true;
+					player->getGreenRaincoat();
+					actualRoomObjects[i]->destroyObject();
+					actualRoomObjects[i] = nullptr;
+				}
+			}
+		}
+		if (!hasGrayRain) {
+			if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == GRAY_RAIN) {
+				Object* grayRain = actualRoomObjects[i];
+				if (getObject(grayRain)) {
+					hasGrayRain = true;
+					player->getGrayRaincoat();
+					actualRoomObjects[i]->destroyObject();
+					actualRoomObjects[i] = nullptr;
+				}
+			}
+		}
+		if (!hasHyperShoes) {
+			if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == HYPERSHOES) {
+				Object* hyperShoes = actualRoomObjects[i];
+				if (getObject(hyperShoes)) {
+					hasHyperShoes = true;
+					player->getHyperShoes();
+					actualRoomObjects[i]->destroyObject();
+					actualRoomObjects[i] = nullptr;
+				}
+			}
+		}
 	}
 	
 
@@ -572,7 +620,7 @@ void playScene::calculateDownObstaculo(Object* obst) {
 		//Si la gota toca el terra/enemic i no esta en SPLASH
 		else if (!bgota) {
 
-			if (gotaHitsPlayer(obst))hitPlayer();
+			if (!player->hasGrayRaincoat() && gotaHitsPlayer(obst)) hitPlayer();
 			obst->setObjectPosition(pos);
 			bgota = true;
 			
@@ -600,7 +648,7 @@ void playScene::calculateDownObstaculo(Object* obst) {
 			}
 			else {
 
-				if (gotaHitsPlayer(obst))hitPlayer();
+				if (!player->hasYellowHelmet() && gotaHitsPlayer(obst)) hitPlayer();
 				obst->setObjectPosition(pos);
 				createSound("../../../libs/irrKlang-1.6.0/media/fallground.wav", false);
 				obst->changeSpriteAnimation(R_SPLASH);
@@ -686,15 +734,16 @@ bool playScene::gotaHitsPlayer(Object* g)
 
 bool playScene::fireHitsPlayer(Object* f)
 {
-	glm::vec2 posFire = f->getObjectPosition();
-	glm::vec2 posPlayer = player->getPosPlayer();
-	int tileSize = map->getTileSize();
-	if (posPlayer.x /tileSize >= (posFire.x / tileSize) -3 && posPlayer.x / tileSize <= (posFire.x / tileSize) -1 ) {
-		if (posPlayer.y / tileSize >= (posFire.y / tileSize) - 5 && posPlayer.y / tileSize <= (posFire.y / tileSize) - 1) {
-			return true; 
+	if (!player->hasGreenRaincoat()) {
+		glm::vec2 posFire = f->getObjectPosition();
+		glm::vec2 posPlayer = player->getPosPlayer();
+		int tileSize = map->getTileSize();
+		if (posPlayer.x / tileSize >= (posFire.x / tileSize) - 3 && posPlayer.x / tileSize <= (posFire.x / tileSize) - 1) {
+			if (posPlayer.y / tileSize >= (posFire.y / tileSize) - 5 && posPlayer.y / tileSize <= (posFire.y / tileSize) - 1) {
+				return true;
+			}
 		}
 	}
-
 	return false;
 }
 
