@@ -200,6 +200,7 @@ void Player::update(int deltaTime)
 	if (vidasPlayer <= 0) {
 		SceneManager* scene_manager = SceneManager::instance();
 		scene_manager->requestScene(SceneID::END_SCENE);
+		
 	}
 	//Si han pegado al jugador hace 20 frames ya no es invulnerable
 	if (timerHit == 60) {
@@ -679,6 +680,19 @@ void Player::incrementChild()
 {
 	++stateChild;
 	childSprite->changeAnimation(stateChild);
+}
+
+int Player::getHealth()
+{
+	return vidasPlayer;
+}
+int Player::getExp() {
+	return expPlayer;
+}
+
+bool Player::isHittedPlayer()
+{
+	return isHitted;
 }
 
 void Player::setHitAnimation() {

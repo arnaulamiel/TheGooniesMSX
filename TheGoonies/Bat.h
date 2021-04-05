@@ -37,6 +37,7 @@ private:
 	glm::ivec2 tileMapDispl, posBat;
 	Player* player;
 	Texture spritesheet;
+	ISoundEngine* sound;
 	Sprite* sprite;
 	TileMap* map;
 

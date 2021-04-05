@@ -74,6 +74,10 @@ void playScene::init(void)
 	hasChild = false;
 	numChilds = 0;
 	timesFireAnim = 0;
+	hasSound = false;
+	
+	
+	changeMusic("../../../libs/irrKlang-1.6.0/media/playGoonies.ogg");
 
 	initShaders();
 
@@ -145,12 +149,14 @@ void playScene::update(int deltaTime)
 	currentTime += deltaTime;
 	if (hitEnem(cal)) {
 		if (!cal->isDead()) {
+			createSound("../../../libs/irrKlang-1.6.0/media/hit.mp3",false);
 			player->calHit();
 			cal->killedCal();
 		}
 	}
 	if (hitEnem(bat)) {
 		if (!bat->isDead()) {
+			createSound("../../../libs/irrKlang-1.6.0/media/hit.mp3", false);
 			player->calHit();
 			bat->killedBat();
 		}
@@ -163,6 +169,7 @@ void playScene::update(int deltaTime)
 				
 				Object* key = actualRoomObjects[i];
 				if (getObject(key)) {
+					createSound("../../../libs/irrKlang-1.6.0/media/getKey.wav", false);
 					hasKey = true;
 					actualRoomObjects[i]->destroyObject();
 					actualRoomObjects[i] = nullptr;
@@ -176,7 +183,8 @@ void playScene::update(int deltaTime)
 				int spriteanim = gota->getSpriteAnimation();
 				if (spriteanim < 3) { 
 					switch (spriteanim) { 
-					case INI :
+					case INI :				
+						
 						gota->changeSpriteAnimation(spriteanim + 1);
 						break;
 					case DOWN_1:
@@ -184,11 +192,12 @@ void playScene::update(int deltaTime)
 						break;
 					case DOWN_2:
 						calculateDownObstaculo(gota);
+						//hasSound = true;
 						break;
 					case SPLASH:
+						
 						gota->changeSpriteAnimation(SPLASH);
 						break;
-
 					}
 				}
 				else{
@@ -223,6 +232,7 @@ void playScene::update(int deltaTime)
 					}
 					else if (!hasChild && getObjDoor(doorChild)) {
 						hasChild = true;
+						createSound("../../../libs/irrKlang-1.6.0/media/rescuedGoonie.ogg", false);
 						player->incrementChild();
 						doorChild->changeSpriteAnimation(OPEN_EMPTY);
 					}
@@ -274,7 +284,7 @@ void playScene::update(int deltaTime)
 				case F_INI:		
 					if (timerFuego == 8 && timesFireAnim <= 13) {
 						if (fireHitsPlayer(fire)) {
-							player->hitByEnemy();
+							hitPlayer();
 						}
 						fire->changeSpriteAnimation(FIRE1);
 						timerFuego = 0;
@@ -292,7 +302,7 @@ void playScene::update(int deltaTime)
 				case FIRE1:
 					if (timerFuego == 8 ) {
 						if (fireHitsPlayer(fire)) {
-							player->hitByEnemy();
+							hitPlayer();
 						}
 						fire->changeSpriteAnimation(FIRE2);
 						timerFuego = 0;
@@ -302,7 +312,7 @@ void playScene::update(int deltaTime)
 				case FIRE2:	
 					if (timerFuego == 8 && timesFireAnim <=13) {
 						if (fireHitsPlayer(fire)) {
-							player->hitByEnemy();
+							hitPlayer();
 						}
 						fire->changeSpriteAnimation(FIRE1);
 						timerFuego = 0;
@@ -382,6 +392,7 @@ void playScene::render()
 			actualRoomObjects[i]->render();
 	}
 
+	if (player->getHealth() == 0) deleteEngine();
 	player->render();
 	cal->render();
 	bat->render();
@@ -518,9 +529,11 @@ void playScene::calculateDownObstaculo(Object* obst) {
 		//Si la gota toca el terra/enemic i no esta en SPLASH
 		else if (!bgota) {
 
-			if (gotaHitsPlayer(obst))player->hitByEnemy();
+			if (gotaHitsPlayer(obst))hitPlayer();
 			obst->setObjectPosition(pos);
 			bgota = true;
+			
+			createSound("../../../libs/irrKlang-1.6.0/media/gota.mp3", false);
 			obst->changeSpriteAnimation(SPLASH);
 		}
 	}
@@ -543,8 +556,9 @@ void playScene::calculateDownObstaculo(Object* obst) {
 			}
 			else {
 
-				if (gotaHitsPlayer(obst))player->hitByEnemy();
+				if (gotaHitsPlayer(obst))hitPlayer();
 				obst->setObjectPosition(pos);
+				createSound("../../../libs/irrKlang-1.6.0/media/fallground.wav", false);
 				obst->changeSpriteAnimation(R_SPLASH);
 			}
 		}
@@ -562,7 +576,11 @@ bool playScene::hitEnem(Enemies* c ) {
 
 			if (posPlayer.x / tilesize <= (posCal.x / tilesize) + 2 && posPlayer.x / tilesize >= (posCal.x / tilesize)) {
 				if (posPlayer.y / tilesize >= (posCal.y / tilesize) - 1 && posPlayer.y / tilesize <= (posCal.y / tilesize) + 1) {
+					if (player->getExp() >= 8) {
+						createSound("../../../libs/irrKlang-1.6.0/media/hpUp.wav", false);
+					}
 					return true;
+					
 				}
 			}
 
@@ -570,7 +588,11 @@ bool playScene::hitEnem(Enemies* c ) {
 		else if (player->getState() == 8) {
 			if (posPlayer.x / tilesize >= (posCal.x / tilesize) - 2 && posPlayer.x / tilesize <= (posCal.x / tilesize)) {
 				if (posPlayer.y / tilesize >= (posCal.y / tilesize) - 1 && posPlayer.y / tilesize <= (posCal.y / tilesize) + 1) {
+					if (player->getExp() >= 8) {
+						createSound("../../../libs/irrKlang-1.6.0/media/hpUp.wav", false);
+					}
 					return true;
+
 				}
 			}
 		}
@@ -632,7 +654,32 @@ bool playScene::fireHitsPlayer(Object* f)
 	return false;
 }
 
+void playScene::deleteEngine() {
+	if(engine)engine->drop();
+}
 
+void playScene::changeMusic(char* music) {
+
+	engine = createIrrKlangDevice();
+
+	engine->play2D(music, true);
+}
+
+void::playScene::createSound(char* music, bool repeat) {
+	sound = createIrrKlangDevice();
+	sound->play2D(music, repeat);
+}
+void playScene::deleteSound() {
+	if(sound)sound->drop();
+}
+
+void playScene::hitPlayer() {
+	
+	if (!player->isHittedPlayer()) {
+		createSound("../../../libs/irrKlang-1.6.0/media/hitPlayer.wav", false);
+	}
+	player->hitByEnemy();
+}
 
 
 /* @brief Function that initializes de shaders*/

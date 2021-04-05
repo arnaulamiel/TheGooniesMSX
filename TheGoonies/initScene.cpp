@@ -37,7 +37,7 @@ initScene::~initScene() {}
 void initScene::init(void)
 {
 	initShaders();
-
+	changeMusic("../../../libs/irrKlang-1.6.0/media/titleGoonies.ogg");
 	logoTexture.loadFromFile("images/initGoonies.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	logoTexture.setMinFilter(GL_NEAREST);
 	logoTexture.setMagFilter(GL_NEAREST);
@@ -59,6 +59,7 @@ void initScene::init(void)
 void initScene::update(int deltaTime)
 {//ENTER
 	if (Game::instance().getKey(13)) {
+		deleteEngine();
 		SceneManager* scene_manager = SceneManager::instance();
 		scene_manager->requestScene(SceneID::PLAY_SCENE);
 	}
@@ -97,6 +98,24 @@ void initScene::render()
 /* @brief Overrided function used to finalize scenes*/
 void initScene::fin() {}
 
+void initScene::deleteEngine() {
+	engine->drop();
+}
+
+void initScene::changeMusic(char* music) {
+
+	engine = createIrrKlangDevice();
+
+	engine->play2D(music, true);
+}
+
+void::initScene::createSound(char* music, bool repeat) {
+	sound = createIrrKlangDevice();
+	sound->play2D(music, repeat);
+}
+void initScene::deleteSound() {
+	sound->drop();
+}
 /* @brief Function that initializes de shaders*/
 void initScene::initShaders()
 {

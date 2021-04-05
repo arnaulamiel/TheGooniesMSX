@@ -85,7 +85,11 @@ void Calavera::update(int deltaTime) {
 			
 			if ((posCal.x / tilesize) == (player->getPosPlayer().x / tilesize) ) {
 				if (posCal.y / tilesize >= (player->getPosPlayer().y / tilesize) - 1 && posCal.y / tilesize <= (player->getPosPlayer().y / tilesize) + 1) {
-				player->hitByEnemy();
+					if (!player->isHittedPlayer()) {
+						sound = createIrrKlangDevice();
+						sound->play2D("../../../libs/irrKlang-1.6.0/media/hitPlayer.wav", false);
+					}
+					player->hitByEnemy();
 				}
 			}
 			break;
@@ -102,6 +106,10 @@ void Calavera::update(int deltaTime) {
 			if ((posCal.x / tilesize) == (player->getPosPlayer().x / tilesize)) {
 				if (posCal.y / tilesize >= (player->getPosPlayer().y / tilesize) - 1 && posCal.y / tilesize <= (player->getPosPlayer().y / tilesize) + 1) {
 					//if (posCal.x == player->getPosPlayer().x && ((player->getPosPlayer().y <= (posCal.y + 4) ) && (player->getPosPlayer().y >= posCal.y - 4)) ) {
+					if (!player->isHittedPlayer()) {
+						sound = createIrrKlangDevice();
+						sound->play2D("../../../libs/irrKlang-1.6.0/media/hitPlayer.wav", false);
+					}
 					player->hitByEnemy();
 				}
 			}

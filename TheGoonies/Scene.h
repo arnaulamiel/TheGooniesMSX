@@ -34,11 +34,12 @@ public:
 	{
 		return sceneID;
 	};
+	virtual void deleteEngine() = 0;
+	virtual void changeMusic(char* music) = 0;
+	virtual void createSound(char* music, bool repeat) = 0;
+	virtual void deleteSound() = 0;
 
-	//virtual void possibleCharacter(int key) {};
-	//virtual void confirmCharacter(int key) {};
 
-	//virtual void setBank(int bank) {};
 
 
 

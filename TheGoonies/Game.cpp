@@ -21,7 +21,7 @@ void Game::init()
 
 	scene_manager->setStartScene(INIT_SCENE);
 
-	changeMusic("../../../libs/irrKlang-1.6.0/media/titleGoonies.ogg");
+	
 }
 
 bool Game::update(int deltaTime)
@@ -55,24 +55,7 @@ void Game::keyReleased(int key)
 	keys[key] = false;
 }
 
-void Game::deleteEngine() {
-	engine->drop();
-}
 
-void Game::changeMusic(char* music) {
-
-	engine = createIrrKlangDevice();
-	
-	engine->play2D(music, true);
-}
-
-void::Game::createSound(char* music) {
-	sound = createIrrKlangDevice();
-	sound->play2D(music, true);
-}
-void Game::deleteSound() {
-	sound->drop();
-}
 //tecles especials (f1,f2, arrows....)
 void Game::specialKeyPressed(int key)
 {

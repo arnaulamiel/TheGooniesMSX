@@ -4,6 +4,7 @@
 
 #include "Sprite.h"
 #include "TileMap.h"
+#include <irrKlang.h>
 
 
 // Player is basically a Sprite that represents the player. As such it has
@@ -33,6 +34,9 @@ public:
 	bool isSameAsBefore();
 	bool canTP();
 	void incrementChild();
+	int getHealth();
+	bool isHittedPlayer();
+	int getExp();
 
 private:
 	

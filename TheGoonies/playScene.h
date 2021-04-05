@@ -45,6 +45,14 @@ public:
 	bool fireHitsPlayer(Object* f);
 	void initChildsInterface(ShaderProgram& shaderPrograma);
 
+	virtual void deleteEngine();
+	virtual void changeMusic(char* music);
+	virtual void createSound(char* music, bool repeat);
+	virtual void deleteSound();
+
+	void hitPlayer();
+
+
 private:
 	/* Function to initialize the shaders */
 	void initShaders();
@@ -63,10 +71,15 @@ private:
 	/* Texture of the logo */
 	Texture logoTexture, vidaexpTexture;
 
+	ISoundEngine* engine;
+	ISoundEngine* sound;
+
+
 	bool hasKey,doorOpen, hasChild;;
 	bool bgota;
 	bool byeRoca;
 	bool rocaDown;
+	bool hasSound;
 
 	int numChilds;
 

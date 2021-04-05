@@ -37,6 +37,8 @@ private:
 	Player* player;
 	Texture spritesheet;
 	Sprite* sprite;
+
+	ISoundEngine* sound;
 	TileMap* map;
 
 };

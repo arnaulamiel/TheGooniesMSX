@@ -90,6 +90,11 @@ void Bat::update(int deltaTime) {
 			}
 			if ((posBat.x / tilesize) == (player->getPosPlayer().x / tilesize)) {
 				if (posBat.y / tilesize >= (player->getPosPlayer().y / tilesize) - 1 && posBat.y / tilesize <= (player->getPosPlayer().y / tilesize) + 1) {
+					
+					if (!player->isHittedPlayer()) {
+						sound = createIrrKlangDevice();
+						sound->play2D("../../../libs/irrKlang-1.6.0/media/hitPlayer.wav", false);
+					}
 					player->hitByEnemy();
 				}
 			}
@@ -136,7 +141,11 @@ void Bat::update(int deltaTime) {
 			if ((posBat.x / tilesize) == (player->getPosPlayer().x / tilesize)) {
 				if (posBat.y / tilesize >= (player->getPosPlayer().y / tilesize) - 1 && posBat.y / tilesize <= (player->getPosPlayer().y / tilesize) + 1) {
 					//if (posCal.x == player->getPosPlayer().x && ((player->getPosPlayer().y <= (posCal.y + 4) ) && (player->getPosPlayer().y >= posCal.y - 4)) ) {
-					player->hitByEnemy();
+					
+					if (!player->isHittedPlayer()) {
+						sound = createIrrKlangDevice();
+						sound->play2D("../../../libs/irrKlang-1.6.0/media/hitPlayer.wav", false);
+					}player->hitByEnemy();
 				}
 			}
 			break;

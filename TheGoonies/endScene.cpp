@@ -38,6 +38,8 @@ endScene::~endScene() {}
 void endScene::init(void)
 {
 	initShaders();
+	changeMusic("../../../libs/irrKlang-1.6.0/media/gameOverGoonies.ogg");
+
 
 	logoTexture.loadFromFile("images/gameOver.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	logoTexture.setMinFilter(GL_NEAREST);
@@ -61,6 +63,7 @@ void endScene::update(int deltaTime)
 {
 
 	if (Game::instance().getKey(C)) {
+		deleteEngine();
 		SceneManager* scene_manager = SceneManager::instance();
 		scene_manager->requestScene(SceneID::INIT_SCENE);
 	}
@@ -93,6 +96,25 @@ void endScene::render()
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 
 	logo->render();
+}
+
+void endScene::deleteEngine() {
+	engine->drop();
+}
+
+void endScene::changeMusic(char* music) {
+
+	engine = createIrrKlangDevice();
+
+	engine->play2D(music, true);
+}
+
+void::endScene::createSound(char* music, bool repeat) {
+	sound = createIrrKlangDevice();
+	sound->play2D(music, true);
+}
+void endScene::deleteSound() {
+	sound->drop();
 }
 
 /* @brief Overrided function used to finalize scenes*/

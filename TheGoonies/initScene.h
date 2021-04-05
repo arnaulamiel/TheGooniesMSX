@@ -29,6 +29,11 @@ public:
 	virtual void render() override;
 	virtual void fin() override;
 
+	virtual void deleteEngine();
+	virtual void changeMusic(char* music);
+	virtual void createSound(char* music, bool repeat);
+	virtual void deleteSound();
+
 private:
 	/* Function to initialize the shaders */
 	void initShaders();
@@ -41,6 +46,9 @@ private:
 
 	/* Logo sprite*/
 	Sprite* logo;
+
+	ISoundEngine* engine;
+	ISoundEngine* sound;
 
 	/* Projection matrix */
 	glm::mat4 projection;
