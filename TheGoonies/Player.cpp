@@ -15,6 +15,10 @@
 #define VIDAEXP_X 175
 #define VIDAEXP_Y 22
 
+#define TIMER_X 45
+#define TIMER_Y 45
+
+
 
 enum PlayerAnims
 {
@@ -27,6 +31,9 @@ enum PlayerVidaExp {
 
 enum PlayerExp {
 	EXP_0, EXP_1, EXP_2, EXP_3, EXP_4, EXP_5, EXP_6, EXP_7, EXP_8
+};
+enum timerAnims {
+	FULL, ALMOST_FULL, HALF, ALMOST_END
 };
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
@@ -149,7 +156,8 @@ void Player::update(int deltaTime)
 	sprite->update(deltaTime);
 	vidaSprite->update(deltaTime);
 	expSprite->update(deltaTime);
-
+	timerSprite->update(deltaTime);
+	
 
 	//Esta en liana
 	if (bLiana) {
@@ -282,7 +290,9 @@ void Player::update(int deltaTime)
 			bLiana = false;
 			posPlayer.y -= 1;
 		}
-	}//Baixar vides del jugador (k)
+		//Al darle a la X, desplazamiento hacia la derecha/izq 2 tiles
+	}
+	//Baixar vides del jugador (k)
 	else if (Game::instance().getKey(107)) {
 			vidasPlayer = vidasPlayer - 1;
 		}		
@@ -298,6 +308,37 @@ void Player::update(int deltaTime)
 			estado = STAND_RIGHT;
 			setHitAnimation();
 		}
+	}
+	if (Game::instance().getKey(120)) {
+
+		if (canTP()) {
+			if (estado == STAND_RIGHT || estado == JUMP_RIGHT || estado == MOVE_RIGHT || estado == DMG_STAND_RIGHT || estado == DMG_JUMP_RIGHT || estado == DMG_MOVE_RIGHT) {
+				posPlayer.x += 36;
+				bCooldownX = true;
+			}
+			else if (estado == STAND_LEFT || estado == JUMP_LEFT || estado == MOVE_LEFT || estado == DMG_STAND_LEFT || estado == DMG_JUMP_LEFT || estado == DMG_MOVE_LEFT) {
+				posPlayer.x -= 36;
+				bCooldownX = true;
+			}
+		}
+	}
+	if (bCooldownX) {
+		if (timerX == 60) {
+			timerSprite->changeAnimation(ALMOST_FULL);
+		}
+		else if (timerX == 120) {
+			timerSprite->changeAnimation(HALF);
+		}
+		else if (timerX == 180) {
+			timerSprite->changeAnimation(ALMOST_END);
+		}
+		else if (timerX == 240) {
+			bCooldownX = false;
+			timerX = 0;
+			timerSprite->changeAnimation(FULL);
+		}
+		++timerX;
+
 	}
 
 	//Booleano para que deje de hacer la animacion de pegar cuando ya la ha hecho
@@ -428,6 +469,7 @@ void Player::update(int deltaTime)
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 	vidaSprite->setPosition(glm::vec2(float(330), float(10)));
 	expSprite->setPosition(glm::vec2(float(330), float(30)));
+	timerSprite->setPosition(glm::vec2(float(60), float(6)));
 }
 
 void Player::render()
@@ -435,6 +477,7 @@ void Player::render()
 	sprite->render();
 	vidaSprite->render();
 	expSprite->render();
+	if (bCooldownX) timerSprite->render();
 }
 
 void Player::setTileMap(TileMap *tileMap)
@@ -461,6 +504,7 @@ void Player::iniPlayerStats(ShaderProgram& shaderProgram)
 	bHitting = false;
 	bLiana = false;
 	isHitted = false;
+	timerSprite = false;
 
 	
 	estado = STAND_LEFT;
@@ -539,6 +583,26 @@ void Player::iniPlayerStats(ShaderProgram& shaderProgram)
 
 	expSprite->changeAnimation(EXP_0);
 	expSprite->setPosition(glm::vec2(float(433), float(1)));
+
+	ssheetTimer.loadFromFile("images/TimerSprite.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	timerSprite = Sprite::createSprite(glm::ivec2(TIMER_X, TIMER_Y), glm::vec2(0.5, 0.5f), &ssheetTimer, &shaderProgram);
+	//aquest sprite te 4 animacions
+	timerSprite->setNumberAnimations(4);
+
+	timerSprite->setAnimationSpeed(FULL, 8);
+	timerSprite->addKeyframe(FULL, glm::vec2(0.5f, 0.5f));
+
+	timerSprite->setAnimationSpeed(ALMOST_FULL, 8);
+	timerSprite->addKeyframe(ALMOST_FULL, glm::vec2(0.f, 0.5f));
+
+	timerSprite->setAnimationSpeed(HALF, 8);
+	timerSprite->addKeyframe(HALF, glm::vec2(0.5f, 0.0f));
+
+	timerSprite->setAnimationSpeed(ALMOST_END, 8);
+	timerSprite->addKeyframe(ALMOST_END, glm::vec2(0.0f, 0.0f));
+		
+	timerSprite->changeAnimation(FULL);
+	timerSprite->setPosition(glm::vec2(float(20), float(5)));
 
 
 }
@@ -669,6 +733,26 @@ bool Player::isSameAsBefore() {
 	if (estado == before) return true;
 	return false;
 }
+
+bool Player::canTP()
+{
+	if (!bCooldownX) {
+		if (estado == STAND_RIGHT || estado == JUMP_RIGHT || estado == MOVE_RIGHT || estado == DMG_STAND_RIGHT || estado == DMG_JUMP_RIGHT || estado == DMG_MOVE_RIGHT) {
+			if (posPlayer.x + 36 <= 532 ) {
+				return true;
+			}
+		}
+		else if (estado == STAND_LEFT || estado == JUMP_LEFT || estado == MOVE_LEFT || estado == DMG_STAND_LEFT || estado == DMG_JUMP_LEFT || estado == DMG_MOVE_LEFT) {
+			if (posPlayer.x - 36 >= 68) {
+				return true;
+			}
+		}
+		
+	}
+	return false;
+}
+
+
 
 /*void Player::setCalaveras(Calavera* c[])
 {

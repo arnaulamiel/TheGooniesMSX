@@ -30,21 +30,24 @@ public:
 	void hitByEnemy();
 	void setHitAnimation();
 	bool isSameAsBefore();
+	bool canTP();
 
 private:
 	
 
 	ShaderProgram texProgram;
 	int vidasPlayer,expPlayer, timerHit, before;
-	bool bJumping,bHitting, bLiana, isHitted;
+	bool bJumping,bHitting, bLiana, isHitted, bCooldownX;
 	glm::ivec2 tileMapDispl, posPlayer;
-	int jumpAngle, startY, estado;
+	int jumpAngle, startY, estado, timerX;
 	Texture spritesheet;
 	Texture ssheet;
+	Texture ssheetTimer;
 	Texture ssheetexp;
 	Sprite *sprite;
 	Sprite* vidaSprite;
 	Sprite* expSprite;
+	Sprite* timerSprite;
 	TileMap *map;
 };
 
