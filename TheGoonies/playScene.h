@@ -63,7 +63,7 @@ private:
 	/* Texture of the logo */
 	Texture logoTexture, vidaexpTexture;
 
-	bool hasKey,doorOpen, hasChild;;
+	bool hasKey,doorOpen, hasChild, hasBlueHel;
 	bool bgota;
 	bool byeRoca;
 	bool rocaDown;

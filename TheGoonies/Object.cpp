@@ -105,6 +105,26 @@ void Object::init(ShaderProgram& shaderProgram)
 		spritesheet.loadFromFile("images/portal.png", TEXTURE_PIXEL_FORMAT_RGBA);
 		sprite = Sprite::createSprite(this->size, glm::vec2(1.f, 1.f), &spritesheet, &shaderProgram);
 	}
+	else if (this->oType == BLUE_HEL) {
+		spritesheet.loadFromFile("images/bolsaSprite.png", TEXTURE_PIXEL_FORMAT_RGBA);
+		sprite = Sprite::createSprite(this->size, glm::vec2(1.f, 1.f), &spritesheet, &shaderProgram);
+	}
+	else if (this->oType == YELLOW_HEL) {
+		spritesheet.loadFromFile("images/bolsaSprite.png", TEXTURE_PIXEL_FORMAT_RGBA);
+		sprite = Sprite::createSprite(this->size, glm::vec2(1.f, 1.f), &spritesheet, &shaderProgram);
+	}
+	else if (this->oType == GREEN_RAIN) {
+		spritesheet.loadFromFile("images/bolsaSprite.png", TEXTURE_PIXEL_FORMAT_RGBA);
+		sprite = Sprite::createSprite(this->size, glm::vec2(1.f, 1.f), &spritesheet, &shaderProgram);
+	}
+	else if (this->oType == GRAY_RAIN) {
+		spritesheet.loadFromFile("images/bolsaSprite.png", TEXTURE_PIXEL_FORMAT_RGBA);
+		sprite = Sprite::createSprite(this->size, glm::vec2(1.f, 1.f), &spritesheet, &shaderProgram);
+	}
+	else if (this->oType == HYPERSHOES) {
+		spritesheet.loadFromFile("images/bolsaSprite.png", TEXTURE_PIXEL_FORMAT_RGBA);
+		sprite = Sprite::createSprite(this->size, glm::vec2(1.f, 1.f), &spritesheet, &shaderProgram);
+	}
 
 	spritesheet.setMinFilter(GL_NEAREST);
 	spritesheet.setMagFilter(GL_NEAREST);

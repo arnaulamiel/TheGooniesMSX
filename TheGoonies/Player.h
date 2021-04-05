@@ -33,13 +33,15 @@ public:
 	bool isSameAsBefore();
 	bool canTP();
 	void incrementChild();
+	void getBlueHelmet();
+	bool hasBlueHelmet();
 
 private:
 	
 
 	ShaderProgram texProgram;
 	int vidasPlayer,expPlayer, timerHit, before;
-	bool bJumping,bHitting, bLiana, isHitted, bCooldownX;
+	bool bJumping,bHitting, bLiana, isHitted, bCooldownX, hasBlueHel;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY, estado, timerX, stateChild;
 	Texture spritesheet;

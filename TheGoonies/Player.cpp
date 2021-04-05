@@ -512,6 +512,7 @@ void Player::iniPlayerStats(ShaderProgram& shaderProgram)
 	bLiana = false;
 	isHitted = false;
 	timerSprite = false;
+	hasBlueHel = false;
 
 	
 	estado = STAND_LEFT;
@@ -799,6 +800,16 @@ bool Player::canTP()
 		
 	}
 	return false;
+}
+
+void Player::getBlueHelmet() 
+{
+	hasBlueHel = true;
+}
+
+bool Player::hasBlueHelmet()
+{
+	return hasBlueHel;
 }
 
 
