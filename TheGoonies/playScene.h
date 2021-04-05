@@ -59,7 +59,7 @@ private:
 
 	bool loadSingleRoomObjects(string levelFile, vector<Object*>& objectsRoom);
 	void calculateDownObstaculo(Object* obs);
-
+	bool playerinPortal(Object* p);
 	
 
 	/* Variable to control the time that the logo is shown */
@@ -67,7 +67,7 @@ private:
 	int room;
 	int timerGota;
 	int timerRoca;
-	int timerFuego, timesFireAnim;
+	int timerFuego, timesFireAnim, waitToEnd;
 	/* Texture of the logo */
 	Texture logoTexture, vidaexpTexture;
 
@@ -80,8 +80,7 @@ private:
 	bool byeRoca;
 	bool rocaDown;
 	bool hasSound;
-
-
+	bool inPortal;
 
 	TileMap* map;
 	TileMap* mapIni;

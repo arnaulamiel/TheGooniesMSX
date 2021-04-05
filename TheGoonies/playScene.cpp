@@ -74,6 +74,8 @@ void playScene::init(void)
 	hasChild = false;
 	timesFireAnim = 0;
 	hasSound = false;
+	inPortal = false;
+	waitToEnd = 0;
 	
 	
 	changeMusic("../../../libs/irrKlang-1.6.0/media/playGoonies.ogg");
@@ -338,6 +340,27 @@ void playScene::update(int deltaTime)
 					actualRoomObjects[i] = nullptr;
 				}
 			}
+		}
+		else if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == PORTAL) {
+			Object* portal = actualRoomObjects[i];
+			if (playerinPortal(portal)) {
+				++waitToEnd;
+				if (!inPortal) { 
+					inPortal = true;
+					createSound("../../../libs/irrKlang-1.6.0/media/winGoonies.ogg", false); 
+					deleteEngine();				
+
+				}
+				else {
+					if (waitToEnd == 90) {
+						deleteSound();
+						SceneManager* scene_manager = SceneManager::instance();
+						scene_manager->requestScene(SceneID::END_SCENE);
+					}
+				}
+			}
+			
+
 		}
 	}
 	
@@ -608,6 +631,18 @@ void playScene::calculateDownObstaculo(Object* obst) {
 		}
 	}	
 	
+}
+
+bool playScene::playerinPortal(Object* p)
+{
+	int tileSize = map->getTileSize();
+	glm::vec2 posPlayer = player->getPosPlayer();
+	glm::vec2 posPort = p->getObjectPosition();
+	if (posPlayer.x / tileSize >= (posPort.x / tileSize) - 2 && posPlayer.x / tileSize <= (posPort.x / tileSize) ) {
+		if (posPlayer.y / tileSize >= (posPort.y / tileSize) - 3 && posPlayer.y / tileSize <= (posPort.y / tileSize) + 4) {
+			return true;
+		}
+	}
 }
 
 bool playScene::hitEnem(Enemies* c ) {
