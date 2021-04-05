@@ -223,7 +223,7 @@ void playScene::update(int deltaTime)
 					}
 					else if (!hasChild && getObjDoor(doorChild)) {
 						hasChild = true;
-						++numChilds;
+						player->incrementChild();
 						doorChild->changeSpriteAnimation(OPEN_EMPTY);
 					}
 
@@ -631,6 +631,8 @@ bool playScene::fireHitsPlayer(Object* f)
 
 	return false;
 }
+
+
 
 
 /* @brief Function that initializes de shaders*/

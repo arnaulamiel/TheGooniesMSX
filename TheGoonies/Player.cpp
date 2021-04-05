@@ -36,6 +36,10 @@ enum timerAnims {
 	FULL, ALMOST_FULL, HALF, ALMOST_END
 };
 
+enum numChilds {
+	ZERO_CH, ONE_CH, TWO_CH, TREE_CH, FOUR_CH, FIVE_CH, SIX_CH
+};
+
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
 	//load una imatge
@@ -143,6 +147,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	sprite->changeAnimation(0);
 	tileMapDispl = tileMapPos;
 	iniPlayerStats(shaderProgram);
+	iniChildsInterface(shaderProgram);
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 
 
@@ -157,6 +162,7 @@ void Player::update(int deltaTime)
 	vidaSprite->update(deltaTime);
 	expSprite->update(deltaTime);
 	timerSprite->update(deltaTime);
+	childSprite->update(deltaTime);
 	
 
 	//Esta en liana
@@ -478,6 +484,7 @@ void Player::render()
 	vidaSprite->render();
 	expSprite->render();
 	if (bCooldownX) timerSprite->render();
+	childSprite->render();
 }
 
 void Player::setTileMap(TileMap *tileMap)
@@ -607,6 +614,42 @@ void Player::iniPlayerStats(ShaderProgram& shaderProgram)
 
 }
 
+void Player::iniChildsInterface(ShaderProgram& shaderProgram) {
+
+	stateChild = ZERO_CH;
+
+	ssheetch.loadFromFile("images/childInterface.png", TEXTURE_PIXEL_FORMAT_RGBA);
+
+	childSprite = Sprite::createSprite(glm::ivec2(90, 36), glm::vec2((1.f/7.f), 1), &ssheetch, &shaderProgram);
+
+	childSprite->setNumberAnimations(7);
+
+	childSprite->setAnimationSpeed(ZERO_CH, 8);
+	childSprite->addKeyframe(ZERO_CH, glm::vec2(0, 0));
+
+	childSprite->setAnimationSpeed(ONE_CH, 8);
+	childSprite->addKeyframe(ONE_CH, glm::vec2((1.f / 7.f), 0));
+
+	childSprite->setAnimationSpeed(TWO_CH, 8);
+	childSprite->addKeyframe(TWO_CH, glm::vec2((2.f / 7.f), 0));
+
+	childSprite->setAnimationSpeed(TREE_CH, 8);
+	childSprite->addKeyframe(TREE_CH, glm::vec2((3.f / 7.f), 0));
+
+	childSprite->setAnimationSpeed(FOUR_CH, 8);
+	childSprite->addKeyframe(FOUR_CH, glm::vec2((4.f / 7.f), 0));
+
+	childSprite->setAnimationSpeed(FIVE_CH, 8);
+	childSprite->addKeyframe(FIVE_CH, glm::vec2((5.f / 7.f), 0));
+
+	childSprite->setAnimationSpeed(SIX_CH, 8);
+	childSprite->addKeyframe(SIX_CH, glm::vec2((6.f / 7.f), 0));
+
+	childSprite->changeAnimation(ZERO_CH);
+	childSprite->setPosition(glm::vec2(float(450), float(415)));
+
+}
+
 glm::ivec2 Player::getPosPlayer() {
 	return posPlayer;
 }
@@ -630,6 +673,12 @@ void Player::hitByEnemy() {
 		timerHit = 0;
 		vidaSprite->changeAnimation(vidasPlayer);
 	}
+}
+
+void Player::incrementChild()
+{
+	++stateChild;
+	childSprite->changeAnimation(stateChild);
 }
 
 void Player::setHitAnimation() {

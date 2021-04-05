@@ -22,6 +22,7 @@ public:
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
 	
+	void iniChildsInterface(ShaderProgram& shaderPrograma);
 	void iniPlayerStats(ShaderProgram& shaderPrograma);
 	glm::ivec2 getPosPlayer();
 	void setState(int sta);
@@ -31,6 +32,7 @@ public:
 	void setHitAnimation();
 	bool isSameAsBefore();
 	bool canTP();
+	void incrementChild();
 
 private:
 	
@@ -39,15 +41,17 @@ private:
 	int vidasPlayer,expPlayer, timerHit, before;
 	bool bJumping,bHitting, bLiana, isHitted, bCooldownX;
 	glm::ivec2 tileMapDispl, posPlayer;
-	int jumpAngle, startY, estado, timerX;
+	int jumpAngle, startY, estado, timerX, stateChild;
 	Texture spritesheet;
 	Texture ssheet;
 	Texture ssheetTimer;
 	Texture ssheetexp;
+	Texture ssheetch;
 	Sprite *sprite;
 	Sprite* vidaSprite;
 	Sprite* expSprite;
 	Sprite* timerSprite;
+	Sprite* childSprite;
 	TileMap *map;
 };
 

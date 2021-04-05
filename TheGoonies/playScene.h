@@ -6,6 +6,7 @@
 #include "Calavera.h"
 #include "Bat.h"
 #include "Object.h"
+#include "Texture.h"
 
 /* @file playScene.h
 *
@@ -42,7 +43,7 @@ public:
 	bool getObjDoor(Object* door);
 	bool gotaHitsPlayer(Object* g);
 	bool fireHitsPlayer(Object* f);
-	 
+	void initChildsInterface(ShaderProgram& shaderPrograma);
 
 private:
 	/* Function to initialize the shaders */
