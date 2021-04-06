@@ -161,6 +161,9 @@ void TileMap::prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program)
 // Method collisionMoveDown also corrects Y coordinate if the box is
 // already intersecting a tile below.
 
+glm::ivec2 TileMap::getMapSize() {
+	return mapSize;
+}
 bool TileMap::isMapLimitRight(const glm::ivec2& pos) {
 	int x = pos.x / tileSize;
 	if (x + 2 >= mapSize.x)return true;
