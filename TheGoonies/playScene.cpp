@@ -1241,7 +1241,7 @@ bool playScene::fireHitsPlayer(Object* f)
 }
 
 void playScene::deleteEngine() {
-	 engine->drop();
+	 if (engine) engine->drop();
 }
 
 void playScene::changeMusic(char* music) {
