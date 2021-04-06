@@ -36,14 +36,14 @@ public:
 	void updateRoom();
 	void loadRoomObjects();
 	void updateActualObjects();
-	void saveActualObject();
+	void saveActualObjects();
 
 	bool hitEnem(Enemies* c);
 	bool getObject(Object* k);
 	bool getObjDoor(Object* door);
 	bool gotaHitsPlayer(Object* g);
 	bool fireHitsPlayer(Object* f);
-	void initChildsInterface(ShaderProgram& shaderPrograma);
+	//void initChildsInterface(ShaderProgram& shaderPrograma);
 
 	virtual void deleteEngine();
 	virtual void changeMusic(char* music);
@@ -93,7 +93,21 @@ private:
 
 	/* Objects */
 	vector<Object*> actualRoomObjects;
-	vector<Object*> objectsRoom1;
+	vector<Object*> objectsRoom1_1;
+	vector<Object*> objectsRoom1_2;
+	vector<Object*> objectsRoom1_3;
+	vector<Object*> objectsRoom2_1;
+	vector<Object*> objectsRoom2_2;
+	vector<Object*> objectsRoom2_3;
+	vector<Object*> objectsRoom3_1;
+	vector<Object*> objectsRoom3_2;
+	vector<Object*> objectsRoom3_3;
+	vector<Object*> objectsRoom4_1;
+	vector<Object*> objectsRoom4_2;
+	vector<Object*> objectsRoom4_3;
+	vector<Object*> objectsRoom5_1;
+	vector<Object*> objectsRoom5_2;
+	vector<Object*> objectsRoom5_3;
 
 	/* Logo sprite*/
 	Sprite* logo;
