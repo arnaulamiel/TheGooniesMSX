@@ -426,7 +426,7 @@ void playScene::update(int deltaTime)
 	bat->update(deltaTime);
 	
 	
-	if (map->isMapLimitRight(player->getPosPlayer())) {
+	if (room == 1 && map->isMapLimitRight(player->getPosPlayer())) {
 		++room;
 		updateRoom();
 		player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y)/18 * map->getTileSize()));
@@ -440,18 +440,38 @@ void playScene::update(int deltaTime)
 		
 		
 	}
+	else if (room == 2 ) {
+		if(map->isMapLimitRight(player->getPosPlayer()) ){
+			++room;
+			updateRoom();
+			player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+			player->setTileMap(map);
 
-	if (room != 1 && map->isMapLimitLeft(player->getPosPlayer())) {
+			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			cal->setPosition(glm::vec2(20 * map->getTileSize(), 12 * map->getTileSize()));
+			cal->setPatrolPoints(10 * map->getTileSize(), 30 * map->getTileSize());
+			cal->setPlayer(player);
+			cal->setTileMap(map);
+		}
+		else if (map->isMapLimitLeft(player->getPosPlayer())) {
+			--room;
+			updateRoom();
+			player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+			player->setTileMap(map);
+			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			cal->setPosition(glm::vec2(INIT_CAL_X_TILES* map->getTileSize(), INIT_CAL_Y_TILES* map->getTileSize()));
+			cal->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
+			cal->setPlayer(player);
+			cal->setTileMap(map);
+		}
+	}
+	else if (room == 3 && map->isMapLimitLeft(player->getPosPlayer())) {
 		--room;
 		updateRoom();
 		player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 		player->setTileMap(map);
 
-		cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-		cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
-		cal->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
-		cal->setPlayer(player);
-		cal->setTileMap(map);
+		
 
 		
 	}
@@ -497,6 +517,8 @@ void playScene::fin() {}
 void playScene::initMaps() {
 	mapIni = TileMap::createTileMap("levels/level05.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	mapIni2 = TileMap::createTileMap("levels/level06.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	mapIni3 = TileMap::createTileMap("levels/level07.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+
 }
 
 void playScene::updateRoom() {
@@ -505,6 +527,9 @@ void playScene::updateRoom() {
 	}
 	else if (room == 2) {
 		map = mapIni2;
+	}
+	else if (room == 3) {
+		map = mapIni3;
 	}
 	
 }
