@@ -476,6 +476,7 @@ void playScene::initMaps(int scene) {
 		mapIni2 = TileMap::createTileMap("levels/level02.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);		
 		mapIni3 = TileMap::createTileMap("levels/level03.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 		
+		
 		break;
 	case 1:
 
@@ -1008,18 +1009,20 @@ void playScene::newScene()
 	hasSound = false;
 	inPortal = false;
 	waitToEnd = 0;
-	room = 1;
 	
-
+	
 	changeMusic("../../../libs/irrKlang-1.6.0/media/playGooniesAlternative.ogg");
 	
 	++scene;
+	updateScene();
 	//saveActualObjects();
+	++room;
 	updateRoom();
 	updateActualObjects();
 	//se ha invocado que se tiene que ir a la nueva escena
-	updateScene();
+	
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
+	player->setTileMap(map);
 	
 	
 
