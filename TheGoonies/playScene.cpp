@@ -423,7 +423,7 @@ void playScene::update(int deltaTime)
 	
 
 	if (player->getHealth() == 0) deleteEngine();
-	if (player->getChilds() == 0) { 
+	if (player->getChilds() == 6) { 
 		deleteEngine(); 
 	}
 	player->update(deltaTime);
@@ -1241,7 +1241,7 @@ bool playScene::fireHitsPlayer(Object* f)
 }
 
 void playScene::deleteEngine() {
-	 engine->drop();
+	 if (engine) engine->drop();
 }
 
 void playScene::changeMusic(char* music) {
