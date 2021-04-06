@@ -74,6 +74,8 @@ void playScene::init(void)
 	hasChild = false;
 	timesFireAnim = 0;
 	hasSound = false;
+	inPortal = false;
+	waitToEnd = 0;
 	
 	
 	changeMusic("../../../libs/irrKlang-1.6.0/media/playGoonies.ogg");
@@ -387,6 +389,28 @@ void playScene::update(int deltaTime)
 				}
 			}
 		}
+		if (actualRoomObjects[i] != nullptr && actualRoomObjects[i]->getObjectType() == PORTAL) {
+			Object* portal = actualRoomObjects[i];
+			if (waitToEnd > 0)++waitToEnd;
+			//Si le da a la flecha hacia abajo entra en el portal
+			if (playerinPortal(portal)) {
+				if (!inPortal) {
+					inPortal = true;
+					createSound("../../../libs/irrKlang-1.6.0/media/alterntiveScene.ogg", false);
+					deleteEngine();
+					++waitToEnd;
+
+				}
+			}
+			else if (inPortal) {
+				if (waitToEnd == 50) {
+					waitToEnd = 0;
+					deleteSound();
+					SceneManager* scene_manager = SceneManager::instance();
+					scene_manager->requestScene(SceneID::END_SCENE);
+				}
+			}
+		}
 	}
 	
 
@@ -658,6 +682,20 @@ void playScene::calculateDownObstaculo(Object* obst) {
 	
 }
 
+bool playScene::playerinPortal(Object* p)
+{
+	int tileSize = map->getTileSize();
+	glm::vec2 posPlayer = player->getPosPlayer();
+	glm::vec2 posPort = p->getObjectPosition();
+	
+		if (posPlayer.x / tileSize >= (posPort.x / tileSize) - 2 && posPlayer.x / tileSize <= (posPort.x / tileSize)) {
+			if (posPlayer.y / tileSize >= (posPort.y / tileSize) - 3 && posPlayer.y / tileSize <= (posPort.y / tileSize) + 4) {
+				if(Game::instance().getSpecialKey(GLUT_KEY_DOWN))return true;
+			}
+		
+	}
+}
+
 bool playScene::hitEnem(Enemies* c ) {
 	glm::vec2 posPlayer = player->getPosPlayer();
 	glm::vec2 posCal = c->getPosition();
@@ -763,7 +801,7 @@ void::playScene::createSound(char* music, bool repeat) {
 	sound->play2D(music, repeat);
 }
 void playScene::deleteSound() {
-	if(sound)sound->drop();
+	sound->drop();
 }
 
 void playScene::hitPlayer() {
