@@ -63,17 +63,26 @@ void initScene::update(int deltaTime)
 		SceneManager* scene_manager = SceneManager::instance();
 		scene_manager->requestScene(SceneID::PLAY_SCENE);
 	}
+	else if (Game::instance().getKey(104)) {
+		
+		logoTexture.loadFromFile("images/helpScene.png", TEXTURE_PIXEL_FORMAT_RGBA);
+		logoTexture.setMinFilter(GL_NEAREST);
+		logoTexture.setMagFilter(GL_NEAREST);
 
-	//count += 1;
+		
+		logo = Sprite::createSprite(glm::ivec2(SCREEN_X, SCREEN_Y), glm::vec2(1.f, 1.f), &logoTexture, &texProgram);
+		logo->setPosition(glm::vec2(0, 0));
 
-	// 210 -> 3.5 seconds (60 frames/s)
-	/*if (count > 210 || Game::instance().getKey(SPACEBAR) || Game::instance().getKey(ESCAPE))
-	{
-		SceneManager* scene_manager = SceneManager::instance();
-		scene_manager->requestScene(SceneID::C_SCENE);
+	}
+	else if (Game::instance().getKey(ESCAPE)) {
+		logoTexture.loadFromFile("images/initGoonies.png", TEXTURE_PIXEL_FORMAT_RGBA);
+		logoTexture.setMinFilter(GL_NEAREST);
+		logoTexture.setMagFilter(GL_NEAREST);
 
-		count = 0;
-	}*/
+		logo = Sprite::createSprite(glm::ivec2(SCREEN_X, SCREEN_Y), glm::vec2(1.f, 1.f), &logoTexture, &texProgram);
+		logo->setPosition(glm::vec2(0, 0));
+	}
+
 }
 
 /* @brief Overrided render function
