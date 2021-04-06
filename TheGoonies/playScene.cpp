@@ -23,7 +23,7 @@
 #define INIT_CAL_Y_TILES 15
 
 #define INIT_BAT_X_TILES 10
-#define INIT_BAT_Y_TILES 13
+#define INIT_BAT_Y_TILES 11
 //prueba
 
 /* @brief Static member function declaration */
@@ -119,8 +119,8 @@ void playScene::init(void)
 	//Calavera
 	cal = new Calavera();
 	cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
-	cal->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
+	cal->setPosition(glm::vec2(5 * map->getTileSize(), 15 * map->getTileSize()));
+	cal->setPatrolPoints(5 * map->getTileSize(), 10 * map->getTileSize());
 	cal->setPlayer(player);
 	cal->setTileMap(map);
 
@@ -561,11 +561,21 @@ void playScene::updateElementsScene()
 			player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 			player->setTileMap(map);
 
+			cal = new Calavera();
 			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-			cal->setPosition(glm::vec2(20 * map->getTileSize(), 12 * map->getTileSize()));
-			cal->setPatrolPoints(10 * map->getTileSize(), 30 * map->getTileSize());
+			cal->setPosition(glm::vec2(5 * map->getTileSize(), 11 * map->getTileSize()));
+			cal->setPatrolPoints(5 * map->getTileSize(), 10 * map->getTileSize());
 			cal->setPlayer(player);
 			cal->setTileMap(map);
+
+			//Bat
+			bat = new Bat();
+			bat->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			bat->setPosition(glm::vec2(INIT_BAT_X_TILES * map->getTileSize(), INIT_BAT_Y_TILES * map->getTileSize()));
+			bat->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
+			bat->setPlayer(player);
+			bat->setTileMap(map);
+
 
 
 		}
@@ -579,8 +589,8 @@ void playScene::updateElementsScene()
 				player->setTileMap(map);
 
 				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-				cal->setPosition(glm::vec2(20 * map->getTileSize(), 12 * map->getTileSize()));
-				cal->setPatrolPoints(10 * map->getTileSize(), 30 * map->getTileSize());
+				cal->setPosition(glm::vec2(5 * map->getTileSize(), 8 * map->getTileSize()));
+				cal->setPatrolPoints(1 * map->getTileSize(), 6 * map->getTileSize());
 				cal->setPlayer(player);
 				cal->setTileMap(map);
 			}
@@ -591,11 +601,21 @@ void playScene::updateElementsScene()
 				updateActualObjects();
 				player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 				player->setTileMap(map);
+				cal = new Calavera();
 				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-				cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
-				cal->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
+				cal->setPosition(glm::vec2(5 * map->getTileSize(), 15 * map->getTileSize()));
+				cal->setPatrolPoints(5 * map->getTileSize(), 10 * map->getTileSize());
 				cal->setPlayer(player);
 				cal->setTileMap(map);
+
+				//Bat
+				bat = new Bat();
+				bat->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+				bat->setPosition(glm::vec2(INIT_BAT_X_TILES * map->getTileSize(), INIT_BAT_Y_TILES * map->getTileSize()));
+				bat->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
+				bat->setPlayer(player);
+				bat->setTileMap(map);
+
 			}
 		}
 		else if (room == 3 && map->isMapLimitLeft(player->getPosPlayer())) {
@@ -605,11 +625,21 @@ void playScene::updateElementsScene()
 			updateActualObjects();
 			player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 			player->setTileMap(map);
+			cal = new Calavera();
 			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-			cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
-			cal->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
+			cal->setPosition(glm::vec2(5 * map->getTileSize(), 11 * map->getTileSize()));
+			cal->setPatrolPoints(5 * map->getTileSize(), 10 * map->getTileSize());
 			cal->setPlayer(player);
 			cal->setTileMap(map);
+
+			//Bat
+			bat = new Bat();
+			bat->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			bat->setPosition(glm::vec2(INIT_BAT_X_TILES * map->getTileSize(), INIT_BAT_Y_TILES * map->getTileSize()));
+			bat->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
+			bat->setPlayer(player);
+			bat->setTileMap(map);
+
 		}
 		break;
 	case 1:
