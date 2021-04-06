@@ -472,7 +472,7 @@ void playScene::initMaps(int scene) {
 	switch (scene) {
 	case 0:
 		
-		mapIni = TileMap::createTileMap("levels/level04.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);		
+		mapIni = TileMap::createTileMap("levels/level15.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);		
 		mapIni2 = TileMap::createTileMap("levels/level02.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);		
 		mapIni3 = TileMap::createTileMap("levels/level03.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 		
@@ -512,13 +512,13 @@ void playScene::initMaps(int scene) {
 
 }
 void playScene::updateRoom() {
-	if (room == 1) {
+	if (room == 1 || room == 4 || room == 7 || room == 10 || room == 13) {
 		map = mapIni;
 	}
-	else if (room == 2) {
+	else if (room == 2 || room == 5 || room == 6 || room == 11 || room == 14) {
 		map = mapIni2;
 	}
-	else if (room == 3) {
+	else if (room == 3 || room == 6 || room == 7 || room == 12 || room == 15) {
 		map = mapIni3;
 	}
 
