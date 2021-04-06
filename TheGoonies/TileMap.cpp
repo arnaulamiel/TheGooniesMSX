@@ -167,6 +167,17 @@ bool TileMap::isMapLimitRight(const glm::ivec2& pos) {
 	return false;
 }
 
+bool TileMap::isMapLimitTop(const glm::ivec2& pos) {
+	int y = pos.y / tileSize;
+	if (y - 2 <= 0)return true;
+	return false;
+}
+bool TileMap::isMapLimitDown(const glm::ivec2& pos) {
+	int y = pos.y / tileSize;
+	if (y + 1 >= mapSize.y)return true;
+	return false;
+}
+
 bool TileMap::isMapLimitLeft(const glm::ivec2& pos) {
 	int x = pos.x / tileSize;
 	if (x - 1 <= 0) return true;

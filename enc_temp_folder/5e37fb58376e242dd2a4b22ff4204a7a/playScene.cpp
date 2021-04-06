@@ -596,7 +596,7 @@ void playScene::updateElementsScene()
 			if (map->isMapLimitTop(player->getPosPlayer())) {
 				++room;
 				updateRoom();
-				player->setPosition(glm::vec2((player->getPosPlayer().x) / 18 * map->getTileSize(),  22 * map->getTileSize()) );
+				player->setPosition(glm::vec2((player->getPosPlayer().x) / 18 * map->getTileSize(),  19 * map->getTileSize()) );
 				player->setTileMap(map);
 
 				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -617,10 +617,10 @@ void playScene::updateElementsScene()
 				cal->setTileMap(map);
 			}
 		}
-		else if (room == 3 && map->isMapLimitDown(player->getPosPlayer())) {
+		else if (room == 3 && map->isMapLimitLeft(player->getPosPlayer())) {
 			--room;
 			updateRoom();
-			player->setPosition(glm::vec2((player->getPosPlayer().x) / 18 * map->getTileSize(), 2 * map->getTileSize()));
+			player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 			player->setTileMap(map);
 			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 			cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
