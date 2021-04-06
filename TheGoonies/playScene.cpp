@@ -516,10 +516,10 @@ void playScene::updateRoom() {
 	if (room == 1 || room == 4 || room == 7 || room == 10 || room == 13) {
 		map = mapIni;
 	}
-	else if (room == 2 || room == 5 || room == 6 || room == 11 || room == 14) {
+	else if (room == 2 || room == 5 || room == 8 || room == 11 || room == 14) {
 		map = mapIni2;
 	}
-	else if (room == 3 || room == 6 || room == 7 || room == 12 || room == 15) {
+	else if (room == 3 || room == 6 || room == 9 || room == 12 || room == 15) {
 		map = mapIni3;
 	}
 
@@ -630,7 +630,7 @@ void playScene::updateElementsScene()
 				++room;
 				updateRoom();
 				updateActualObjects();
-				player->setPosition(glm::vec2((player->getPosPlayer().x) / 18 * map->getTileSize(), 20 * map->getTileSize()));
+				player->setPosition(glm::vec2((player->getPosPlayer().x) / 18 * map->getTileSize(), 17 * map->getTileSize()));
 				player->setTileMap(map);
 
 				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
