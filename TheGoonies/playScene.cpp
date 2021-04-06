@@ -472,7 +472,7 @@ void playScene::initMaps(int scene) {
 	switch (scene) {
 	case 0:
 		
-		mapIni = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);		
+		mapIni = TileMap::createTileMap("levels/level04.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);		
 		mapIni2 = TileMap::createTileMap("levels/level02.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);		
 		mapIni3 = TileMap::createTileMap("levels/level03.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 		
@@ -489,6 +489,20 @@ void playScene::initMaps(int scene) {
 		mapIni = TileMap::createTileMap("levels/level07.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 		mapIni2 = TileMap::createTileMap("levels/level08.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 		mapIni3 = TileMap::createTileMap("levels/level09.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+
+		break;
+	case 3:
+
+		mapIni = TileMap::createTileMap("levels/level10.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+		mapIni2 = TileMap::createTileMap("levels/level11.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+		mapIni3 = TileMap::createTileMap("levels/level12.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+
+		break;
+	case 4:
+
+		mapIni = TileMap::createTileMap("levels/level13.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+		mapIni2 = TileMap::createTileMap("levels/level14.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+		mapIni3 = TileMap::createTileMap("levels/level15.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
 		break;
 	}
