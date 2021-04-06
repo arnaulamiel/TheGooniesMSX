@@ -506,7 +506,7 @@ void Player::update(int deltaTime)
 		++timerHit;
 	}
 
-	if (stateChild == 6) {
+	if (stateChild == 5) {
 		
 		SceneManager* scene_manager = SceneManager::instance();
 		scene_manager->requestScene(SceneID::END_SCENE);

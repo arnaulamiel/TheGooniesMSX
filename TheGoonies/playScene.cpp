@@ -242,6 +242,7 @@ void playScene::update(int deltaTime)
 					}
 					else if (!hasChild && getObjDoor(doorChild)) {
 						hasChild = true;
+						hasKey = false;
 						createSound("../../../libs/irrKlang-1.6.0/media/rescuedGoonie.ogg", false);
 						player->incrementChild();
 						doorChild->changeSpriteAnimation(OPEN_EMPTY);
@@ -516,6 +517,7 @@ void playScene::initMaps(int scene) {
 
 }
 void playScene::updateRoom() {
+	hasChild = false;
 	if (room == 1 || room == 4 || room == 7 || room == 10 || room == 13) {
 		map = mapIni;
 	}
