@@ -413,7 +413,7 @@ void playScene::update(int deltaTime)
 				if (waitToEnd == 50) {
 					waitToEnd = 0;
 					deleteSound();
-					++scene;
+					
 					newScene();
 
 				}
@@ -607,7 +607,7 @@ void playScene::updateElementsScene()
 		}
 		break;
 	case 1:
-		if (room == 1 && map->isMapLimitRight(player->getPosPlayer())) {
+		if ((room == 1 || room == 4) && map->isMapLimitRight(player->getPosPlayer())) {
 			saveActualObjects();
 			++room;
 			updateRoom();
@@ -623,13 +623,13 @@ void playScene::updateElementsScene()
 
 
 		}
-		else if (room == 2) {
+		else if (room == 2 || room == 5) {
 			if (map->isMapLimitTop(player->getPosPlayer())) {
 				saveActualObjects();
 				++room;
 				updateRoom();
 				updateActualObjects();
-				player->setPosition(glm::vec2((player->getPosPlayer().x) / 18 * map->getTileSize(), 22 * map->getTileSize()));
+				player->setPosition(glm::vec2((player->getPosPlayer().x) / 18 * map->getTileSize(), 20 * map->getTileSize()));
 				player->setTileMap(map);
 
 				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -643,7 +643,7 @@ void playScene::updateElementsScene()
 				--room;
 				updateRoom();
 				updateActualObjects();
-				player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+				player->setPosition(glm::vec2(29 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 				player->setTileMap(map);
 				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 				cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
@@ -652,7 +652,7 @@ void playScene::updateElementsScene()
 				cal->setTileMap(map);
 			}
 		}
-		else if (room == 3 && map->isMapLimitDown(player->getPosPlayer())) {
+		else if ((room == 3 || room == 6) && map->isMapLimitDown(player->getPosPlayer())) {
 			saveActualObjects();
 			--room;
 			updateRoom();
@@ -758,7 +758,7 @@ void playScene::loadRoomObjects()
 	loadSingleRoomObjects("objects/Objects1_1.txt", objectsRoom1_1);
 	loadSingleRoomObjects("objects/Objects1_2.txt", objectsRoom1_2);
 	loadSingleRoomObjects("objects/Objects1_3.txt", objectsRoom1_3);
-	/*loadSingleRoomObjects("objects/Objects2_1.txt", objectsRoom2_1);
+	loadSingleRoomObjects("objects/Objects2_1.txt", objectsRoom2_1);
 	loadSingleRoomObjects("objects/Objects2_2.txt", objectsRoom2_2);
 	loadSingleRoomObjects("objects/Objects2_3.txt", objectsRoom2_3);
 	loadSingleRoomObjects("objects/Objects3_1.txt", objectsRoom3_1);
@@ -769,7 +769,7 @@ void playScene::loadRoomObjects()
 	loadSingleRoomObjects("objects/Objects4_3.txt", objectsRoom4_3);
 	loadSingleRoomObjects("objects/Objects5_1.txt", objectsRoom5_1);
 	loadSingleRoomObjects("objects/Objects5_2.txt", objectsRoom5_2);
-	loadSingleRoomObjects("objects/Objects5_3.txt", objectsRoom5_3);*/
+	loadSingleRoomObjects("objects/Objects5_3.txt", objectsRoom5_3);
 
 }
 
@@ -1013,11 +1013,14 @@ void playScene::newScene()
 
 	changeMusic("../../../libs/irrKlang-1.6.0/media/playGooniesAlternative.ogg");
 	
-	//se ha invocado que se tiene que ir a la nueva escena
-
-	updateScene();
+	++scene;
+	//saveActualObjects();
 	updateRoom();
+	updateActualObjects();
+	//se ha invocado que se tiene que ir a la nueva escena
+	updateScene();
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
+	
 	
 
 }
