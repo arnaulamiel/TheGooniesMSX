@@ -76,6 +76,7 @@ void playScene::init(void)
 	hasSound = false;
 	inPortal = false;
 	waitToEnd = 0;
+	scene = 0;
 	
 	
 	changeMusic("../../../libs/irrKlang-1.6.0/media/playGoonies.ogg");
@@ -97,7 +98,7 @@ void playScene::init(void)
 	vidaexpTexture.setMagFilter(GL_NEAREST);*/
 
 	//TileMap
-	initMaps();
+	initMaps(scene);
 	updateRoom();
 	loadRoomObjects();
 	updateActualObjects();
@@ -412,8 +413,9 @@ void playScene::update(int deltaTime)
 				if (waitToEnd == 50) {
 					waitToEnd = 0;
 					deleteSound();
-					SceneManager* scene_manager = SceneManager::instance();
-					scene_manager->requestScene(SceneID::END_SCENE);
+					++scene;
+					newScene();
+
 				}
 			}
 		}
@@ -425,56 +427,8 @@ void playScene::update(int deltaTime)
 	cal->update(deltaTime);
 	bat->update(deltaTime);
 	
+	updateElementsScene();
 	
-	if (room == 1 && map->isMapLimitRight(player->getPosPlayer())) {
-		++room;
-		updateRoom();
-		player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y)/18 * map->getTileSize()));
-		player->setTileMap(map);
-
-		cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-		cal->setPosition(glm::vec2(20 * map->getTileSize(), 12 * map->getTileSize()));
-		cal->setPatrolPoints(10 * map->getTileSize(), 30 * map->getTileSize());
-		cal->setPlayer(player);
-		cal->setTileMap(map);
-		
-		
-	}
-	else if (room == 2 ) {
-		if(map->isMapLimitRight(player->getPosPlayer()) ){
-			++room;
-			updateRoom();
-			player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
-			player->setTileMap(map);
-
-			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-			cal->setPosition(glm::vec2(20 * map->getTileSize(), 12 * map->getTileSize()));
-			cal->setPatrolPoints(10 * map->getTileSize(), 30 * map->getTileSize());
-			cal->setPlayer(player);
-			cal->setTileMap(map);
-		}
-		else if (map->isMapLimitLeft(player->getPosPlayer())) {
-			--room;
-			updateRoom();
-			player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
-			player->setTileMap(map);
-			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-			cal->setPosition(glm::vec2(INIT_CAL_X_TILES* map->getTileSize(), INIT_CAL_Y_TILES* map->getTileSize()));
-			cal->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
-			cal->setPlayer(player);
-			cal->setTileMap(map);
-		}
-	}
-	else if (room == 3 && map->isMapLimitLeft(player->getPosPlayer())) {
-		--room;
-		updateRoom();
-		player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
-		player->setTileMap(map);
-
-		
-
-		
-	}
 	
 }
 
@@ -514,13 +468,28 @@ void playScene::render()
 /* @brief Overrided function used to finalize scenes*/
 void playScene::fin() {}
 
-void playScene::initMaps() {
-	mapIni = TileMap::createTileMap("levels/level05.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	mapIni2 = TileMap::createTileMap("levels/level06.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	mapIni3 = TileMap::createTileMap("levels/level07.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+void playScene::initMaps(int scene) {
+	switch (scene) {
+	case 0:
+		
+		mapIni = TileMap::createTileMap("levels/level05.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);		
+		mapIni2 = TileMap::createTileMap("levels/level06.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);		
+		mapIni3 = TileMap::createTileMap("levels/level07.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+		
+		break;
+	case 1:
+
+		mapIni = TileMap::createTileMap("levels/level08.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);			
+		mapIni2 = TileMap::createTileMap("levels/level09.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);			
+		mapIni3 = TileMap::createTileMap("levels/level07.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);	
+
+		break;
+	}
+	
+	
+	
 
 }
-
 void playScene::updateRoom() {
 	if (room == 1) {
 		map = mapIni;
@@ -531,14 +500,161 @@ void playScene::updateRoom() {
 	else if (room == 3) {
 		map = mapIni3;
 	}
-	
+
+}
+
+void playScene::updateScene() {
+
+	if (scene == 0) {
+		initMaps(scene);
+	}
+	else if (scene == 1) {
+		initMaps(scene);
+	}
+	else if (scene == 2) {
+		initMaps(scene);
+	}
+	else if (scene == 3) {
+		initMaps(scene);
+	}
+	else if (scene == 4) {
+		initMaps(scene);
+	}
+}
+
+void playScene::updateElementsScene()
+{
+	switch (scene) {
+	case 0:
+		if (room == 1 && map->isMapLimitRight(player->getPosPlayer())) {
+			++room;
+			updateRoom();
+			player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+			player->setTileMap(map);
+
+			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			cal->setPosition(glm::vec2(20 * map->getTileSize(), 12 * map->getTileSize()));
+			cal->setPatrolPoints(10 * map->getTileSize(), 30 * map->getTileSize());
+			cal->setPlayer(player);
+			cal->setTileMap(map);
+
+
+		}
+		else if (room == 2) {
+			if (map->isMapLimitRight(player->getPosPlayer())) {
+				++room;
+				updateRoom();
+				player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+				player->setTileMap(map);
+
+				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+				cal->setPosition(glm::vec2(20 * map->getTileSize(), 12 * map->getTileSize()));
+				cal->setPatrolPoints(10 * map->getTileSize(), 30 * map->getTileSize());
+				cal->setPlayer(player);
+				cal->setTileMap(map);
+			}
+			else if (map->isMapLimitLeft(player->getPosPlayer())) {
+				--room;
+				updateRoom();
+				player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+				player->setTileMap(map);
+				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+				cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
+				cal->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
+				cal->setPlayer(player);
+				cal->setTileMap(map);
+			}
+		}
+		else if (room == 3 && map->isMapLimitLeft(player->getPosPlayer())) {
+			--room;
+			updateRoom();
+			player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+			player->setTileMap(map);
+			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
+			cal->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
+			cal->setPlayer(player);
+			cal->setTileMap(map);
+		}
+		break;
+	case 1:
+		if (room == 1 && map->isMapLimitRight(player->getPosPlayer())) {
+			++room;
+			updateRoom();
+			player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+			player->setTileMap(map);
+
+			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			cal->setPosition(glm::vec2(20 * map->getTileSize(), 12 * map->getTileSize()));
+			cal->setPatrolPoints(10 * map->getTileSize(), 30 * map->getTileSize());
+			cal->setPlayer(player);
+			cal->setTileMap(map);
+
+
+		}
+		else if (room == 2) {
+			if (map->isMapLimitRight(player->getPosPlayer())) {
+				++room;
+				updateRoom();
+				player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+				player->setTileMap(map);
+
+				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+				cal->setPosition(glm::vec2(20 * map->getTileSize(), 12 * map->getTileSize()));
+				cal->setPatrolPoints(10 * map->getTileSize(), 30 * map->getTileSize());
+				cal->setPlayer(player);
+				cal->setTileMap(map);
+			}
+			else if (map->isMapLimitLeft(player->getPosPlayer())) {
+				--room;
+				updateRoom();
+				player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+				player->setTileMap(map);
+				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+				cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
+				cal->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
+				cal->setPlayer(player);
+				cal->setTileMap(map);
+			}
+		}
+		else if (room == 3 && map->isMapLimitLeft(player->getPosPlayer())) {
+			--room;
+			updateRoom();
+			player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+			player->setTileMap(map);
+			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
+			cal->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
+			cal->setPlayer(player);
+			cal->setTileMap(map);
+
+			break;
+		}
+	}
 }
 
 void playScene::loadRoomObjects() 
 {
 	//if (objectsRoom1.size() != 0) objectsRoom1.erase(objectsRoom1.begin(), objectsRoom1.end());
 
-	loadSingleRoomObjects("objects/prueba.txt", objectsRoom1);
+	switch (scene) { 
+	case 0:
+		switch (room) { 
+		case 1:
+			loadSingleRoomObjects("objects/Objects11.txt", objectsRoom1); 
+			break;
+		case 2:
+			loadSingleRoomObjects("objects/Objects12.txt", objectsRoom1);
+			break;
+		case 3:
+			loadSingleRoomObjects("objects/Objects13.txt", objectsRoom1);
+			break;
+		}
+		break;
+	case 1:
+		loadSingleRoomObjects("objects/prueba.txt", objectsRoom1);
+		break;
+	}
 }
 
 bool playScene::loadSingleRoomObjects(string levelFile, vector<Object*>& objectsRoom)
@@ -725,6 +841,37 @@ bool playScene::playerinPortal(Object* p)
 			}
 		
 	}
+		return false;
+}
+
+void playScene::newScene()
+{
+	hasKey = false;
+	bgota = false;
+	byeRoca = false;
+	rocaDown = false;
+	timerGota = 0;
+	timerRoca = 0;
+	timerFuego = 0;
+	doorOpen = false;
+	hasChild = false;
+	timesFireAnim = 0;
+	hasSound = false;
+	inPortal = false;
+	waitToEnd = 0;
+	room = 1;
+	changeMusic("../../../libs/irrKlang-1.6.0/media/playGooniesAlternative.ogg");
+	
+	//se ha invocado que se tiene que ir a la nueva escena
+
+	updateScene();
+	updateRoom();
+	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
+	
+	
+	
+
+
 }
 
 bool playScene::hitEnem(Enemies* c ) {

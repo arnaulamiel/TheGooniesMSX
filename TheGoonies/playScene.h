@@ -32,7 +32,7 @@ public:
 	virtual void update(int deltaTime) override;
 	virtual void render() override;
 	virtual void fin() override;
-	void initMaps() ;
+	void initMaps(int scene) ;
 	void updateRoom();
 	void loadRoomObjects();
 	void updateActualObjects();
@@ -51,6 +51,8 @@ public:
 	virtual void deleteSound();
 
 	void hitPlayer();
+	void updateScene();
+	void updateElementsScene();
 
 
 private:
@@ -60,11 +62,11 @@ private:
 	bool loadSingleRoomObjects(string levelFile, vector<Object*>& objectsRoom);
 	void calculateDownObstaculo(Object* obs);
 	bool playerinPortal(Object* p);
-	
+	void newScene();
 
 	/* Variable to control the time that the logo is shown */
 	int count;
-	int room;
+	int room, scene;
 	int timerGota;
 	int timerRoca;
 	int timerFuego, timesFireAnim, waitToEnd;
