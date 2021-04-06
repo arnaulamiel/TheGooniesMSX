@@ -505,6 +505,12 @@ void Player::update(int deltaTime)
 	if (isHitted) {
 		++timerHit;
 	}
+
+	if (stateChild == 6) {
+		
+		SceneManager* scene_manager = SceneManager::instance();
+		scene_manager->requestScene(SceneID::END_SCENE);
+	}
 	
 	
 		
@@ -1109,6 +1115,9 @@ bool Player::hasGrayRaincoat()
 bool Player::hasHypershoes()
 {
 	return hasHyperShoes;
+}
+int Player::getChilds() {
+	return stateChild;
 }
 
 /*void Player::setCalaveras(Calavera* c[])
