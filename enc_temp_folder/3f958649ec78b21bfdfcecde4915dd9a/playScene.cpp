@@ -512,13 +512,13 @@ void playScene::initMaps(int scene) {
 
 }
 void playScene::updateRoom() {
-	if (room == 1 || room == 4 || room == 7 || room == 10 || room == 13) {
+	if (room == 1) {
 		map = mapIni;
 	}
-	else if (room == 2 || room == 5 || room == 6 || room == 11 || room == 14) {
+	else if (room == 2) {
 		map = mapIni2;
 	}
-	else if (room == 3 || room == 6 || room == 7 || room == 12 || room == 15) {
+	else if (room == 3) {
 		map = mapIni3;
 	}
 
