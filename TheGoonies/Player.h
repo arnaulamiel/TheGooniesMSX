@@ -51,6 +51,8 @@ public:
 	bool hasGrayRaincoat();
 	bool hasHypershoes();
 
+	int getChilds();
+
 
 private:
 	

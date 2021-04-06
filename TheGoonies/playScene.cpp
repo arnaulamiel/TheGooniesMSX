@@ -423,6 +423,9 @@ void playScene::update(int deltaTime)
 	
 
 	if (player->getHealth() == 0) deleteEngine();
+	if (player->getChilds() == 0) { 
+		deleteEngine(); 
+	}
 	player->update(deltaTime);
 	cal->update(deltaTime);
 	bat->update(deltaTime);
@@ -668,7 +671,7 @@ void playScene::updateElementsScene()
 		}
 		break;
 	case 2:
-		if (room == 1 && map->isMapLimitRight(player->getPosPlayer())) {
+		if (room == 7 && map->isMapLimitLeft(player->getPosPlayer())) {
 			saveActualObjects();
 			++room;
 			updateRoom();
@@ -684,13 +687,75 @@ void playScene::updateElementsScene()
 
 
 		}
-		else if (room == 2) {
-			if (map->isMapLimitTop(player->getPosPlayer())) {
+		else if (room == 8) {
+			if (map->isMapLimitLeft(player->getPosPlayer())) {
 				saveActualObjects();
 				++room;
 				updateRoom();
 				updateActualObjects();
 				player->setPosition(glm::vec2((player->getPosPlayer().x) / 18 * map->getTileSize(), 22 * map->getTileSize()));
+				player->setTileMap(map);
+
+				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+				cal->setPosition(glm::vec2(20 * map->getTileSize(), 12 * map->getTileSize()));
+				cal->setPatrolPoints(10 * map->getTileSize(), 30 * map->getTileSize());
+				cal->setPlayer(player);
+				cal->setTileMap(map);
+			}
+			else if (map->isMapLimitRight(player->getPosPlayer())) {
+				saveActualObjects();
+				--room;
+				updateRoom();
+				updateActualObjects();
+				player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+				player->setTileMap(map);
+				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+				cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
+				cal->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
+				cal->setPlayer(player);
+				cal->setTileMap(map);
+			}
+		}
+		else if (room == 9 && map->isMapLimitRight(player->getPosPlayer())) {
+			saveActualObjects();
+			--room;
+			updateRoom();
+			updateActualObjects();
+			player->setPosition(glm::vec2((player->getPosPlayer().x) / 18 * map->getTileSize(), 2 * map->getTileSize()));
+			player->setTileMap(map);
+			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
+			cal->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
+			cal->setPlayer(player);
+			cal->setTileMap(map);
+
+
+		}
+		break;
+	case 3:
+		if (room == 10 && map->isMapLimitRight(player->getPosPlayer())) {
+			saveActualObjects();
+			++room;
+			updateRoom();
+			updateActualObjects();
+			player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+			player->setTileMap(map);
+
+			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			cal->setPosition(glm::vec2(20 * map->getTileSize(), 12 * map->getTileSize()));
+			cal->setPatrolPoints(10 * map->getTileSize(), 30 * map->getTileSize());
+			cal->setPlayer(player);
+			cal->setTileMap(map);
+
+
+		}
+		else if (room == 11) {
+			if (map->isMapLimitRight(player->getPosPlayer())) {
+				saveActualObjects();
+				++room;
+				updateRoom();
+				updateActualObjects();
+				player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 				player->setTileMap(map);
 
 				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -713,20 +778,78 @@ void playScene::updateElementsScene()
 				cal->setTileMap(map);
 			}
 		}
-		else if (room == 3 && map->isMapLimitDown(player->getPosPlayer())) {
+		else if (room == 12 && map->isMapLimitLeft(player->getPosPlayer())) {
 			saveActualObjects();
 			--room;
 			updateRoom();
 			updateActualObjects();
-			player->setPosition(glm::vec2((player->getPosPlayer().x) / 18 * map->getTileSize(), 2 * map->getTileSize()));
+			player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 			player->setTileMap(map);
 			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 			cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
 			cal->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
 			cal->setPlayer(player);
 			cal->setTileMap(map);
+		}
+		break;
+	case 4:
+		if (room == 13 && map->isMapLimitRight(player->getPosPlayer())) {
+			saveActualObjects();
+			++room;
+			updateRoom();
+			updateActualObjects();
+			player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+			player->setTileMap(map);
+
+			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			cal->setPosition(glm::vec2(20 * map->getTileSize(), 12 * map->getTileSize()));
+			cal->setPatrolPoints(10 * map->getTileSize(), 30 * map->getTileSize());
+			cal->setPlayer(player);
+			cal->setTileMap(map);
 
 
+		}
+		else if (room == 14) {
+			if (map->isMapLimitRight(player->getPosPlayer())) {
+				saveActualObjects();
+				++room;
+				updateRoom();
+				updateActualObjects();
+				player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+				player->setTileMap(map);
+
+				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+				cal->setPosition(glm::vec2(20 * map->getTileSize(), 12 * map->getTileSize()));
+				cal->setPatrolPoints(10 * map->getTileSize(), 30 * map->getTileSize());
+				cal->setPlayer(player);
+				cal->setTileMap(map);
+			}
+			else if (map->isMapLimitLeft(player->getPosPlayer())) {
+				saveActualObjects();
+				--room;
+				updateRoom();
+				updateActualObjects();
+				player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+				player->setTileMap(map);
+				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+				cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
+				cal->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
+				cal->setPlayer(player);
+				cal->setTileMap(map);
+			}
+		}
+		else if (room == 15 && map->isMapLimitLeft(player->getPosPlayer())) {
+			saveActualObjects();
+			--room;
+			updateRoom();
+			updateActualObjects();
+			player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+			player->setTileMap(map);
+			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
+			cal->setPatrolPoints(10 * map->getTileSize(), 20 * map->getTileSize());
+			cal->setPlayer(player);
+			cal->setTileMap(map);
 		}
 		break;
 		
@@ -1118,7 +1241,7 @@ bool playScene::fireHitsPlayer(Object* f)
 }
 
 void playScene::deleteEngine() {
-	if(engine)engine->drop();
+	 engine->drop();
 }
 
 void playScene::changeMusic(char* music) {
