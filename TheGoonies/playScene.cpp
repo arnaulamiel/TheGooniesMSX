@@ -793,7 +793,7 @@ void playScene::updateElementsScene()
 		}
 		break;
 	case 4:
-		if (room == 10 && map->isMapLimitRight(player->getPosPlayer())) {
+		if (room == 13 && map->isMapLimitRight(player->getPosPlayer())) {
 			saveActualObjects();
 			++room;
 			updateRoom();
@@ -809,7 +809,7 @@ void playScene::updateElementsScene()
 
 
 		}
-		else if (room == 11) {
+		else if (room == 14) {
 			if (map->isMapLimitRight(player->getPosPlayer())) {
 				saveActualObjects();
 				++room;
@@ -838,7 +838,7 @@ void playScene::updateElementsScene()
 				cal->setTileMap(map);
 			}
 		}
-		else if (room == 12 && map->isMapLimitLeft(player->getPosPlayer())) {
+		else if (room == 15 && map->isMapLimitLeft(player->getPosPlayer())) {
 			saveActualObjects();
 			--room;
 			updateRoom();
