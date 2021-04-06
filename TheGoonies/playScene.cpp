@@ -534,8 +534,10 @@ void playScene::updateElementsScene()
 	switch (scene) {
 	case 0:
 		if (room == 1 && map->isMapLimitRight(player->getPosPlayer())) {
+			saveActualObjects();
 			++room;
 			updateRoom();
+			updateActualObjects();
 			player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 			player->setTileMap(map);
 
@@ -549,8 +551,10 @@ void playScene::updateElementsScene()
 		}
 		else if (room == 2) {
 			if (map->isMapLimitRight(player->getPosPlayer())) {
+				saveActualObjects();
 				++room;
 				updateRoom();
+				updateActualObjects();
 				player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 				player->setTileMap(map);
 
@@ -561,8 +565,10 @@ void playScene::updateElementsScene()
 				cal->setTileMap(map);
 			}
 			else if (map->isMapLimitLeft(player->getPosPlayer())) {
+				saveActualObjects();
 				--room;
 				updateRoom();
+				updateActualObjects();
 				player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 				player->setTileMap(map);
 				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -573,8 +579,10 @@ void playScene::updateElementsScene()
 			}
 		}
 		else if (room == 3 && map->isMapLimitLeft(player->getPosPlayer())) {
+			saveActualObjects();
 			--room;
 			updateRoom();
+			updateActualObjects();
 			player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 			player->setTileMap(map);
 			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -586,8 +594,10 @@ void playScene::updateElementsScene()
 		break;
 	case 1:
 		if (room == 1 && map->isMapLimitRight(player->getPosPlayer())) {
+			saveActualObjects();
 			++room;
 			updateRoom();
+			updateActualObjects();
 			player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 			player->setTileMap(map);
 
@@ -601,8 +611,10 @@ void playScene::updateElementsScene()
 		}
 		else if (room == 2) {
 			if (map->isMapLimitTop(player->getPosPlayer())) {
+				saveActualObjects();
 				++room;
 				updateRoom();
+				updateActualObjects();
 				player->setPosition(glm::vec2((player->getPosPlayer().x) / 18 * map->getTileSize(), 22 * map->getTileSize()));
 				player->setTileMap(map);
 
@@ -613,8 +625,10 @@ void playScene::updateElementsScene()
 				cal->setTileMap(map);
 			}
 			else if (map->isMapLimitLeft(player->getPosPlayer())) {
+				saveActualObjects();
 				--room;
 				updateRoom();
+				updateActualObjects();
 				player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 				player->setTileMap(map);
 				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -625,8 +639,10 @@ void playScene::updateElementsScene()
 			}
 		}
 		else if (room == 3 && map->isMapLimitDown(player->getPosPlayer())) {
+			saveActualObjects();
 			--room;
 			updateRoom();
+			updateActualObjects();
 			player->setPosition(glm::vec2((player->getPosPlayer().x) / 18 * map->getTileSize(), 2 * map->getTileSize()));
 			player->setTileMap(map);
 			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -638,8 +654,10 @@ void playScene::updateElementsScene()
 		break;
 	case 2:
 		if (room == 1 && map->isMapLimitRight(player->getPosPlayer())) {
+			saveActualObjects();
 			++room;
 			updateRoom();
+			updateActualObjects();
 			player->setPosition(glm::vec2((map->getMapSize().x -1) * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 			player->setTileMap(map);
 
@@ -653,8 +671,10 @@ void playScene::updateElementsScene()
 		}
 		else if (room == 2) {
 			if (map->isMapLimitTop(player->getPosPlayer())) {
+				saveActualObjects();
 				++room;
 				updateRoom();
+				updateActualObjects();
 				player->setPosition(glm::vec2((player->getPosPlayer().x) / 18 * map->getTileSize(), 22 * map->getTileSize()));
 				player->setTileMap(map);
 
@@ -665,8 +685,10 @@ void playScene::updateElementsScene()
 				cal->setTileMap(map);
 			}
 			else if (map->isMapLimitLeft(player->getPosPlayer())) {
+				saveActualObjects();
 				--room;
 				updateRoom();
+				updateActualObjects();
 				player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 				player->setTileMap(map);
 				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -677,8 +699,10 @@ void playScene::updateElementsScene()
 			}
 		}
 		else if (room == 3 && map->isMapLimitDown(player->getPosPlayer())) {
+			saveActualObjects();
 			--room;
 			updateRoom();
+			updateActualObjects();
 			player->setPosition(glm::vec2((player->getPosPlayer().x) / 18 * map->getTileSize(), 2 * map->getTileSize()));
 			player->setTileMap(map);
 			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -698,7 +722,7 @@ void playScene::loadRoomObjects()
 {
 	//if (objectsRoom1.size() != 0) objectsRoom1.erase(objectsRoom1.begin(), objectsRoom1.end());
 
-	switch (scene) { 
+	/*switch (scene) { 
 	case 0:
 		switch (room) { 
 		case 1:
@@ -715,7 +739,24 @@ void playScene::loadRoomObjects()
 	case 1:
 		loadSingleRoomObjects("objects/Objects12.txt", objectsRoom1);
 		break;
-	}
+	}*/
+
+	loadSingleRoomObjects("objects/Objects1_1.txt", objectsRoom1_1);
+	loadSingleRoomObjects("objects/Objects1_2.txt", objectsRoom1_2);
+	loadSingleRoomObjects("objects/Objects1_3.txt", objectsRoom1_3);
+	/*loadSingleRoomObjects("objects/Objects2_1.txt", objectsRoom2_1);
+	loadSingleRoomObjects("objects/Objects2_2.txt", objectsRoom2_2);
+	loadSingleRoomObjects("objects/Objects2_3.txt", objectsRoom2_3);
+	loadSingleRoomObjects("objects/Objects3_1.txt", objectsRoom3_1);
+	loadSingleRoomObjects("objects/Objects3_2.txt", objectsRoom3_2);
+	loadSingleRoomObjects("objects/Objects3_3.txt", objectsRoom3_3);
+	loadSingleRoomObjects("objects/Objects4_1.txt", objectsRoom4_1);
+	loadSingleRoomObjects("objects/Objects4_2.txt", objectsRoom4_2);
+	loadSingleRoomObjects("objects/Objects4_3.txt", objectsRoom4_3);
+	loadSingleRoomObjects("objects/Objects5_1.txt", objectsRoom5_1);
+	loadSingleRoomObjects("objects/Objects5_2.txt", objectsRoom5_2);
+	loadSingleRoomObjects("objects/Objects5_3.txt", objectsRoom5_3);*/
+
 }
 
 bool playScene::loadSingleRoomObjects(string levelFile, vector<Object*>& objectsRoom)
@@ -828,7 +869,40 @@ bool playScene::loadSingleRoomObjects(string levelFile, vector<Object*>& objects
 
 void playScene::updateActualObjects()
 {
-	actualRoomObjects = objectsRoom1;
+	if (room == 1) actualRoomObjects = objectsRoom1_1;
+	else if (room == 2) actualRoomObjects = objectsRoom1_2;
+	else if (room == 3) actualRoomObjects = objectsRoom1_3;
+	else if (room == 4) actualRoomObjects = objectsRoom2_1;
+	else if (room == 5) actualRoomObjects = objectsRoom2_2;
+	else if (room == 6) actualRoomObjects = objectsRoom2_3;
+	else if (room == 7) actualRoomObjects = objectsRoom3_1;
+	else if (room == 8) actualRoomObjects = objectsRoom3_2;
+	else if (room == 9) actualRoomObjects = objectsRoom3_3;
+	else if (room == 10) actualRoomObjects = objectsRoom4_1;
+	else if (room == 11) actualRoomObjects = objectsRoom4_2;
+	else if (room == 12) actualRoomObjects = objectsRoom4_3;
+	else if (room == 13) actualRoomObjects = objectsRoom5_1;
+	else if (room == 14) actualRoomObjects = objectsRoom5_2;
+	else if (room == 15) actualRoomObjects = objectsRoom5_3;
+}
+
+void playScene::saveActualObjects() 
+{
+	if (room == 1) objectsRoom1_1 = actualRoomObjects;
+	else if (room == 2) objectsRoom1_2 = actualRoomObjects;
+	else if (room == 3) objectsRoom1_3 = actualRoomObjects;
+	else if (room == 4) objectsRoom2_1 = actualRoomObjects;
+	else if (room == 5) objectsRoom2_2 = actualRoomObjects;
+	else if (room == 6) objectsRoom2_3 = actualRoomObjects;
+	else if (room == 7) objectsRoom3_1 = actualRoomObjects;
+	else if (room == 8) objectsRoom3_2 = actualRoomObjects;
+	else if (room == 9) objectsRoom3_3 = actualRoomObjects;
+	else if (room == 10) objectsRoom4_1 = actualRoomObjects;
+	else if (room == 11) objectsRoom4_2 = actualRoomObjects;
+	else if (room == 12) objectsRoom4_3 = actualRoomObjects;
+	else if (room == 13) objectsRoom5_1 = actualRoomObjects;
+	else if (room == 14) objectsRoom5_2 = actualRoomObjects;
+	else if (room == 15) objectsRoom5_3 = actualRoomObjects;
 }
 
 void playScene::calculateDownObstaculo(Object* obst) {
@@ -930,8 +1004,7 @@ void playScene::newScene()
 	updateScene();
 	updateRoom();
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
-	loadRoomObjects();
-	updateActualObjects();
+	
 
 }
 
