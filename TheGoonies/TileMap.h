@@ -28,7 +28,11 @@ public:
 	
 	int getTileSize() const { return tileSize; }
 
+	glm::ivec2 getMapSize();
+
 	bool isMapLimitRight(const glm::ivec2& pos);
+	bool isMapLimitTop(const glm::ivec2& pos);
+	bool isMapLimitDown(const glm::ivec2& pos);
 	bool isMapLimitLeft(const glm::ivec2& pos);
 	
 	bool collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) const;
