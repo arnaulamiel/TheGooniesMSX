@@ -472,7 +472,7 @@ void playScene::initMaps(int scene) {
 	switch (scene) {
 	case 0:
 		
-		mapIni = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);		
+		mapIni = TileMap::createTileMap("levels/level15.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);		
 		mapIni2 = TileMap::createTileMap("levels/level02.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);		
 		mapIni3 = TileMap::createTileMap("levels/level03.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 		
@@ -758,7 +758,7 @@ void playScene::loadRoomObjects()
 	loadSingleRoomObjects("objects/Objects1_1.txt", objectsRoom1_1);
 	loadSingleRoomObjects("objects/Objects1_2.txt", objectsRoom1_2);
 	loadSingleRoomObjects("objects/Objects1_3.txt", objectsRoom1_3);
-	loadSingleRoomObjects("objects/Objects2_1.txt", objectsRoom2_1);
+	/*loadSingleRoomObjects("objects/Objects2_1.txt", objectsRoom2_1);
 	loadSingleRoomObjects("objects/Objects2_2.txt", objectsRoom2_2);
 	loadSingleRoomObjects("objects/Objects2_3.txt", objectsRoom2_3);
 	loadSingleRoomObjects("objects/Objects3_1.txt", objectsRoom3_1);
@@ -769,7 +769,7 @@ void playScene::loadRoomObjects()
 	loadSingleRoomObjects("objects/Objects4_3.txt", objectsRoom4_3);
 	loadSingleRoomObjects("objects/Objects5_1.txt", objectsRoom5_1);
 	loadSingleRoomObjects("objects/Objects5_2.txt", objectsRoom5_2);
-	loadSingleRoomObjects("objects/Objects5_3.txt", objectsRoom5_3);
+	loadSingleRoomObjects("objects/Objects5_3.txt", objectsRoom5_3);*/
 
 }
 
