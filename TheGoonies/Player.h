@@ -25,6 +25,8 @@ public:
 	
 	void iniChildsInterface(ShaderProgram& shaderPrograma);
 	void iniPlayerStats(ShaderProgram& shaderPrograma);
+	void iniPowerUpInterface(ShaderProgram& shaderPrograma);
+	
 	glm::ivec2 getPosPlayer();
 	void setState(int sta);
 	int getState();
@@ -52,7 +54,7 @@ public:
 
 private:
 	
-
+	vector<int> powerUps;
 	ShaderProgram texProgram;
 	int vidasPlayer,expPlayer, timerHit, before;
 	bool bJumping,bHitting, bLiana, isHitted, bCooldownX, hasBlueHel, soundDash, flagDash, hasYellowHel, hasGreenRain, hasGrayRain, hasHyperShoes, godMode;
@@ -64,12 +66,22 @@ private:
 	Texture ssheetexp;
 	Texture ssheetch;
 	Texture godsh;
+	Texture powup1sh;
+	Texture powup2sh;
+	Texture powup3sh;
+	Texture powup4sh;
+	Texture powup5sh;
 	Sprite *sprite;
 	Sprite* vidaSprite;
 	Sprite* expSprite;
 	Sprite* timerSprite;
 	Sprite* childSprite;
 	Sprite* godSprite;
+	Sprite* powUp1Sprite;
+	Sprite* powUp2Sprite;
+	Sprite* powUp3Sprite;
+	Sprite* powUp4Sprite;
+	Sprite* powUp5Sprite;
 	TileMap *map;
 };
 

@@ -40,6 +40,10 @@ enum numChilds {
 	ZERO_CH, ONE_CH, TWO_CH, TREE_CH, FOUR_CH, FIVE_CH, SIX_CH
 };
 
+enum powerUps {
+	NONE, BLUE_HEL, YELLOW_HEL, GREEN_RAIN, GRAY_RAIN, HYPERSHOES
+};
+
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
 	//load una imatge
@@ -148,6 +152,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	tileMapDispl = tileMapPos;
 	iniPlayerStats(shaderProgram);
 	iniChildsInterface(shaderProgram);
+	iniPowerUpInterface(shaderProgram);
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 
 
@@ -164,6 +169,11 @@ void Player::update(int deltaTime)
 	timerSprite->update(deltaTime);
 	childSprite->update(deltaTime);
 	godSprite->update(deltaTime);
+	powUp1Sprite->update(deltaTime);
+	powUp2Sprite->update(deltaTime);
+	powUp3Sprite->update(deltaTime);
+	powUp4Sprite->update(deltaTime);
+	powUp5Sprite->update(deltaTime);
 	
 	++timerGod;
 	//Esta en liana
@@ -513,6 +523,11 @@ void Player::render()
 	if (bCooldownX) timerSprite->render();
 	childSprite->render();
 	godSprite->render();
+	powUp1Sprite->render();
+	powUp2Sprite->render();
+	powUp3Sprite->render();
+	powUp4Sprite->render();
+	powUp5Sprite->render();
 }
 
 void Player::setTileMap(TileMap *tileMap)
@@ -701,6 +716,154 @@ void Player::iniChildsInterface(ShaderProgram& shaderProgram) {
 
 }
 
+void Player::iniPowerUpInterface(ShaderProgram& shaderProgram) 
+{
+	//Power-up 1
+	powup1sh.loadFromFile("images/powerUpInterface.png", TEXTURE_PIXEL_FORMAT_RGBA);
+
+	powUp1Sprite = Sprite::createSprite(glm::ivec2(36, 36), glm::vec2((1.f / 6.f), 1), &powup1sh, &shaderProgram);
+
+	powUp1Sprite->setNumberAnimations(6);
+
+		powUp1Sprite->setAnimationSpeed(NONE, 8);
+		powUp1Sprite->addKeyframe(NONE, glm::vec2(0, 0));
+
+		powUp1Sprite->setAnimationSpeed(BLUE_HEL, 8);
+		powUp1Sprite->addKeyframe(BLUE_HEL, glm::vec2((1.f / 6.f), 0));
+
+		powUp1Sprite->setAnimationSpeed(YELLOW_HEL, 8);
+		powUp1Sprite->addKeyframe(YELLOW_HEL, glm::vec2((2.f / 6.f), 0));
+
+		powUp1Sprite->setAnimationSpeed(GREEN_RAIN, 8);
+		powUp1Sprite->addKeyframe(GREEN_RAIN, glm::vec2((3.f / 6.f), 0));
+
+		powUp1Sprite->setAnimationSpeed(GRAY_RAIN, 8);
+		powUp1Sprite->addKeyframe(GRAY_RAIN, glm::vec2((4.f / 6.f), 0));
+
+		powUp1Sprite->setAnimationSpeed(HYPERSHOES, 8);
+		powUp1Sprite->addKeyframe(HYPERSHOES, glm::vec2((5.f / 6.f), 0));
+
+	powUp1Sprite->changeAnimation(NONE);
+	powUp1Sprite->setPosition(glm::vec2(float(40), float(415)));
+
+
+	//Power-up 2
+	powup2sh.loadFromFile("images/powerUpInterface.png", TEXTURE_PIXEL_FORMAT_RGBA);
+
+	powUp2Sprite = Sprite::createSprite(glm::ivec2(36, 36), glm::vec2((1.f / 6.f), 1), &powup2sh, &shaderProgram);
+
+	powUp2Sprite->setNumberAnimations(6);
+
+		powUp2Sprite->setAnimationSpeed(NONE, 8);
+		powUp2Sprite->addKeyframe(NONE, glm::vec2(0, 0));
+
+		powUp2Sprite->setAnimationSpeed(BLUE_HEL, 8);
+		powUp2Sprite->addKeyframe(BLUE_HEL, glm::vec2((1.f / 6.f), 0));
+
+		powUp2Sprite->setAnimationSpeed(YELLOW_HEL, 8);
+		powUp2Sprite->addKeyframe(YELLOW_HEL, glm::vec2((2.f / 6.f), 0));
+
+		powUp2Sprite->setAnimationSpeed(GREEN_RAIN, 8);
+		powUp2Sprite->addKeyframe(GREEN_RAIN, glm::vec2((3.f / 6.f), 0));
+
+		powUp2Sprite->setAnimationSpeed(GRAY_RAIN, 8);
+		powUp2Sprite->addKeyframe(GRAY_RAIN, glm::vec2((4.f / 6.f), 0));
+
+		powUp2Sprite->setAnimationSpeed(HYPERSHOES, 8);
+		powUp2Sprite->addKeyframe(HYPERSHOES, glm::vec2((5.f / 6.f), 0));
+
+	powUp2Sprite->changeAnimation(NONE);
+	powUp2Sprite->setPosition(glm::vec2(float(80), float(415)));
+
+
+	//Power-up 3
+	powup3sh.loadFromFile("images/powerUpInterface.png", TEXTURE_PIXEL_FORMAT_RGBA);
+
+	powUp3Sprite = Sprite::createSprite(glm::ivec2(36, 36), glm::vec2((1.f / 6.f), 1), &powup3sh, &shaderProgram);
+
+	powUp3Sprite->setNumberAnimations(6);
+
+		powUp3Sprite->setAnimationSpeed(NONE, 8);
+		powUp3Sprite->addKeyframe(NONE, glm::vec2(0, 0));
+
+		powUp3Sprite->setAnimationSpeed(BLUE_HEL, 8);
+		powUp3Sprite->addKeyframe(BLUE_HEL, glm::vec2((1.f / 6.f), 0));
+
+		powUp3Sprite->setAnimationSpeed(YELLOW_HEL, 8);
+		powUp3Sprite->addKeyframe(YELLOW_HEL, glm::vec2((2.f / 6.f), 0));
+
+		powUp3Sprite->setAnimationSpeed(GREEN_RAIN, 8);
+		powUp3Sprite->addKeyframe(GREEN_RAIN, glm::vec2((3.f / 6.f), 0));
+
+		powUp3Sprite->setAnimationSpeed(GRAY_RAIN, 8);
+		powUp3Sprite->addKeyframe(GRAY_RAIN, glm::vec2((4.f / 6.f), 0));
+
+		powUp3Sprite->setAnimationSpeed(HYPERSHOES, 8);
+		powUp3Sprite->addKeyframe(HYPERSHOES, glm::vec2((5.f / 6.f), 0));
+
+	powUp3Sprite->changeAnimation(NONE);
+	powUp3Sprite->setPosition(glm::vec2(float(120), float(415)));
+
+
+	//Power-up 4
+	powup4sh.loadFromFile("images/powerUpInterface.png", TEXTURE_PIXEL_FORMAT_RGBA);
+
+	powUp4Sprite = Sprite::createSprite(glm::ivec2(36, 36), glm::vec2((1.f / 6.f), 1), &powup4sh, &shaderProgram);
+
+	powUp4Sprite->setNumberAnimations(6);
+
+		powUp4Sprite->setAnimationSpeed(NONE, 8);
+		powUp4Sprite->addKeyframe(NONE, glm::vec2(0, 0));
+
+		powUp4Sprite->setAnimationSpeed(BLUE_HEL, 8);
+		powUp4Sprite->addKeyframe(BLUE_HEL, glm::vec2((1.f / 6.f), 0));
+
+		powUp4Sprite->setAnimationSpeed(YELLOW_HEL, 8);
+		powUp4Sprite->addKeyframe(YELLOW_HEL, glm::vec2((2.f / 6.f), 0));
+
+		powUp4Sprite->setAnimationSpeed(GREEN_RAIN, 8);
+		powUp4Sprite->addKeyframe(GREEN_RAIN, glm::vec2((3.f / 6.f), 0));
+
+		powUp4Sprite->setAnimationSpeed(GRAY_RAIN, 8);
+		powUp4Sprite->addKeyframe(GRAY_RAIN, glm::vec2((4.f / 6.f), 0));
+
+		powUp4Sprite->setAnimationSpeed(HYPERSHOES, 8);
+		powUp4Sprite->addKeyframe(HYPERSHOES, glm::vec2((5.f / 6.f), 0));
+
+	powUp4Sprite->changeAnimation(NONE);
+	powUp4Sprite->setPosition(glm::vec2(float(160), float(415)));
+
+
+	//Power-up 5
+	powup5sh.loadFromFile("images/powerUpInterface.png", TEXTURE_PIXEL_FORMAT_RGBA);
+
+	powUp5Sprite = Sprite::createSprite(glm::ivec2(36, 36), glm::vec2((1.f / 6.f), 1), &powup5sh, &shaderProgram);
+
+	powUp5Sprite->setNumberAnimations(6);
+
+		powUp5Sprite->setAnimationSpeed(NONE, 8);
+		powUp5Sprite->addKeyframe(NONE, glm::vec2(0, 0));
+
+		powUp5Sprite->setAnimationSpeed(BLUE_HEL, 8);
+		powUp5Sprite->addKeyframe(BLUE_HEL, glm::vec2((1.f / 6.f), 0));
+
+		powUp5Sprite->setAnimationSpeed(YELLOW_HEL, 8);
+		powUp5Sprite->addKeyframe(YELLOW_HEL, glm::vec2((2.f / 6.f), 0));
+
+		powUp5Sprite->setAnimationSpeed(GREEN_RAIN, 8);
+		powUp5Sprite->addKeyframe(GREEN_RAIN, glm::vec2((3.f / 6.f), 0));
+
+		powUp5Sprite->setAnimationSpeed(GRAY_RAIN, 8);
+		powUp5Sprite->addKeyframe(GRAY_RAIN, glm::vec2((4.f / 6.f), 0));
+
+		powUp5Sprite->setAnimationSpeed(HYPERSHOES, 8);
+		powUp5Sprite->addKeyframe(HYPERSHOES, glm::vec2((5.f / 6.f), 0));
+
+	powUp5Sprite->changeAnimation(NONE);
+	powUp5Sprite->setPosition(glm::vec2(float(200), float(415)));
+
+}
+
 glm::ivec2 Player::getPosPlayer() {
 	return posPlayer;
 }
@@ -876,26 +1039,51 @@ bool Player::canTP()
 void Player::getBlueHelmet() 
 {
 	hasBlueHel = true;
+	if (powUp1Sprite->animation() == NONE) powUp1Sprite->changeAnimation(BLUE_HEL);
+	else if (powUp2Sprite->animation() == NONE) powUp2Sprite->changeAnimation(BLUE_HEL);
+	else if (powUp3Sprite->animation() == NONE) powUp3Sprite->changeAnimation(BLUE_HEL);
+	else if (powUp4Sprite->animation() == NONE) powUp4Sprite->changeAnimation(BLUE_HEL);
+	else if (powUp5Sprite->animation() == NONE) powUp5Sprite->changeAnimation(BLUE_HEL);
 }
 
 void Player::getYellowHelmet()
 {
 	hasYellowHel = true;
+	if (powUp1Sprite->animation() == NONE) powUp1Sprite->changeAnimation(YELLOW_HEL);
+	else if (powUp2Sprite->animation() == NONE) powUp2Sprite->changeAnimation(YELLOW_HEL);
+	else if (powUp3Sprite->animation() == NONE) powUp3Sprite->changeAnimation(YELLOW_HEL);
+	else if (powUp4Sprite->animation() == NONE) powUp4Sprite->changeAnimation(YELLOW_HEL);
+	else if (powUp5Sprite->animation() == NONE) powUp5Sprite->changeAnimation(YELLOW_HEL);
 }
 
 void Player::getGreenRaincoat()
 {
 	hasGreenRain = true;
+	if (powUp1Sprite->animation() == NONE) powUp1Sprite->changeAnimation(GREEN_RAIN);
+	else if (powUp2Sprite->animation() == NONE) powUp2Sprite->changeAnimation(GREEN_RAIN);
+	else if (powUp3Sprite->animation() == NONE) powUp3Sprite->changeAnimation(GREEN_RAIN);
+	else if (powUp4Sprite->animation() == NONE) powUp4Sprite->changeAnimation(GREEN_RAIN);
+	else if (powUp5Sprite->animation() == NONE) powUp5Sprite->changeAnimation(GREEN_RAIN);
 }
 
 void Player::getGrayRaincoat()
 {
 	hasGrayRain = true;
+	if (powUp1Sprite->animation() == NONE) powUp1Sprite->changeAnimation(GRAY_RAIN);
+	else if (powUp2Sprite->animation() == NONE) powUp2Sprite->changeAnimation(GRAY_RAIN);
+	else if (powUp3Sprite->animation() == NONE) powUp3Sprite->changeAnimation(GRAY_RAIN);
+	else if (powUp4Sprite->animation() == NONE) powUp4Sprite->changeAnimation(GRAY_RAIN);
+	else if (powUp5Sprite->animation() == NONE) powUp5Sprite->changeAnimation(GRAY_RAIN);
 }
 
 void Player::getHyperShoes()
 {
 	hasHyperShoes = true;
+	if (powUp1Sprite->animation() == NONE) powUp1Sprite->changeAnimation(HYPERSHOES);
+	else if (powUp2Sprite->animation() == NONE) powUp2Sprite->changeAnimation(HYPERSHOES);
+	else if (powUp3Sprite->animation() == NONE) powUp3Sprite->changeAnimation(HYPERSHOES);
+	else if (powUp4Sprite->animation() == NONE) powUp4Sprite->changeAnimation(HYPERSHOES);
+	else if (powUp5Sprite->animation() == NONE) powUp5Sprite->changeAnimation(HYPERSHOES);
 }
 
 bool Player::hasBlueHelmet()
