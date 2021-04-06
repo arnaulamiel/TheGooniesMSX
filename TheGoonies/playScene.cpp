@@ -340,6 +340,7 @@ void playScene::update(int deltaTime)
 				if (getObject(blueHel)) {
 					hasBlueHel = true;
 					player->getBlueHelmet();
+					createSound("../../../libs/irrKlang-1.6.0/media/getKey.wav", false);
 					actualRoomObjects[i]->destroyObject();
 					actualRoomObjects[i] = nullptr;
 				}
@@ -351,6 +352,7 @@ void playScene::update(int deltaTime)
 				if (getObject(yellowHel)) {
 					hasYellowHel = true;
 					player->getYellowHelmet();
+					createSound("../../../libs/irrKlang-1.6.0/media/getKey.wav", false);
 					actualRoomObjects[i]->destroyObject();
 					actualRoomObjects[i] = nullptr;
 				}
@@ -362,6 +364,7 @@ void playScene::update(int deltaTime)
 				if (getObject(greenRain)) {
 					hasGreenRain = true;
 					player->getGreenRaincoat();
+					createSound("../../../libs/irrKlang-1.6.0/media/getKey.wav", false);
 					actualRoomObjects[i]->destroyObject();
 					actualRoomObjects[i] = nullptr;
 				}
@@ -373,6 +376,7 @@ void playScene::update(int deltaTime)
 				if (getObject(grayRain)) {
 					hasGrayRain = true;
 					player->getGrayRaincoat();
+					createSound("../../../libs/irrKlang-1.6.0/media/getKey.wav", false);
 					actualRoomObjects[i]->destroyObject();
 					actualRoomObjects[i] = nullptr;
 				}
@@ -383,6 +387,8 @@ void playScene::update(int deltaTime)
 				Object* hyperShoes = actualRoomObjects[i];
 				if (getObject(hyperShoes)) {
 					hasHyperShoes = true;
+					createSound("../../../libs/irrKlang-1.6.0/media/getKey.wav", false);
+					
 					player->getHyperShoes();
 					actualRoomObjects[i]->destroyObject();
 					actualRoomObjects[i] = nullptr;
@@ -489,8 +495,8 @@ void playScene::render()
 void playScene::fin() {}
 
 void playScene::initMaps() {
-	mapIni = TileMap::createTileMap("levels/level02.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	mapIni2 = TileMap::createTileMap("levels/level04.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	mapIni = TileMap::createTileMap("levels/level05.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	mapIni2 = TileMap::createTileMap("levels/level06.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 }
 
 void playScene::updateRoom() {
