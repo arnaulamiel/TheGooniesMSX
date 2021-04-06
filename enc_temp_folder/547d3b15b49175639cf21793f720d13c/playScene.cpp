@@ -472,7 +472,7 @@ void playScene::initMaps(int scene) {
 	switch (scene) {
 	case 0:
 		
-		mapIni = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);		
+		mapIni = TileMap::createTileMap("levels/level09.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);		
 		mapIni2 = TileMap::createTileMap("levels/level02.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);		
 		mapIni3 = TileMap::createTileMap("levels/level03.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 		
@@ -921,11 +921,7 @@ void playScene::newScene()
 	inPortal = false;
 	waitToEnd = 0;
 	room = 1;
-	hasBlueHel = false;
-	hasYellowHel = false;
-	hasGreenRain = false;
-	hasGrayRain = false;
-	hasHyperShoes = false;
+	
 
 	changeMusic("../../../libs/irrKlang-1.6.0/media/playGooniesAlternative.ogg");
 	
@@ -936,12 +932,6 @@ void playScene::newScene()
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	loadRoomObjects();
 	updateActualObjects();
-	
-
-	
-	
-	
-
 
 }
 
