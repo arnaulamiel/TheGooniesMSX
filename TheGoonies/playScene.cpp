@@ -676,7 +676,7 @@ void playScene::updateElementsScene()
 			++room;
 			updateRoom();
 			updateActualObjects();
-			player->setPosition(glm::vec2((map->getMapSize().x -1) * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+			player->setPosition(glm::vec2(28 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 			player->setTileMap(map);
 
 			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -693,7 +693,7 @@ void playScene::updateElementsScene()
 				++room;
 				updateRoom();
 				updateActualObjects();
-				player->setPosition(glm::vec2((player->getPosPlayer().x) / 18 * map->getTileSize(), 22 * map->getTileSize()));
+				player->setPosition(glm::vec2(28 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 				player->setTileMap(map);
 
 				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -707,7 +707,7 @@ void playScene::updateElementsScene()
 				--room;
 				updateRoom();
 				updateActualObjects();
-				player->setPosition(glm::vec2(30 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
+				player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 				player->setTileMap(map);
 				cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 				cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
@@ -721,7 +721,7 @@ void playScene::updateElementsScene()
 			--room;
 			updateRoom();
 			updateActualObjects();
-			player->setPosition(glm::vec2((player->getPosPlayer().x) / 18 * map->getTileSize(), 2 * map->getTileSize()));
+			player->setPosition(glm::vec2(2 * map->getTileSize(), (player->getPosPlayer().y) / 18 * map->getTileSize()));
 			player->setTileMap(map);
 			cal->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 			cal->setPosition(glm::vec2(INIT_CAL_X_TILES * map->getTileSize(), INIT_CAL_Y_TILES * map->getTileSize()));
